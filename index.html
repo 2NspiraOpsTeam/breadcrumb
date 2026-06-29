@@ -420,7 +420,6 @@
   <script>
     (() => {
       const TOTAL_STAGES = 10;
-      const INPUT_PLACEHOLDER = "[Await Breadcrumb Input...]";
       const CHARSET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
       const ROUTE_STAGE_PREFIX = "/stage-";
       const state = {
@@ -445,7 +444,7 @@
           prompt: [
             "An old deception crossed a city gate because everyone studied the spectacle and ignored the path.",
             "You are not here to solve the horse. You are here to verify the boundary that carried it into this stage.",
-            "Return the four-character sector token exactly as it appears at the edge of your window."
+            "Return the sector token exactly as it appears at the edge of your window."
           ]
         },
         {
@@ -589,6 +588,18 @@
         return value.toUpperCase().replace(/\s+/g, "");
       }
 
+      function getInputPlaceholder(stage) {
+        if (stage.id === 1) {
+          return "[ _ _ _ _ ]";
+        }
+
+        if (stage.expectedLength >= 4 && stage.expectedLength <= 8) {
+          return `[ ${Array.from({ length: stage.expectedLength }, () => "_").join(" ")} ]`;
+        }
+
+        return "[ _ _ _ _ ... ]";
+      }
+
       function generateToken() {
         const randomValues = new Uint32Array(4);
         window.crypto.getRandomValues(randomValues);
@@ -665,6 +676,7 @@
           navigateHome(true);
           return;
         }
+        const inputPlaceholder = getInputPlaceholder(stage);
 
         const assetMarkup = stage.assetType === "trojan"
           ? renderTrojanAsset()
@@ -694,8 +706,8 @@
                     spellcheck="false"
                     autocomplete="off"
                     autocapitalize="characters"
-                    placeholder="${INPUT_PLACEHOLDER}"
-                    aria-label="${INPUT_PLACEHOLDER}"
+                    placeholder="${inputPlaceholder}"
+                    aria-label="${inputPlaceholder}"
                   >
                 </div>
               </div>
