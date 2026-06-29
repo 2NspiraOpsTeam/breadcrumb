@@ -672,6 +672,20 @@
         return Array.from(randomValues, (value) => CHARSET[value % CHARSET.length]).join("");
       }
 
+      function getUnlockedStage() {
+        const stored = Number.parseInt(localStorage.getItem("current_stage") || "1", 10);
+        if (Number.isNaN(stored)) {
+          return 1;
+        }
+
+        return Math.min(Math.max(stored, 1), TOTAL_STAGES + 1);
+      }
+
+      function getAccessibleStage(requestedStage) {
+        const unlockedStage = getUnlockedStage();
+        return Math.min(Math.max(requestedStage, 1), Math.min(unlockedStage, TOTAL_STAGES));
+      }
+
       async function sha256(value) {
         const buffer = await window.crypto.subtle.digest(
           "SHA-256",
@@ -965,13 +979,14 @@
 
       function navigateToStage(stageNumber, animate = false, preserveUrl = false) {
         const execute = () => {
+          const accessibleStage = getAccessibleStage(stageNumber);
           state.currentView = "stage";
-          state.currentStage = stageNumber;
+          state.currentStage = accessibleStage;
           if (!preserveUrl) {
-            const nextUrl = stageNumber === 1 ? "/stage-1" : `${ROUTE_STAGE_PREFIX}${stageNumber}`;
-            window.history.pushState({ view: "stage", stage: stageNumber }, "", nextUrl);
+            const nextUrl = accessibleStage === 1 ? "/stage-1" : `${ROUTE_STAGE_PREFIX}${accessibleStage}`;
+            window.history.pushState({ view: "stage", stage: accessibleStage }, "", nextUrl);
           }
-          renderStage(stageNumber);
+          renderStage(accessibleStage);
         };
 
         if (animate) {
@@ -999,6 +1014,10 @@
         const pathname = window.location.pathname;
         const completion = pathname === "/complete";
         if (completion) {
+          if (getUnlockedStage() <= TOTAL_STAGES) {
+            navigateToStage(getAccessibleStage(TOTAL_STAGES), false);
+            return;
+          }
           renderCompletion();
           return;
         }
@@ -1006,8 +1025,13 @@
         const stageMatch = pathname.match(/^\/stage-(\d+)$/);
         if (stageMatch) {
           const stageNumber = Number.parseInt(stageMatch[1], 10);
+          const accessibleStage = getAccessibleStage(stageNumber);
+          if (accessibleStage !== stageNumber) {
+            navigateToStage(accessibleStage, false);
+            return;
+          }
           state.currentView = "stage";
-          state.currentStage = Math.min(Math.max(stageNumber, 1), TOTAL_STAGES);
+          state.currentStage = accessibleStage;
           renderStage(state.currentStage);
           return;
         }
