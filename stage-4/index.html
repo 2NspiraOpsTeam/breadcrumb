@@ -317,26 +317,71 @@
       bottom: 18px;
       padding-top: 16px;
       border-top: 1px solid var(--line);
+      cursor: text;
     }
 
     .stage-input {
+      position: absolute;
+      inset: 16px 0 0;
       width: 100%;
+      opacity: 0;
       border: 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.22);
       background: transparent;
-      color: var(--text);
-      padding: 14px 0 12px;
-      font-size: clamp(0.98rem, 2vw, 1.08rem);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      color: transparent;
+      padding: 0;
       outline: none;
-      caret-color: var(--accent);
+      caret-color: transparent;
     }
 
-    .stage-input::placeholder {
-      color: rgba(244, 241, 234, 0.26);
-      text-transform: none;
-      letter-spacing: 0.02em;
+    .token-box-row {
+      display: flex;
+      justify-content: center;
+      gap: clamp(8px, 1.6vw, 14px);
+      padding: 8px 0 4px;
+    }
+
+    .token-box {
+      width: clamp(42px, 7vw, 56px);
+      height: clamp(50px, 8vw, 62px);
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.02);
+      color: rgba(244, 241, 234, 0.38);
+      font-size: clamp(1rem, 2vw, 1.12rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .token-box.is-filled {
+      color: var(--text);
+      border-color: rgba(155, 243, 207, 0.44);
+      background: rgba(155, 243, 207, 0.07);
+    }
+
+    .token-box.is-active {
+      border-color: rgba(155, 243, 207, 0.78);
+      background: rgba(155, 243, 207, 0.12);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .token-box.is-success {
+      border-color: rgba(155, 243, 207, 0.92);
+      background: rgba(155, 243, 207, 0.16);
+      color: var(--success);
+    }
+
+    @media (max-width: 520px) {
+      .token-box-row {
+        gap: 8px;
+      }
+
+      .token-box {
+        width: min(15.5vw, 48px);
+        height: min(17vw, 54px);
+      }
     }
 
     .completion {
@@ -590,16 +635,35 @@
         return value.toUpperCase().replace(/\s+/g, "");
       }
 
-      function getInputPlaceholder(stage) {
+      function getInputLabel(stage) {
         if (stage.id === 1) {
-          return "[ _ _ _ _ _ ]";
+          return "Enter the five-slot sector token";
         }
 
-        if (stage.expectedLength >= 4 && stage.expectedLength <= 8) {
-          return `[ ${Array.from({ length: stage.expectedLength }, () => "_").join(" ")} ]`;
+        return `Enter the ${stage.expectedLength}-slot stage token`;
+      }
+
+      function renderTokenBoxes(length) {
+        return `
+          <div class="token-box-row" id="token-box-row" aria-hidden="true">
+            ${Array.from({ length }, (_, index) => `<div class="token-box${index === 0 ? " is-active" : ""}" data-token-index="${index}">_</div>`).join("")}
+          </div>
+        `;
+      }
+
+      function syncTokenBoxes(value, isSuccess = false) {
+        const boxes = document.querySelectorAll(".token-box");
+        if (!boxes.length) {
+          return;
         }
 
-        return "[ _ _ _ _ ... ]";
+        boxes.forEach((box, index) => {
+          const char = value[index] || "";
+          box.textContent = char || "_";
+          box.classList.toggle("is-filled", Boolean(char));
+          box.classList.toggle("is-active", !isSuccess && index === Math.min(value.length, boxes.length - 1) && value.length < boxes.length);
+          box.classList.toggle("is-success", isSuccess);
+        });
       }
 
       function generateToken(length = 4) {
@@ -709,7 +773,7 @@
           navigateHome(true);
           return;
         }
-        const inputPlaceholder = getInputPlaceholder(stage);
+        const inputLabel = getInputLabel(stage);
 
         const assetMarkup = stage.assetType === "trojan"
           ? renderTrojanAsset()
@@ -732,6 +796,7 @@
                 </div>
                 <div class="feedback-line" id="feedback-line"></div>
                 <div class="input-frame">
+                  ${renderTokenBoxes(stage.expectedLength)}
                   <input
                     id="stage-input"
                     class="stage-input"
@@ -740,8 +805,7 @@
                     autocomplete="off"
                     autocapitalize="characters"
                     maxlength="${stage.expectedLength}"
-                    placeholder="${inputPlaceholder}"
-                    aria-label="${inputPlaceholder}"
+                    aria-label="${inputLabel}"
                   >
                 </div>
               </div>
@@ -750,8 +814,11 @@
         `;
 
         const input = document.getElementById("stage-input");
+        const inputFrame = document.querySelector(".input-frame");
+        syncTokenBoxes("");
         input.focus();
         input.addEventListener("input", handleStageInput);
+        inputFrame.addEventListener("click", () => input.focus());
 
         if (stage.id === 1) {
           mountStageOneToken();
@@ -817,6 +884,7 @@
         if (input.value !== sanitized) {
           input.value = sanitized;
         }
+        syncTokenBoxes(sanitized);
 
         if (!sanitized) {
           return;
@@ -833,10 +901,12 @@
             updateStageOneHints();
           }
           input.value = "";
+          syncTokenBoxes("");
           showFeedback("error", "Token mismatch");
           return;
         }
 
+        syncTokenBoxes(sanitized, true);
         showFeedback("success", "Token verified");
         input.disabled = true;
         const nextStage = state.currentStage + 1;
