@@ -193,6 +193,18 @@
       filter: saturate(0.74) contrast(1.02) brightness(0.9);
     }
 
+    .asset-container-trojan {
+      min-height: clamp(440px, 58vw, 760px);
+      padding: 16px;
+    }
+
+    .asset-container-trojan img {
+      width: min(100%, 980px);
+      max-height: 100%;
+      transform: scale(1.08);
+      transform-origin: center center;
+    }
+
     .asset-meta {
       position: absolute;
       left: 18px;
@@ -741,7 +753,7 @@
 
       function renderTrojanAsset() {
         return `
-          <div class="asset-container">
+          <div class="asset-container asset-container-trojan">
             <img
               src="/assets/trojan-horse-stage-1.jpg"
               alt="Giovanni Domenico Tiepolo, The Procession of the Trojan Horse into Troy"
