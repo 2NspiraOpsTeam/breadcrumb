@@ -1,4 +1,4 @@
-# Needles in Haystacks
+# Breadcrumb
 
 Static OSINT challenge game designed for zero-cost hosting on Vercel.
 
