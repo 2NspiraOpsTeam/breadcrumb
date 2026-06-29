@@ -604,28 +604,12 @@
       function renderTrojanAsset() {
         return `
           <div class="asset-container">
-            <svg viewBox="0 0 720 420" aria-hidden="true" role="img">
-              <defs>
-                <linearGradient id="horseGlow" x1="0%" x2="100%" y1="0%" y2="100%">
-                  <stop offset="0%" stop-color="rgba(211,183,143,0.95)"></stop>
-                  <stop offset="100%" stop-color="rgba(114,88,55,0.9)"></stop>
-                </linearGradient>
-              </defs>
-              <g fill="none" stroke="url(#horseGlow)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
-                <path d="M170 255 L220 190 L286 173 L341 113 L378 120 L370 153 L395 172 L432 171 L463 150 L495 157 L511 181 L493 215 L521 236 L496 263 L459 269 L437 312 L408 312 L389 275 L321 273 L295 314 L269 314 L262 272 L205 270 Z"></path>
-                <path d="M235 188 L213 141 L228 103 L287 84 L313 88 L335 114"></path>
-                <path d="M350 126 L383 82 L422 76 L445 102 L432 149"></path>
-                <path d="M205 270 L170 319"></path>
-                <path d="M283 273 L247 344"></path>
-                <path d="M395 274 L413 345"></path>
-                <path d="M459 267 L496 326"></path>
-                <path d="M138 322 H544"></path>
-              </g>
-              <g fill="rgba(244,241,234,0.64)" font-family="IBM Plex Mono, monospace" font-size="17" letter-spacing="3">
-                <text x="104" y="364">TROJAN ENTRY VECTOR</text>
-              </g>
-            </svg>
-            <div class="asset-meta">Stage 1 visual clue</div>
+            <img
+              src="/assets/trojan-horse-stage-1.jpg"
+              alt="Giovanni Domenico Tiepolo, The Procession of the Trojan Horse into Troy"
+              loading="eager"
+            >
+            <div class="asset-meta">Giovanni Domenico Tiepolo // The Procession of the Trojan Horse into Troy</div>
           </div>
         `;
       }
