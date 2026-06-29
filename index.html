@@ -4,20 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Breadcrumb | OSINT Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: dark;
-      --bg: #0b1320;
-      --panel: rgba(12, 25, 46, 0.92);
-      --panel-2: #12213c;
-      --accent: #ff6b6b;
-      --accent-2: #ffd166;
-      --text: #ebf2ff;
-      --muted: #9db0cf;
-      --success: #5fd38d;
-      --error: #ff8f8f;
-      --border: rgba(255, 255, 255, 0.12);
-      --shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+      --bg: #05070b;
+      --panel: rgba(12, 15, 20, 0.9);
+      --panel-soft: rgba(255, 255, 255, 0.03);
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #f4f1ea;
+      --muted: rgba(244, 241, 234, 0.58);
+      --hint: rgba(244, 241, 234, 0.78);
+      --accent: #d3b78f;
+      --success: #c7f3c8;
+      --success-bg: rgba(136, 212, 143, 0.1);
+      --danger-bg: rgba(208, 124, 124, 0.12);
+      --danger: #f3c4c4;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
     }
 
     * {
@@ -26,592 +31,890 @@
       padding: 0;
     }
 
+    html,
     body {
-      min-height: 100vh;
-      font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+      min-height: 100%;
       background:
-        radial-gradient(circle at top, rgba(255, 107, 107, 0.16), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(255, 209, 102, 0.16), transparent 24%),
-        linear-gradient(160deg, #07101d 0%, #0b1320 48%, #04070d 100%);
+        radial-gradient(circle at top, rgba(211, 183, 143, 0.08), transparent 26%),
+        radial-gradient(circle at bottom, rgba(89, 113, 156, 0.09), transparent 28%),
+        linear-gradient(180deg, #05070b 0%, #090c12 100%);
       color: var(--text);
-      padding: 24px;
+    }
+
+    body {
+      font-family: "IBM Plex Mono", monospace;
+      overflow-x: hidden;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      background: none;
+      color: inherit;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      padding: 28px;
       display: grid;
       place-items: center;
     }
 
-    .shell {
-      width: min(980px, 100%);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      overflow: hidden;
+    .fade-layer {
+      width: min(1100px, 100%);
+      transition: opacity 320ms ease, transform 320ms ease;
+    }
+
+    .fade-layer.is-transitioning {
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+    }
+
+    .landing {
+      min-height: calc(100vh - 56px);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 6vw 4vw;
+    }
+
+    .landing-card {
+      width: min(760px, 100%);
+      display: grid;
+      gap: 34px;
+      justify-items: center;
+    }
+
+    .landing-mark {
+      font-size: 0.72rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .landing-statement {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(2.25rem, 5.4vw, 4.65rem);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+      max-width: 12ch;
+      color: var(--text);
+      text-wrap: balance;
+    }
+
+    .landing-cta {
+      padding: 16px 22px;
+      border: 1px solid rgba(211, 183, 143, 0.34);
+      color: var(--text);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .landing-cta:hover,
+    .landing-cta:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(211, 183, 143, 0.72);
+      background: rgba(211, 183, 143, 0.08);
+      outline: none;
+    }
+
+    .stage-shell {
+      min-height: calc(100vh - 56px);
+      display: grid;
+      align-items: start;
+      padding: clamp(12px, 2vw, 28px) 0;
+    }
+
+    .stage-frame {
+      width: min(880px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 26px;
+    }
+
+    .stage-tracker {
+      font-size: 0.76rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stage-body {
+      min-height: 76vh;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(8, 10, 14, 0.88), rgba(7, 8, 12, 0.95));
       box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      padding: clamp(22px, 3vw, 42px);
+      display: grid;
+      gap: 24px;
+      align-content: start;
+      position: relative;
     }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 18px 22px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.03);
+    .asset-container {
+      min-height: clamp(230px, 34vw, 420px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+        radial-gradient(circle at 50% 30%, rgba(211, 183, 143, 0.16), transparent 34%),
+        #090b10;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      overflow: hidden;
+      position: relative;
     }
 
-    .eyebrow {
-      color: var(--accent-2);
-      font-size: 0.82rem;
+    .asset-container img,
+    .asset-container svg {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .asset-meta {
+      position: absolute;
+      left: 18px;
+      bottom: 16px;
+      font-size: 0.7rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      font-size: clamp(1.9rem, 4vw, 3.1rem);
-      line-height: 1;
-      margin-bottom: 10px;
-    }
-
-    .lead {
       color: var(--muted);
-      max-width: 60ch;
-      line-height: 1.6;
-      font-size: 0.96rem;
     }
 
-    .stats {
-      display: grid;
-      gap: 10px;
-      min-width: 220px;
-    }
-
-    .stat-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px 14px;
-    }
-
-    .stat-label {
-      display: block;
-      color: var(--muted);
-      font-size: 0.74rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .stat-value {
-      font-size: 1.15rem;
-      font-weight: 700;
-    }
-
-    .content {
-      padding: 24px;
-      display: grid;
-      gap: 18px;
-    }
-
-    .progress {
-      height: 10px;
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
+    .evidence-card {
+      width: 100%;
       height: 100%;
-      width: 0;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      transition: width 0.3s ease;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      gap: 16px;
     }
 
-    .stage-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
+    .evidence-symbol {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      color: rgba(211, 183, 143, 0.86);
+      line-height: 0.9;
     }
 
-    .stage-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255, 209, 102, 0.1);
-      border: 1px solid rgba(255, 209, 102, 0.2);
-      color: var(--accent-2);
-      font-size: 0.84rem;
+    .evidence-caption {
+      color: var(--hint);
+      font-size: 0.86rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      max-width: 38ch;
+      line-height: 1.8;
     }
 
-    .panel {
-      background: linear-gradient(180deg, rgba(18, 33, 60, 0.95), rgba(10, 19, 34, 0.95));
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px;
+    .prompt-block {
+      display: grid;
+      gap: 14px;
+      padding: 0 0 86px;
     }
 
-    .panel h2,
-    .panel h3 {
-      margin-bottom: 14px;
+    .prompt-title {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      font-weight: 600;
+      letter-spacing: 0.01em;
     }
 
-    .scenario {
-      line-height: 1.75;
-      color: #f2f5ff;
+    .prompt-copy {
+      color: var(--hint);
+      font-size: 0.98rem;
+      line-height: 1.95;
+      max-width: 62ch;
     }
 
-    .scenario p + p,
-    .scenario ul + p,
-    .scenario p + ul {
+    .prompt-copy p + p {
       margin-top: 14px;
     }
 
-    .scenario ul {
-      padding-left: 20px;
+    .hint-rail {
+      position: absolute;
+      left: clamp(22px, 3vw, 42px);
+      right: clamp(22px, 3vw, 42px);
+      bottom: 92px;
+      min-height: 72px;
+      display: grid;
+      align-items: end;
+      pointer-events: none;
     }
 
-    .hint-box {
-      display: grid;
-      gap: 8px;
+    .hint-card {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 320ms ease, transform 320ms ease;
+      border-top: 1px solid rgba(211, 183, 143, 0.2);
+      padding-top: 14px;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.86rem;
+      line-height: 1.8;
+      max-width: 66ch;
     }
 
-    .answer-row {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 12px;
+    .hint-card.is-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    input[type="text"] {
+    .hint-card strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .feedback-line {
+      position: absolute;
+      left: clamp(22px, 3vw, 42px);
+      right: clamp(22px, 3vw, 42px);
+      bottom: 58px;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      min-height: 18px;
+      transition: color 200ms ease, opacity 200ms ease;
+      opacity: 0;
+    }
+
+    .feedback-line.is-visible {
+      opacity: 1;
+    }
+
+    .feedback-line.success {
+      color: var(--success);
+    }
+
+    .feedback-line.error {
+      color: var(--danger);
+    }
+
+    .input-frame {
+      position: absolute;
+      left: clamp(22px, 3vw, 42px);
+      right: clamp(22px, 3vw, 42px);
+      bottom: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .stage-input {
       width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(5, 11, 21, 0.85);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 15px 16px;
-      font-size: 1rem;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    input[type="text"]:focus {
-      border-color: rgba(255, 209, 102, 0.7);
-      box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.14);
-    }
-
-    button {
       border: 0;
-      border-radius: 14px;
-      padding: 14px 18px;
-      font: inherit;
-      cursor: pointer;
-      transition: transform 0.16s ease, opacity 0.16s ease, background 0.16s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    button.primary {
-      background: linear-gradient(90deg, var(--accent), #ff847c);
-      color: #fff;
-      font-weight: 700;
-    }
-
-    button.secondary {
-      background: rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+      background: transparent;
       color: var(--text);
-      border: 1px solid var(--border);
+      padding: 14px 0 12px;
+      font-size: clamp(0.98rem, 2vw, 1.08rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      outline: none;
+      caret-color: var(--accent);
     }
 
-    button:disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
-      transform: none;
-    }
-
-    .feedback {
-      display: none;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid transparent;
-      line-height: 1.5;
-    }
-
-    .feedback.success {
-      display: block;
-      background: rgba(95, 211, 141, 0.12);
-      border-color: rgba(95, 211, 141, 0.35);
-      color: #c7f7d9;
-    }
-
-    .feedback.error {
-      display: block;
-      background: rgba(255, 107, 107, 0.12);
-      border-color: rgba(255, 107, 107, 0.35);
-      color: #ffd1d1;
-    }
-
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 0.88rem;
+    .stage-input::placeholder {
+      color: rgba(244, 241, 234, 0.26);
+      text-transform: none;
+      letter-spacing: 0.02em;
     }
 
     .completion {
-      display: none;
+      min-height: calc(100vh - 56px);
+      display: grid;
+      place-items: center;
       text-align: center;
-      padding: 30px 22px;
+      padding: 6vw 4vw;
     }
 
-    .completion h2 {
-      font-size: clamp(1.7rem, 4vw, 2.6rem);
-      margin-bottom: 16px;
-      color: var(--accent-2);
+    .completion-card {
+      width: min(720px, 100%);
+      display: grid;
+      gap: 22px;
     }
 
-    .completion p {
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 60ch;
-      margin: 0 auto 20px;
+    .completion-card h2 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(2.3rem, 5vw, 4rem);
+      font-weight: 600;
     }
 
-    .certificate {
-      display: inline-block;
-      padding: 16px 18px;
-      border-radius: 16px;
-      background: rgba(255, 209, 102, 0.08);
-      border: 1px solid rgba(255, 209, 102, 0.2);
-      color: var(--accent-2);
-      margin-bottom: 18px;
+    .completion-card p {
+      color: var(--hint);
+      line-height: 1.9;
+      max-width: 58ch;
+      margin: 0 auto;
     }
 
-    @media (max-width: 820px) {
-      .topbar,
-      .answer-row,
-      .footer-row {
-        grid-template-columns: 1fr;
-        display: grid;
-      }
-
-      .stats {
-        min-width: 0;
-      }
+    .completion-card .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    @media (max-width: 560px) {
-      body {
-        padding: 12px;
+    .ghost-button,
+    .solid-button {
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.78rem;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .solid-button {
+      border-color: rgba(211, 183, 143, 0.42);
+      background: rgba(211, 183, 143, 0.08);
+    }
+
+    .ghost-button:hover,
+    .ghost-button:focus-visible,
+    .solid-button:hover,
+    .solid-button:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(211, 183, 143, 0.74);
+      outline: none;
+    }
+
+    @media (max-width: 720px) {
+      .app-shell {
+        padding: 14px;
       }
 
-      .content,
-      .topbar {
-        padding: 18px;
+      .stage-body {
+        min-height: 82vh;
       }
 
-      .panel {
-        padding: 18px;
-      }
-
-      .answer-row {
-        grid-template-columns: 1fr;
+      .landing-statement {
+        max-width: 14ch;
       }
     }
   </style>
 </head>
 <body>
-  <main class="shell">
-    <section class="topbar">
-      <div>
-        <p class="eyebrow">Breadcrumb Briefing</p>
-        <h1>Breadcrumb</h1>
-        <p class="lead">
-          A narrative OSINT challenge about tracing propaganda, verifying claims, and spotting patterns across public sources.
-        </p>
-      </div>
-      <div class="stats">
-        <div class="stat-card">
-          <span class="stat-label">Challenge Track</span>
-          <span class="stat-value">10 live stages</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">Progress Saved</span>
-          <span class="stat-value" id="save-state">Local browser checkpoint</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="content">
-      <div class="progress" aria-hidden="true">
-        <div class="progress-bar" id="progress-bar"></div>
-      </div>
-
-      <div class="stage-header">
-        <div class="stage-chip" id="stage-chip">Stage 1 of 10</div>
-        <button class="secondary" id="reset-progress" type="button">Restart mission</button>
-      </div>
-
-      <section class="panel" id="game-panel">
-        <div id="game-container"></div>
-      </section>
-
-      <section class="panel completion" id="completion-screen">
-        <h2>Investigation complete</h2>
-        <div class="certificate">Certification code: OSINT</div>
-        <p>
-          You completed all ten challenge stages and worked through the full evidence chain. This build stores your progress locally, runs as a single static file, and is ready for zero-cost Vercel hosting.
-        </p>
-        <button class="primary" id="play-again" type="button">Run it again</button>
-      </section>
-    </section>
-  </main>
+  <div class="app-shell">
+    <div class="fade-layer" id="app"></div>
+  </div>
 
   <script>
-    const STORAGE_KEY = "breadcrumb-progress";
-    const TOTAL_STAGES = 10;
+    (() => {
+      const TOTAL_STAGES = 10;
+      const INPUT_PLACEHOLDER = "Enter 4-Character Security Token....";
+      const CHARSET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      const ROUTE_STAGE_PREFIX = "/stage-";
+      const state = {
+        currentView: "landing",
+        currentStage: 1,
+        activeStageHash: "",
+        hintTimers: [],
+        feedbackTimer: null,
+        transitionLock: false
+      };
 
-    const stages = [
-      {
-        title: "Mission intake",
-        scenario: `
-          <h2>Stage 1</h2>
-          <p>Welcome to <strong>Breadcrumb</strong>, an Open Source Intelligence challenge designed for conflict-resolution practitioners.</p>
-          <p>Your mission is to investigate a Cuban diaspora disinformation campaign using public sources. Verify claims, trace digital footprints, and identify patterns.</p>
-          <p><strong>Instructions:</strong> read each scenario, investigate with public sources, and submit the keyword or short answer that unlocks the next stage.</p>
-        `,
-        hint: "Start by searching for Stanford research on Cuban diaspora disinformation.",
-        answer: "stanford"
-      },
-      {
-        title: "Synthetic personas",
-        scenario: `
-          <h2>Stage 2</h2>
-          <p>You found a Stanford report describing a social-media operation around the word <strong>bloqueo</strong>.</p>
-          <p><strong>Your task:</strong> review fake profile pictures tied to the campaign and identify the repeated pattern.</p>
-        `,
-        hint: "Search for fake Cuban diaspora profiles and inspect the faces closely.",
-        answer: "ai"
-      },
-      {
-        title: "Audience mapping",
-        scenario: `
-          <h2>Stage 3</h2>
-          <p>The report names a network called <strong>DeZurdaTeam</strong>.</p>
-          <p><strong>Your task:</strong> identify the primary audience segment this network was trying to influence.</p>
-        `,
-        hint: "Think about which Cuban-American audience is easiest to sway online.",
-        answer: "young"
-      },
-      {
-        title: "Narrative pressure points",
-        scenario: `
-          <h2>Stage 4</h2>
-          <p>You determined the network targeted younger, digitally native Cuban-Americans in South Florida.</p>
-          <p><strong>Your task:</strong> find a recurring misconception that shows up in discussions about Cuba.</p>
-        `,
-        hint: "Look at common claims about Cuban social systems.",
-        answer: "healthcare"
-      },
-      {
-        title: "Medical defection trail",
-        scenario: `
-          <h2>Stage 5</h2>
-          <p>The campaign praises Cuban healthcare without mentioning doctor defections or bribery.</p>
-          <p><strong>Your task:</strong> estimate the scale described in public reporting about Cuban doctors defecting to the United States.</p>
-        `,
-        hint: "Look for a rounded quantity rather than an exact headcount.",
-        answer: "thousand"
-      },
-      {
-        title: "Informal payments",
-        scenario: `
-          <h2>Stage 6</h2>
-          <p>The propaganda thread also hides the reality of families paying under the table for access to treatment.</p>
-          <p><strong>Your task:</strong> identify the term commonly used for this practice.</p>
-        `,
-        hint: "Search for informal payments and bribes in Cuban healthcare coverage.",
-        answer: "sobres"
-      },
-      {
-        title: "Connectivity constraints",
-        scenario: `
-          <h2>Stage 7</h2>
-          <p>Now trace how information control inside Cuba shapes what can be challenged publicly.</p>
-          <p><strong>Your task:</strong> find a recent estimate for the share of Cubans who can access international websites.</p>
-        `,
-        hint: "The answer is a percentage.",
-        answer: "15%"
-      },
-      {
-        title: "Broadcast history",
-        scenario: `
-          <h2>Stage 8</h2>
-          <p>Limited connectivity made external broadcasting channels especially important.</p>
-          <p><strong>Your task:</strong> identify the year Radio Marti was established.</p>
-        `,
-        hint: "Look for the original launch date.",
-        answer: "1990"
-      },
-      {
-        title: "Modern comms pattern",
-        scenario: `
-          <h2>Stage 9</h2>
-          <p>Historical broadcasting gave way to newer communication channels among exile communities.</p>
-          <p><strong>Your task:</strong> identify the platform most commonly used today for daily coordination.</p>
-        `,
-        hint: "Think encrypted mobile messaging.",
-        answer: "whatsapp"
-      },
-      {
-        title: "Closeout",
-        scenario: `
-          <h2>Stage 10</h2>
-          <p>You traced the campaign, synthetic identities, propaganda narratives, censorship limits, and modern communication patterns.</p>
-          <p><strong>Your final task:</strong> enter the certificate word that represents the investigation discipline you used throughout the challenge.</p>
-        `,
-        hint: "It is the name of the discipline itself.",
-        answer: "osint"
-      }
-    ];
+      const app = document.getElementById("app");
 
-    let currentStage = 0;
-
-    const progressBar = document.getElementById("progress-bar");
-    const stageChip = document.getElementById("stage-chip");
-    const saveState = document.getElementById("save-state");
-    const gameContainer = document.getElementById("game-container");
-    const gamePanel = document.getElementById("game-panel");
-    const completionScreen = document.getElementById("completion-screen");
-    const resetButton = document.getElementById("reset-progress");
-    const replayButton = document.getElementById("play-again");
-
-    function normalizeAnswer(value) {
-      return value.trim().toLowerCase();
-    }
-
-    function persistStage() {
-      localStorage.setItem(STORAGE_KEY, String(currentStage));
-      saveState.textContent = currentStage >= TOTAL_STAGES ? "Mission complete" : "Stage " + (currentStage + 1) + " checkpoint";
-    }
-
-    function loadStage() {
-      const saved = Number.parseInt(localStorage.getItem(STORAGE_KEY) || "0", 10);
-      if (Number.isInteger(saved) && saved >= 0 && saved <= TOTAL_STAGES) {
-        currentStage = saved;
-      }
-    }
-
-    function updateFrame() {
-      const progressValue = Math.min((currentStage / TOTAL_STAGES) * 100, 100);
-      progressBar.style.width = progressValue + "%";
-      stageChip.textContent = currentStage >= TOTAL_STAGES
-        ? "Mission complete"
-        : "Stage " + (currentStage + 1) + " of " + TOTAL_STAGES;
-    }
-
-    function renderCompletion() {
-      gamePanel.style.display = "none";
-      completionScreen.style.display = "block";
-      updateFrame();
-      persistStage();
-    }
-
-    function renderStage() {
-      if (currentStage >= TOTAL_STAGES) {
-        renderCompletion();
-        return;
-      }
-
-      gamePanel.style.display = "block";
-      completionScreen.style.display = "none";
-
-      const stage = stages[currentStage];
-      gameContainer.innerHTML = `
-        <div class="scenario">${stage.scenario}</div>
-        <div class="hint-box">
-          <h3>Field hint</h3>
-          <p>${stage.hint}</p>
-        </div>
-        <div class="answer-row">
-          <input type="text" id="answer-input" placeholder="Enter your answer to unlock the next stage" autocomplete="off" />
-          <button class="primary" id="submit-answer" type="button">Submit answer</button>
-          <button class="secondary" id="skip-focus" type="button">Focus input</button>
-        </div>
-        <div id="feedback" class="feedback" aria-live="polite"></div>
-        <div class="footer-row">
-          <span>Current briefing: ${stage.title}</span>
-          <span>Answers are checked case-insensitively.</span>
-        </div>
-      `;
-
-      const input = document.getElementById("answer-input");
-      const submitButton = document.getElementById("submit-answer");
-      const focusButton = document.getElementById("skip-focus");
-
-      submitButton.addEventListener("click", checkAnswer);
-      focusButton.addEventListener("click", () => input.focus());
-      input.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          checkAnswer();
+      const stageDefinitions = [
+        {
+          id: 1,
+          tracker: "01 / 10",
+          title: "The Boundary Test",
+          expectedLength: 4,
+          assetType: "trojan",
+          assetMeta: "Stage 1 visual clue",
+          prompt: [
+            "An old deception crossed a city gate because everyone studied the spectacle and ignored the path.",
+            "You are not here to solve the horse. You are here to verify the boundary that carried it into this stage.",
+            "Return the four-character sector token exactly as it appears at the edge of your window."
+          ]
+        },
+        {
+          id: 2,
+          tracker: "02 / 10",
+          title: "Synthetic Personas",
+          expectedLength: 2,
+          hash: "11fb682be0a0233d5fb899721ecfc1827d20f0d2ff2e093310efa61efca8af1c",
+          assetType: "text",
+          assetMeta: "Profile set anomaly",
+          assetSymbol: "AI",
+          assetCaption: "Inspect the repeated features. The faces tell you the method before the account network tells you the motive.",
+          prompt: [
+            "You located a Stanford report describing a disinformation operation around bloqueo.",
+            "Review the fake profile images tied to the campaign and identify the repeated pattern behind the portraits."
+          ]
+        },
+        {
+          id: 3,
+          tracker: "03 / 10",
+          title: "Audience Mapping",
+          expectedLength: 5,
+          hash: "90008a2bee7e9adbf273a4c637683197878bed1e48a8b8c59ef4e9d95d0069eb",
+          assetType: "text",
+          assetMeta: "Target cohort",
+          assetSymbol: "Y",
+          assetCaption: "Find the segment that is digitally reachable, culturally adjacent, and historically easiest to influence.",
+          prompt: [
+            "The report names a network called DeZurdaTeam.",
+            "Identify the primary audience segment this network was trying to influence inside the Cuban-American information ecosystem."
+          ]
+        },
+        {
+          id: 4,
+          tracker: "04 / 10",
+          title: "Narrative Pressure Point",
+          expectedLength: 10,
+          hash: "0834649cf2634dde335a5e7ffff5d8907934fe6721f9795e18a253e97fd12c74",
+          assetType: "text",
+          assetMeta: "Recurring claim",
+          assetSymbol: "H",
+          assetCaption: "A persuasive narrative often begins with a socially admired institution and removes its costs from view.",
+          prompt: [
+            "You now know the campaign targeted younger, digitally native Cuban-Americans in South Florida.",
+            "Locate the recurring misconception used to soften critical scrutiny of the regime."
+          ]
+        },
+        {
+          id: 5,
+          tracker: "05 / 10",
+          title: "Defection Signal",
+          expectedLength: 8,
+          hash: "26a39a83482f48feae455f6f37d87c7812fd3d0242ae711bdc30d7a749662546",
+          assetType: "text",
+          assetMeta: "Scale estimate",
+          assetSymbol: "1K",
+          assetCaption: "The story you need is quantitative, not rhetorical. Search for the rounded scale in the reporting.",
+          prompt: [
+            "The campaign praises Cuban healthcare while erasing physician defections and material scarcity.",
+            "Estimate the scale used in public reporting for Cuban doctors defecting to the United States."
+          ]
+        },
+        {
+          id: 6,
+          tracker: "06 / 10",
+          title: "Informal Payments",
+          expectedLength: 6,
+          hash: "75e74817bfd082c9c1ff399396217f2d718ab5b688c7e8a0feb116a19b970515",
+          assetType: "text",
+          assetMeta: "Underground term",
+          assetSymbol: "S",
+          assetCaption: "Official systems rarely describe their own side channels. Local language usually does.",
+          prompt: [
+            "Propaganda hides the reality of families paying under the table for access to treatment.",
+            "Identify the term commonly used for this practice."
+          ]
+        },
+        {
+          id: 7,
+          tracker: "07 / 10",
+          title: "Connectivity Constraint",
+          expectedLength: 3,
+          hash: "b5f6dbae04bd764b0c2f3cb796e404ffdf77fb4cac171d72ec7fa6a2077da252",
+          assetType: "text",
+          assetMeta: "Access rate",
+          assetSymbol: "15%",
+          assetCaption: "Find the recent estimate that defines how much of the network can see beyond national boundaries.",
+          prompt: [
+            "Trace how information control shapes what can be challenged publicly inside Cuba.",
+            "Find a recent estimate for the share of Cubans who can access international websites."
+          ]
+        },
+        {
+          id: 8,
+          tracker: "08 / 10",
+          title: "Broadcast Origin",
+          expectedLength: 4,
+          hash: "a7be8e1fe282a37cd666e0632b17d933fa13f21addf4798fc0455bc166e2488c",
+          assetType: "text",
+          assetMeta: "Foundation year",
+          assetSymbol: "1990",
+          assetCaption: "When bandwidth is constrained, old broadcast infrastructure becomes the signal path worth dating precisely.",
+          prompt: [
+            "Limited connectivity made external broadcasting channels strategically important.",
+            "Identify the year Radio Marti was established."
+          ]
+        },
+        {
+          id: 9,
+          tracker: "09 / 10",
+          title: "Modern Comms Pattern",
+          expectedLength: 8,
+          hash: "77877a6e15b4b85d927a53604ef263ab77b59321023244a6be5be8f5c7fa1e44",
+          assetType: "text",
+          assetMeta: "Current channel",
+          assetSymbol: "W",
+          assetCaption: "The tool is ordinary, mobile, encrypted, and socially sticky enough to replace distance with cadence.",
+          prompt: [
+            "Historical broadcasting gave way to newer communication channels among exile communities.",
+            "Identify the platform most commonly used today for daily coordination."
+          ]
+        },
+        {
+          id: 10,
+          tracker: "10 / 10",
+          title: "Certification Word",
+          expectedLength: 5,
+          hash: "9012389aad4eb9be53d225c4bbe72098ebdb37b97a52893171ff1bce0d40f383",
+          assetType: "text",
+          assetMeta: "Final verification",
+          assetSymbol: "OSINT",
+          assetCaption: "Your last answer is not hidden in the evidence. It is the discipline that let you read the evidence correctly.",
+          prompt: [
+            "You traced the campaign, synthetic identities, propaganda narratives, censorship limits, and modern communication patterns.",
+            "Enter the discipline that guided the full investigation."
+          ]
         }
+      ];
+
+      function sanitizeInput(value) {
+        return value.toUpperCase().replace(/\s+/g, "");
+      }
+
+      function generateToken() {
+        const randomValues = new Uint32Array(4);
+        window.crypto.getRandomValues(randomValues);
+        return Array.from(randomValues, (value) => CHARSET[value % CHARSET.length]).join("");
+      }
+
+      async function sha256(value) {
+        const buffer = await window.crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(value)
+        );
+        return Array.from(new Uint8Array(buffer))
+          .map((byte) => byte.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      function clearHintTimers() {
+        state.hintTimers.forEach((timerId) => window.clearTimeout(timerId));
+        state.hintTimers = [];
+        if (state.feedbackTimer) {
+          window.clearTimeout(state.feedbackTimer);
+          state.feedbackTimer = null;
+        }
+      }
+
+      function renderTrojanAsset() {
+        return `
+          <div class="asset-container">
+            <svg viewBox="0 0 720 420" aria-hidden="true" role="img">
+              <defs>
+                <linearGradient id="horseGlow" x1="0%" x2="100%" y1="0%" y2="100%">
+                  <stop offset="0%" stop-color="rgba(211,183,143,0.95)"></stop>
+                  <stop offset="100%" stop-color="rgba(114,88,55,0.9)"></stop>
+                </linearGradient>
+              </defs>
+              <g fill="none" stroke="url(#horseGlow)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+                <path d="M170 255 L220 190 L286 173 L341 113 L378 120 L370 153 L395 172 L432 171 L463 150 L495 157 L511 181 L493 215 L521 236 L496 263 L459 269 L437 312 L408 312 L389 275 L321 273 L295 314 L269 314 L262 272 L205 270 Z"></path>
+                <path d="M235 188 L213 141 L228 103 L287 84 L313 88 L335 114"></path>
+                <path d="M350 126 L383 82 L422 76 L445 102 L432 149"></path>
+                <path d="M205 270 L170 319"></path>
+                <path d="M283 273 L247 344"></path>
+                <path d="M395 274 L413 345"></path>
+                <path d="M459 267 L496 326"></path>
+                <path d="M138 322 H544"></path>
+              </g>
+              <g fill="rgba(244,241,234,0.64)" font-family="IBM Plex Mono, monospace" font-size="17" letter-spacing="3">
+                <text x="104" y="364">TROJAN ENTRY VECTOR</text>
+              </g>
+            </svg>
+            <div class="asset-meta">Stage 1 visual clue</div>
+          </div>
+        `;
+      }
+
+      function renderEvidenceAsset(stage) {
+        return `
+          <div class="asset-container">
+            <div class="evidence-card">
+              <div class="evidence-symbol">${stage.assetSymbol}</div>
+              <div class="evidence-caption">${stage.assetCaption}</div>
+            </div>
+            <div class="asset-meta">${stage.assetMeta}</div>
+          </div>
+        `;
+      }
+
+      function renderLanding() {
+        app.innerHTML = `
+          <section class="landing">
+            <div class="landing-card">
+              <div class="landing-mark">Breadcrumb</div>
+              <div class="landing-statement">
+                In a digital landscape crowded with noise, the truth is a needle hidden within a global haystack; your only weapon is objective verification.
+              </div>
+              <button class="landing-cta" id="accept-challenge" type="button">Accept the Challenge</button>
+            </div>
+          </section>
+        `;
+
+        document.getElementById("accept-challenge").addEventListener("click", () => {
+          navigateToStage(1, true);
+        });
+      }
+
+      function renderStage(stageNumber) {
+        const stage = stageDefinitions.find((item) => item.id === stageNumber);
+        if (!stage) {
+          navigateHome(true);
+          return;
+        }
+
+        const assetMarkup = stage.assetType === "trojan"
+          ? renderTrojanAsset()
+          : renderEvidenceAsset(stage);
+
+        app.innerHTML = `
+          <section class="stage-shell">
+            <div class="stage-frame">
+              <div class="stage-tracker">${stage.tracker}</div>
+              <div class="stage-body">
+                ${assetMarkup}
+                <div class="prompt-block">
+                  <div class="prompt-title">${stage.title}</div>
+                  <div class="prompt-copy">
+                    ${stage.prompt.map((paragraph) => `<p>${paragraph}</p>`).join("")}
+                  </div>
+                </div>
+                <div class="hint-rail">
+                  <div class="hint-card" id="hint-card"></div>
+                </div>
+                <div class="feedback-line" id="feedback-line"></div>
+                <div class="input-frame">
+                  <input
+                    id="stage-input"
+                    class="stage-input"
+                    type="text"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    placeholder="${INPUT_PLACEHOLDER}"
+                    aria-label="${INPUT_PLACEHOLDER}"
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
+        `;
+
+        const input = document.getElementById("stage-input");
+        input.focus();
+        input.addEventListener("input", handleStageInput);
+
+        if (stage.id === 1) {
+          mountStageOneToken();
+          mountStageOneHints();
+        } else {
+          state.activeStageHash = stage.hash;
+        }
+      }
+
+      function renderCompletion() {
+        app.innerHTML = `
+          <section class="completion">
+            <div class="completion-card">
+              <div class="landing-mark">Breadcrumb Complete</div>
+              <h2>Verification survived the noise.</h2>
+              <p>
+                You completed the full investigation path and held the signal long enough to turn fragments into structure. The trail remains open whenever you want to run it again.
+              </p>
+              <div class="cta-row">
+                <button class="solid-button" id="restart-run" type="button">Run Breadcrumb Again</button>
+                <button class="ghost-button" id="return-home" type="button">Return to Entry Point</button>
+              </div>
+            </div>
+          </section>
+        `;
+
+        document.getElementById("restart-run").addEventListener("click", () => {
+          localStorage.setItem("current_stage", "1");
+          navigateToStage(1, true);
+        });
+        document.getElementById("return-home").addEventListener("click", () => {
+          navigateHome(true);
+        });
+      }
+
+      function showFeedback(type, message) {
+        const feedback = document.getElementById("feedback-line");
+        if (!feedback) {
+          return;
+        }
+
+        feedback.className = `feedback-line is-visible ${type}`;
+        feedback.textContent = message;
+
+        if (type === "error") {
+          if (state.feedbackTimer) {
+            window.clearTimeout(state.feedbackTimer);
+          }
+          state.feedbackTimer = window.setTimeout(() => {
+            feedback.className = "feedback-line";
+            feedback.textContent = "";
+          }, 1200);
+        }
+      }
+
+      async function handleStageInput(event) {
+        const input = event.target;
+        const stage = stageDefinitions.find((item) => item.id === state.currentStage);
+        const sanitized = sanitizeInput(input.value);
+        if (input.value !== sanitized) {
+          input.value = sanitized;
+        }
+
+        if (!sanitized) {
+          return;
+        }
+
+        const userHash = await sha256(sanitized);
+        if (userHash !== state.activeStageHash) {
+          if (stage && sanitized.length >= stage.expectedLength) {
+            showFeedback("error", "Token mismatch");
+          }
+          return;
+        }
+
+        showFeedback("success", "Token verified");
+        input.disabled = true;
+        const nextStage = state.currentStage + 1;
+        localStorage.setItem("current_stage", String(nextStage));
+
+        window.setTimeout(() => {
+          if (nextStage > TOTAL_STAGES) {
+            navigateToCompletion(true);
+            return;
+          }
+          navigateToStage(nextStage, true);
+        }, 520);
+      }
+
+      async function mountStageOneToken() {
+        const token = generateToken();
+        state.activeStageHash = await sha256(token);
+        const nextUrl = new URL(window.location.href);
+        nextUrl.pathname = "/stage-1";
+        nextUrl.searchParams.set("sector", token);
+        window.history.replaceState({ view: "stage", stage: 1 }, "", nextUrl);
+      }
+
+      function mountStageOneHints() {
+        const hintCard = document.getElementById("hint-card");
+        if (!hintCard) {
+          return;
+        }
+
+        const hintOne = window.setTimeout(() => {
+          hintCard.innerHTML = `<strong>[SYSTEM ASSIST]</strong> Do not get distracted by the architecture of the horse itself. Like a malicious domain proxy or a fake news entity, the facade is designed to trap your eyes. Look at the structural framework of the digital path you used to get here. Check the window's boundary.`;
+          hintCard.classList.add("is-visible");
+        }, 120000);
+
+        const hintTwo = window.setTimeout(() => {
+          hintCard.innerHTML = `<strong>[SYSTEM ASSIST]</strong> You are not verifying the artwork. You are verifying the route. The answer is the four-character <code>sector</code> token carried in the address boundary of this stage.`;
+          hintCard.classList.add("is-visible");
+        }, 240000);
+
+        state.hintTimers.push(hintOne, hintTwo);
+      }
+
+      function withTransition(callback) {
+        if (state.transitionLock) {
+          return;
+        }
+        state.transitionLock = true;
+        clearHintTimers();
+        app.classList.add("is-transitioning");
+
+        window.setTimeout(() => {
+          callback();
+          requestAnimationFrame(() => {
+            app.classList.remove("is-transitioning");
+            state.transitionLock = false;
+          });
+        }, 220);
+      }
+
+      function navigateHome(animate = false) {
+        const execute = () => {
+          state.currentView = "landing";
+          state.currentStage = 1;
+          window.history.pushState({ view: "landing" }, "", "/");
+          renderLanding();
+        };
+
+        if (animate) {
+          withTransition(execute);
+        } else {
+          execute();
+        }
+      }
+
+      function navigateToStage(stageNumber, animate = false, preserveUrl = false) {
+        const execute = () => {
+          state.currentView = "stage";
+          state.currentStage = stageNumber;
+          if (!preserveUrl) {
+            const nextUrl = stageNumber === 1 ? "/stage-1" : `${ROUTE_STAGE_PREFIX}${stageNumber}`;
+            window.history.pushState({ view: "stage", stage: stageNumber }, "", nextUrl);
+          }
+          renderStage(stageNumber);
+        };
+
+        if (animate) {
+          withTransition(execute);
+        } else {
+          execute();
+        }
+      }
+
+      function navigateToCompletion(animate = false) {
+        const execute = () => {
+          state.currentView = "complete";
+          window.history.pushState({ view: "complete" }, "", "/complete");
+          renderCompletion();
+        };
+
+        if (animate) {
+          withTransition(execute);
+        } else {
+          execute();
+        }
+      }
+
+      function resolveRoute() {
+        const pathname = window.location.pathname;
+        const completion = pathname === "/complete";
+        if (completion) {
+          renderCompletion();
+          return;
+        }
+
+        const stageMatch = pathname.match(/^\/stage-(\d+)$/);
+        if (stageMatch) {
+          const stageNumber = Number.parseInt(stageMatch[1], 10);
+          state.currentView = "stage";
+          state.currentStage = Math.min(Math.max(stageNumber, 1), TOTAL_STAGES);
+          renderStage(state.currentStage);
+          return;
+        }
+
+        renderLanding();
+      }
+
+      window.addEventListener("popstate", () => {
+        clearHintTimers();
+        resolveRoute();
       });
 
-      input.focus();
-      updateFrame();
-      persistStage();
-    }
-
-    function checkAnswer() {
-      const input = document.getElementById("answer-input");
-      const feedback = document.getElementById("feedback");
-      if (!input || !feedback) {
-        return;
-      }
-
-      const guess = normalizeAnswer(input.value);
-      if (!guess) {
-        feedback.className = "feedback error";
-        feedback.textContent = "Enter a keyword or short answer before submitting.";
-        return;
-      }
-
-      const expected = normalizeAnswer(stages[currentStage].answer);
-      if (guess !== expected) {
-        feedback.className = "feedback error";
-        feedback.textContent = "Not quite. Recheck the evidence trail and try again.";
-        input.select();
-        return;
-      }
-
-      feedback.className = "feedback success";
-      feedback.textContent = "Correct. Advancing to the next stage.";
-      currentStage += 1;
-      persistStage();
-      updateFrame();
-      window.setTimeout(renderStage, 900);
-    }
-
-    function resetProgress() {
-      currentStage = 0;
-      localStorage.removeItem(STORAGE_KEY);
-      renderStage();
-    }
-
-    resetButton.addEventListener("click", resetProgress);
-    replayButton.addEventListener("click", resetProgress);
-
-    loadStage();
-    renderStage();
+      resolveRoute();
+    })();
   </script>
 </body>
 </html>
