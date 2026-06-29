@@ -176,7 +176,7 @@
       background: transparent;
       box-shadow: none;
       padding: 0;
-      gap: 0;
+      gap: 14px;
       overflow: hidden;
     }
 
@@ -204,7 +204,7 @@
     }
 
     .asset-container-trojan {
-      min-height: 82vh;
+      min-height: 74vh;
       border: 0;
       background: #050607;
       padding: 0;
@@ -226,24 +226,52 @@
       position: absolute;
       top: clamp(20px, 2.8vw, 34px);
       left: clamp(20px, 2.8vw, 34px);
-      width: min(390px, calc(100% - 56px));
-      padding: 16px 18px;
-      background: linear-gradient(180deg, rgba(3, 5, 6, 0.68), rgba(3, 5, 6, 0.22));
+      width: min(430px, calc(100% - 56px));
+      padding: 18px 20px;
+      background: linear-gradient(180deg, rgba(3, 5, 6, 0.86), rgba(3, 5, 6, 0.58));
       border: 0;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(5px);
       z-index: 2;
     }
 
     .stage-brief-overlay .prompt-title {
-      font-size: clamp(1.45rem, 2.5vw, 1.95rem);
-      margin-bottom: 8px;
+      font-size: clamp(1.62rem, 2.7vw, 2.1rem);
+      margin-bottom: 10px;
     }
 
     .stage-brief-overlay .prompt-copy {
       max-width: none;
-      color: rgba(244, 241, 234, 0.78);
-      font-size: 0.84rem;
-      line-height: 1.6;
+      color: rgba(244, 241, 234, 0.92);
+      font-size: 0.92rem;
+      line-height: 1.72;
+    }
+
+    .stage-body-trojan .hint-rail,
+    .stage-body-trojan .feedback-line,
+    .stage-body-trojan .input-frame {
+      position: static;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      margin-left: clamp(20px, 2.8vw, 34px);
+      margin-right: clamp(20px, 2.8vw, 34px);
+    }
+
+    .stage-body-trojan .hint-rail {
+      min-height: 0;
+      margin-top: 0;
+      align-items: start;
+    }
+
+    .stage-body-trojan .feedback-line {
+      min-height: 18px;
+    }
+
+    .stage-body-trojan .input-frame {
+      margin-top: 4px;
+      margin-bottom: clamp(18px, 2.8vw, 28px);
+      padding-top: 18px;
+      background: linear-gradient(180deg, rgba(4, 7, 8, 0.94), rgba(3, 5, 6, 0.98));
     }
 
     .asset-meta {
