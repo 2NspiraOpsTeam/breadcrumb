@@ -686,6 +686,10 @@
         return Math.min(Math.max(requestedStage, 1), Math.min(unlockedStage, TOTAL_STAGES));
       }
 
+      function getResumeStage() {
+        return getAccessibleStage(getUnlockedStage());
+      }
+
       async function sha256(value) {
         const buffer = await window.crypto.subtle.digest(
           "SHA-256",
@@ -763,6 +767,9 @@
       }
 
       function renderLanding() {
+        const resumeStage = getResumeStage();
+        const hasProgress = resumeStage > 1;
+
         app.innerHTML = `
           <section class="landing">
             <div class="system-status">BREADCRUMB SYSTEM STATUS: SECURE // OPERATOR ACCESS REQUIRED</div>
@@ -771,13 +778,14 @@
               <div class="landing-statement">
                 In a digital landscape crowded with noise, the truth is a breadcrumb hidden within a global haystack; your only weapon is objective verification.
               </div>
-              <button class="landing-cta" id="accept-challenge" type="button">[ Initialize Breadcrumb Run ]</button>
+              <button class="landing-cta" id="accept-challenge" type="button">${hasProgress ? "[ Resume Breadcrumb Run ]" : "[ Initialize Breadcrumb Run ]"}</button>
+              ${hasProgress ? `<div class="asset-meta">Saved checkpoint detected // Stage ${String(resumeStage).padStart(2, "0")} of ${TOTAL_STAGES}</div>` : ""}
             </div>
           </section>
         `;
 
         document.getElementById("accept-challenge").addEventListener("click", () => {
-          navigateToStage(1, true);
+          navigateToStage(getResumeStage(), true);
         });
       }
 
