@@ -428,6 +428,8 @@
         activeStageHash: "",
         hintTimers: [],
         feedbackTimer: null,
+        stageOneAttempts: 0,
+        stageOneHintLevel: 0,
         transitionLock: false
       };
 
@@ -438,7 +440,7 @@
           id: 1,
           tracker: "BREADCRUMB TRACK: 01 / 10 // OPERATIONAL ANCHOR: TROJAN STRATAGEM",
           title: "The Boundary Test",
-          expectedLength: 4,
+          expectedLength: 5,
           assetType: "trojan",
           assetMeta: "Stage 1 visual clue",
           prompt: [
@@ -590,7 +592,7 @@
 
       function getInputPlaceholder(stage) {
         if (stage.id === 1) {
-          return "[ _ _ _ _ ]";
+          return "[ _ _ _ _ _ ]";
         }
 
         if (stage.expectedLength >= 4 && stage.expectedLength <= 8) {
@@ -600,8 +602,8 @@
         return "[ _ _ _ _ ... ]";
       }
 
-      function generateToken() {
-        const randomValues = new Uint32Array(4);
+      function generateToken(length = 4) {
+        const randomValues = new Uint32Array(length);
         window.crypto.getRandomValues(randomValues);
         return Array.from(randomValues, (value) => CHARSET[value % CHARSET.length]).join("");
       }
@@ -622,6 +624,37 @@
         if (state.feedbackTimer) {
           window.clearTimeout(state.feedbackTimer);
           state.feedbackTimer = null;
+        }
+      }
+
+      function resetStageOneHints() {
+        state.stageOneAttempts = 0;
+        state.stageOneHintLevel = 0;
+        const hintCard = document.getElementById("hint-card");
+        if (!hintCard) {
+          return;
+        }
+        hintCard.className = "hint-card";
+        hintCard.innerHTML = "";
+      }
+
+      function updateStageOneHints() {
+        const hintCard = document.getElementById("hint-card");
+        if (!hintCard) {
+          return;
+        }
+
+        if (state.stageOneAttempts >= 10 && state.stageOneHintLevel < 2) {
+          hintCard.innerHTML = `<strong>[INTEL ALERT - RECON DIRECTIVE]</strong> The structural truth is hidden in plain sight outside the walls of the asset container. Scan the terminal navigation routing path. The unique five-slot operational DOMAIN token you require is pinned to the absolute trailing edge of your active browser parameter string.`;
+          hintCard.classList.add("is-visible");
+          state.stageOneHintLevel = 2;
+          return;
+        }
+
+        if (state.stageOneAttempts >= 5 && state.stageOneHintLevel < 1) {
+          hintCard.innerHTML = `<strong>[INTEL ALERT - DECEPTION DIAGNOSTIC]</strong> Do not get trapped by the facade of the visual payload. Disinformation operations mask their true origin under the guise of an offering. To bypass the trap, an agent must audit the structural parameters of the host network. Look at the boundary of your deployment frame.`;
+          hintCard.classList.add("is-visible");
+          state.stageOneHintLevel = 1;
         }
       }
 
@@ -706,6 +739,7 @@
                     spellcheck="false"
                     autocomplete="off"
                     autocapitalize="characters"
+                    maxlength="${stage.expectedLength}"
                     placeholder="${inputPlaceholder}"
                     aria-label="${inputPlaceholder}"
                   >
@@ -721,7 +755,6 @@
 
         if (stage.id === 1) {
           mountStageOneToken();
-          mountStageOneHints();
         } else {
           state.activeStageHash = stage.hash;
         }
@@ -776,7 +809,11 @@
       async function handleStageInput(event) {
         const input = event.target;
         const stage = stageDefinitions.find((item) => item.id === state.currentStage);
-        const sanitized = sanitizeInput(input.value);
+        if (!stage) {
+          return;
+        }
+
+        const sanitized = sanitizeInput(input.value).slice(0, stage.expectedLength);
         if (input.value !== sanitized) {
           input.value = sanitized;
         }
@@ -785,11 +822,18 @@
           return;
         }
 
+        if (sanitized.length < stage.expectedLength) {
+          return;
+        }
+
         const userHash = await sha256(sanitized);
         if (userHash !== state.activeStageHash) {
-          if (stage && sanitized.length >= stage.expectedLength) {
-            showFeedback("error", "Token mismatch");
+          if (stage.id === 1) {
+            state.stageOneAttempts += 1;
+            updateStageOneHints();
           }
+          input.value = "";
+          showFeedback("error", "Token mismatch");
           return;
         }
 
@@ -808,31 +852,13 @@
       }
 
       async function mountStageOneToken() {
-        const token = generateToken();
+        resetStageOneHints();
+        const token = generateToken(5);
         state.activeStageHash = await sha256(token);
         const nextUrl = new URL(window.location.href);
         nextUrl.pathname = "/stage-1";
         nextUrl.searchParams.set("sector", token);
         window.history.replaceState({ view: "stage", stage: 1 }, "", nextUrl);
-      }
-
-      function mountStageOneHints() {
-        const hintCard = document.getElementById("hint-card");
-        if (!hintCard) {
-          return;
-        }
-
-        const hintOne = window.setTimeout(() => {
-          hintCard.innerHTML = `<strong>[INTEL ALERT - DECEPTION DIAGNOSTIC]</strong> Do not get trapped by the facade of the visual payload. Disinformation operations mask their true origin under the guise of an offering. To bypass the trap, an agent must audit the structural parameters of the host network. Look at the boundary of your deployment frame.`;
-          hintCard.classList.add("is-visible");
-        }, 120000);
-
-        const hintTwo = window.setTimeout(() => {
-          hintCard.innerHTML = `<strong>[INTEL ALERT - RECON DIRECTIVE]</strong> The structural truth is hidden in plain sight outside the walls of the asset container. Scan the terminal navigation routing path. The unique four-digit operational DOMAIN token you require is pinned to the absolute trailing edge of your active browser parameter string.`;
-          hintCard.classList.add("is-visible");
-        }, 240000);
-
-        state.hintTimers.push(hintOne, hintTwo);
       }
 
       function withTransition(callback) {
