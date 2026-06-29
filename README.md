@@ -21,7 +21,7 @@ Then open `http://localhost:4173`.
 
 ## Zero-cost GitHub + Vercel path
 
-1. Create a GitHub repo for this folder, for example `2NspiraOpsTeam/needles-in-haystacks`.
+1. Create a GitHub repo for this folder, for example `2NspiraOpsTeam/breadcrumb`.
 2. Push `main`.
 3. In Vercel, import the GitHub repo.
 4. Leave framework preset as `Other`.
