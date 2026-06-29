@@ -205,6 +205,30 @@
       transform-origin: center center;
     }
 
+    .stage-brief-overlay {
+      position: absolute;
+      top: clamp(18px, 2.4vw, 28px);
+      left: clamp(18px, 2.4vw, 28px);
+      width: min(420px, calc(100% - 52px));
+      padding: 18px 20px;
+      background: linear-gradient(180deg, rgba(3, 5, 6, 0.88), rgba(3, 5, 6, 0.62));
+      border: 1px solid rgba(155, 243, 207, 0.12);
+      backdrop-filter: blur(6px);
+      z-index: 2;
+    }
+
+    .stage-brief-overlay .prompt-title {
+      font-size: clamp(1.7rem, 3vw, 2.3rem);
+      margin-bottom: 10px;
+    }
+
+    .stage-brief-overlay .prompt-copy {
+      max-width: none;
+      color: rgba(244, 241, 234, 0.84);
+      font-size: 0.92rem;
+      line-height: 1.75;
+    }
+
     .asset-meta {
       position: absolute;
       left: 18px;
@@ -502,7 +526,8 @@
           assetMeta: "Stage 1 visual clue",
           prompt: [
             "An old deception crossed a city gate because everyone studied the spectacle and ignored the path.",
-            "You are not here to solve the horse. You are here to verify the boundary that carried it into this stage as it appears at the edge of your window."
+            "You are not here to solve the horse. You are here to verify the boundary that carried it into this stage.",
+            "Return the sector token exactly as it appears at the edge of your window."
           ]
         },
         {
@@ -752,8 +777,15 @@
       }
 
       function renderTrojanAsset() {
+        const stage = stageDefinitions.find((item) => item.id === 1);
         return `
           <div class="asset-container asset-container-trojan">
+            <div class="stage-brief-overlay">
+              <div class="prompt-title">${stage.title}</div>
+              <div class="prompt-copy">
+                ${stage.prompt.map((paragraph) => `<p>${paragraph}</p>`).join("")}
+              </div>
+            </div>
             <img
               src="/assets/trojan-horse-stage-1.jpg"
               alt="Giovanni Domenico Tiepolo, The Procession of the Trojan Horse into Troy"
@@ -812,18 +844,24 @@
           ? renderTrojanAsset()
           : renderEvidenceAsset(stage);
 
-        app.innerHTML = `
-          <section class="stage-shell">
-            <div class="stage-frame">
-              <div class="stage-tracker">${stage.tracker}</div>
-              <div class="stage-body">
-                ${assetMarkup}
+        const promptMarkup = stage.assetType === "trojan"
+          ? ""
+          : `
                 <div class="prompt-block">
                   <div class="prompt-title">${stage.title}</div>
                   <div class="prompt-copy">
                     ${stage.prompt.map((paragraph) => `<p>${paragraph}</p>`).join("")}
                   </div>
                 </div>
+              `;
+
+        app.innerHTML = `
+          <section class="stage-shell">
+            <div class="stage-frame">
+              <div class="stage-tracker">${stage.tracker}</div>
+              <div class="stage-body">
+                ${assetMarkup}
+                ${promptMarkup}
                 <div class="hint-rail">
                   <div class="hint-card" id="hint-card"></div>
                 </div>
