@@ -755,6 +755,7 @@
           title: "Defection Signal",
           expectedLength: 4,
           hash: "91a27e7f677fb274e1e695d7cf161726a455f75e2fa2cfdf323fd35e729a7000",
+          tokenBoxes: 4,
           assetType: "text",
           assetGraphic: "/assets/stage5-iK-insignia.png",
           assetAlt: "High-contrast military-style operation insignia with iK stencil letters on a dark signal-intercept background.",
@@ -869,7 +870,7 @@
         return `Enter the ${stage.expectedLength}-slot stage token`;
       }
 
-      function renderTokenBoxes(length) {
+      function renderTokenBoxes(length, visualCount = length) {
         return `
           <div class="token-box-row" id="token-box-row" aria-hidden="true">
             ${Array.from({ length }, (_, index) => `<div class="token-box${index === 0 ? " is-active" : ""}" data-token-index="${index}">_</div>`).join("")}
@@ -1095,7 +1096,7 @@
                 </div>
                 <div class="feedback-line" id="feedback-line"></div>
                 <div class="input-frame">
-                  ${renderTokenBoxes(stage.expectedLength)}
+                  ${renderTokenBoxes(stage.expectedLength, stage.tokenBoxes)}
                   <input
                     id="stage-input"
                     class="stage-input"

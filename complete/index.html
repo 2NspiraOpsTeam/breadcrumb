@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Breadcrumb | OSINT Challenge</title>
+  <meta name="version" content="2026-07-01T13:25:00Z">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -752,15 +753,32 @@
           id: 5,
           tracker: "BREADCRUMB TRACK: 05 / 10 // OPERATIONAL ANCHOR: DEFECTION SIGNAL",
           title: "Defection Signal",
-          expectedLength: 8,
-          hash: "26a39a83482f48feae455f6f37d87c7812fd3d0242ae711bdc30d7a749662546",
+          expectedLength: 4,
+          hash: "91a27e7f677fb274e1e695d7cf161726a455f75e2fa2cfdf323fd35e729a7000",
+          tokenBoxes: 4,
           assetType: "text",
+          assetGraphic: "/assets/stage5-iK-insignia.png",
+          assetAlt: "High-contrast military-style operation insignia with iK stencil letters on a dark signal-intercept background.",
           assetMeta: "Scale estimate",
-          assetSymbol: "1K",
-          assetCaption: "The story you need is quantitative, not rhetorical. Search for the rounded scale in the reporting.",
+          assetSymbol: "iK",
+          assetCaption: "State-sponsored campaigns systematically praise overseas healthcare operations while completely erasing real-world physician defections, movement restrictions, and material scarcity.",
+          externalLinkUrl: "https://www.pbs.org/newshour/show/u-s-mulls-ending-program-that-urges-cuban-doctors-to-defect",
+          externalLinkLabel: "OPEN HISTORICAL REPOSITORY",
+          timedHints: [
+            {
+              delayMs: 120000,
+              title: "[INTEL ALERT - STATISTICAL TRANSPARENCY]",
+              text: "Propaganda cloaks itself in rhetoric, but reality relies on cold, quantitative documentation. Fire up your secure external tab to view the declassified reporting transcript on the Cuban Medical Professional Parole (CMPP) program. Look for the official figures issued directly by the U.S. State Department."
+            },
+            {
+              delayMs: 240000,
+              title: "[INTEL ALERT - ROUNDED BASELINE]",
+              text: "Isolate the exact, rounded baseline number of approved medical professional applications processed between the launch of the initiative in 2006 and the policy review window. The 4-digit metric starting with '7' is the precise cryptographic key required to clear the terminal."
+            }
+          ],
           prompt: [
-            "The campaign praises Cuban healthcare while erasing physician defections and material scarcity.",
-            "Estimate the scale used in public reporting for Cuban doctors defecting to the United States."
+            "State-sponsored campaigns systematically praise overseas healthcare operations while completely erasing real-world physician defections, movement restrictions, and material scarcity.",
+            "To bypass the rhetorical narrative and anchor your analysis in hard data, you must extract the baseline rounded scale used in public reporting for Cuban doctors who successfully defected to the United States under the historic CMPP initiatives."
           ]
         },
         {
@@ -852,7 +870,7 @@
         return `Enter the ${stage.expectedLength}-slot stage token`;
       }
 
-      function renderTokenBoxes(length) {
+      function renderTokenBoxes(length, visualCount = length) {
         return `
           <div class="token-box-row" id="token-box-row" aria-hidden="true">
             ${Array.from({ length }, (_, index) => `<div class="token-box${index === 0 ? " is-active" : ""}" data-token-index="${index}">_</div>`).join("")}
@@ -1078,7 +1096,7 @@
                 </div>
                 <div class="feedback-line" id="feedback-line"></div>
                 <div class="input-frame">
-                  ${renderTokenBoxes(stage.expectedLength)}
+                  ${renderTokenBoxes(stage.expectedLength, stage.tokenBoxes)}
                   <input
                     id="stage-input"
                     class="stage-input"
