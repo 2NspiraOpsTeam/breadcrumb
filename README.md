@@ -36,3 +36,4 @@ Because this app is static, there are no paid dependencies, no env vars, and no 
 
 - Progress is stored only in local browser storage.
 - `vercel.json` keeps URLs clean and avoids build/runtime assumptions.
+# Stage 5 Update - Force Deploy
