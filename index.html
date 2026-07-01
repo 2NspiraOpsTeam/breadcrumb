@@ -158,6 +158,20 @@
       color: var(--muted);
     }
 
+    .stage-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .stage-toolbar-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .stage-body {
       min-height: 76vh;
       border: 1px solid rgba(155, 243, 207, 0.06);
@@ -316,6 +330,14 @@
       line-height: 1.8;
     }
 
+    .timeline-graphic {
+      width: min(100%, 680px);
+      height: auto;
+      justify-self: center;
+      border: 1px solid rgba(155, 243, 207, 0.08);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+    }
+
     .prompt-block {
       display: grid;
       gap: 14px;
@@ -338,6 +360,43 @@
 
     .prompt-copy p + p {
       margin-top: 14px;
+    }
+
+    .external-link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .external-link-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border: 1px solid rgba(155, 243, 207, 0.28);
+      color: var(--text);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.74rem;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .external-link-button:hover,
+    .external-link-button:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(155, 243, 207, 0.72);
+      background: rgba(155, 243, 207, 0.08);
+      outline: none;
+    }
+
+    .external-link-note {
+      color: var(--muted);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .hint-rail {
@@ -530,6 +589,23 @@
       outline: none;
     }
 
+    .stage-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .stage-actions .ghost-button,
+    .stage-actions .solid-button {
+      padding: 12px 16px;
+      font-size: 0.72rem;
+    }
+
     @media (max-width: 720px) {
       .app-shell {
         padding: 14px;
@@ -584,62 +660,122 @@
         },
         {
           id: 2,
-          tracker: "BREADCRUMB TRACK: 02 / 10 // OPERATIONAL ANCHOR: SYNTHETIC PERSONAS",
-          title: "Synthetic Personas",
-          expectedLength: 2,
-          hash: "11fb682be0a0233d5fb899721ecfc1827d20f0d2ff2e093310efa61efca8af1c",
+          tracker: "BREADCRUMB TRACK: 02 / 10 // OPERATIONAL ANCHOR: HISTORICAL ARCHIVE WINNOWING",
+          title: "Historical Archive Winnowing",
+          expectedLength: 4,
+          hash: "3d1e557b540ac045b3b327994a351f08a443f9216f9b2b8d3a0f42b58671ac83",
           assetType: "text",
-          assetMeta: "Profile set anomaly",
-          assetSymbol: "AI",
-          assetCaption: "Inspect the repeated features. The faces tell you the method before the account network tells you the motive.",
+          assetMeta: "Wayback timeline matrix",
+          assetGraphic: "/assets/stage2-timeline-graphic.png",
+          assetAlt: "Abstract network timeline graphic with archival checkpoints and a highlighted early waypoint.",
+          assetCaption: "Winnow out the modern shell and identify the earliest permanent web-era footprint for granma.cu.",
+          externalLinkUrl: "https://web.archive.org/web/*/granma.cu",
+          externalLinkLabel: "Open Wayback Timeline",
+          timedHints: [
+            {
+              delayMs: 120000,
+              title: "[INTEL ALERT - ARCHIVE VECTOR]",
+              text: "Disinformation attempts to rewrite history by deleting the past. Open a new tab and head to the Wayback Machine (web.archive.org). Plug in Cuba's official state news domain (granma.cu) and look at the absolute dawn of its historical timeline tracking archive."
+            },
+            {
+              delayMs: 240000,
+              title: "[INTEL ALERT - TIMELINE ANCHOR]",
+              text: "Look directly at the permanent calendar bar stretching across the top of the Internet Archive screen. Slide the navigation window all the way to the far left. The 4-digit calendar year marking the very first logged digital cluster capture is your key code."
+            }
+          ],
           prompt: [
-            "You located a Stanford report describing a disinformation operation around bloqueo.",
-            "Review the fake profile images tied to the campaign and identify the repeated pattern behind the portraits."
+            "Disinformation networks survive by rewriting the digital record and gaslighting target communities.",
+            "To isolate the historical baseline infrastructure of Cuba's primary state information engine, winnow out modern layout changes and uncover when granma.cu first established its permanent footprint on the global web architecture."
           ]
         },
         {
           id: 3,
-          tracker: "BREADCRUMB TRACK: 03 / 10 // OPERATIONAL ANCHOR: AUDIENCE MAPPING",
-          title: "Audience Mapping",
-          expectedLength: 5,
-          hash: "90008a2bee7e9adbf273a4c637683197878bed1e48a8b8c59ef4e9d95d0069eb",
+          tracker: "BREADCRUMB TRACK: 03 / 10 // OPERATIONAL ANCHOR: FEDERAL REPOSITORY DORKING",
+          title: "Federal Repository Dorking",
+          expectedLength: 4,
+          hash: "3e547f270ce178864bd8b8b87a8b6f0103c3d0d929cb3ba80b5af93722cc9923",
           assetType: "text",
-          assetMeta: "Target cohort",
-          assetSymbol: "Y",
-          assetCaption: "Find the segment that is digitally reachable, culturally adjacent, and historically easiest to influence.",
+          assetMeta: "National archives query vector",
+          assetGraphic: "/assets/stage3-dorking-interface.png",
+          assetAlt: "Secure server interface graphic with a command-line style archives.gov Google dork query prompt.",
+          assetCaption: "Bypass summaries. Query the raw federal archive layer and extract the permanent record-series prefix.",
+          externalLinkUrl: "https://www.google.com/search?q=site:archives.gov+filetype:pdf+%22OPERATION+MONGOOSE%22+%22SSCIA%22",
+          externalLinkLabel: "Launch Google Dork",
+          timedHints: [
+            {
+              delayMs: 120000,
+              title: "[INTEL ALERT - FEDERAL VECTOR]",
+              text: "True intelligence requires bypassing media summaries and reading raw unindexed documentation. Use your browser to search site:archives.gov filetype:pdf combined with the historical operation codename 'OPERATION MONGOOSE' and the agency creator 'SSCIA'. Look at the permanent serial stamp at the absolute top of the national archive document."
+            },
+            {
+              delayMs: 240000,
+              title: "[INTEL ALERT - RECORD SERIES]",
+              text: "Open the first PDF returned from the archives.gov search. Look at the very top block titled 'JFK ASSASSINATION SYSTEM IDENTIFICATION FORM'. Locate the 'RECORD NUMBER' row. The first three digits and the trailing hyphen form your 4-character access token."
+            }
+          ],
           prompt: [
-            "The report names a network called DeZurdaTeam.",
-            "Identify the primary audience segment this network was trying to influence inside the Cuban-American information ecosystem."
+            "True intelligence requires bypassing media summaries and reading raw, unindexed documentation.",
+            "Disinformation campaigns collapse when held against the immutable bedrock of official records. Deploy a live targeted query to locate the primary national archive classification framework for historical covert actions."
           ]
         },
         {
           id: 4,
-          tracker: "BREADCRUMB TRACK: 04 / 10 // OPERATIONAL ANCHOR: NARRATIVE PRESSURE",
-          title: "Narrative Pressure Point",
-          expectedLength: 10,
-          hash: "0834649cf2634dde335a5e7ffff5d8907934fe6721f9795e18a253e97fd12c74",
+          tracker: "BREADCRUMB TRACK: 04 / 10 // OPERATIONAL ANCHOR: GEOLOCATION INFRASTRUCTURE",
+          title: "Geolocation Infrastructure",
+          expectedLength: 3,
+          hash: "cff8d79c0ed4b59e63244285cede84846242c3d75c34b926d33a56726ee5e20f",
           assetType: "text",
-          assetMeta: "Recurring claim",
-          assetSymbol: "H",
-          assetCaption: "A persuasive narrative often begins with a socially admired institution and removes its costs from view.",
+          assetMeta: "Satellite geolocation reference",
+          assetGraphic: "/assets/stage4-satellite-crop.png",
+          assetAlt: "Satellite-style crop showing a large signal intercept installation layout outside Havana.",
+          assetCaption: "Map the physical site, convert the terrain to its immutable UTM grid zone, and extract the 3-character clearance code.",
+          externalLinkUrl: "https://www.google.com/maps/place/22%C2%B059'00.0%22N+82%C2%B027'47.0%22W/@22.9833333,-82.4652444,14z/",
+          externalLinkLabel: "Open Satellite Coordinates",
+          timedHints: [
+            {
+              delayMs: 120000,
+              title: "[INTEL ALERT - GEOREFERENCE]",
+              text: "Fake news lives in digital space; reality lives in physical geography. Plug the coordinates of the historic communications array (22°59'00\"N 82°27'47\"W) into your global map or tracking utilities. Switch to satellite mode. The global alphanumeric Universal Transverse Mercator (UTM) grid zone identifier holds your clearance code."
+            },
+            {
+              delayMs: 240000,
+              title: "[INTEL ALERT - GRID ZONE]",
+              text: "Look up any universal map zone reference chart for western Cuba or Havana. The region is permanently locked into a specific longitudinal zone number and latitudinal band letter. Combine the two-digit longitudinal zone (84°W to 78°W) and the latitudinal band letter. The resulting 3-character string '17Q' is your override key."
+            }
+          ],
           prompt: [
-            "You now know the campaign targeted younger, digitally native Cuban-Americans in South Florida.",
-            "Locate the recurring misconception used to soften critical scrutiny of the regime."
+            "Fake news lives in digital space; reality lives in physical geography.",
+            "Media operations target minds, but signal intercept operations require physical, grounded infrastructure anchored to the earth. To identify the signal array mapping the diaspora channels, trace its precise geographic coordinates to extract its structural sector clearance code."
           ]
         },
         {
           id: 5,
           tracker: "BREADCRUMB TRACK: 05 / 10 // OPERATIONAL ANCHOR: DEFECTION SIGNAL",
           title: "Defection Signal",
-          expectedLength: 8,
-          hash: "26a39a83482f48feae455f6f37d87c7812fd3d0242ae711bdc30d7a749662546",
+          expectedLength: 4,
+          hash: "91a27e7f677fb274e1e695d7cf161726a455f75e2fa2cfdf323fd35e729a7000",
           assetType: "text",
+          assetGraphic: "/assets/stage5-iK-insignia.png",
+          assetAlt: "High-contrast military-style operation insignia with iK stencil letters on a dark signal-intercept background.",
           assetMeta: "Scale estimate",
-          assetSymbol: "1K",
-          assetCaption: "The story you need is quantitative, not rhetorical. Search for the rounded scale in the reporting.",
+          assetSymbol: "iK",
+          externalLinkUrl: "https://www.pbs.org/newshour/show/u-s-mulls-ending-program-that-urges-cuban-doctors-to-defect",
+          externalLinkLabel: "OPEN HISTORICAL REPOSITORY",
+          timedHints: [
+            {
+              delayMs: 120000,
+              title: "[INTEL ALERT - STATISTICAL TRANSPARENCY]",
+              text: "Propaganda cloaks itself in rhetoric, but reality relies on cold, quantitative documentation. Fire up your secure external tab to view the declassified reporting transcript on the Cuban Medical Professional Parole (CMPP) program. Look for the official figures issued directly by the U.S. State Department."
+            },
+            {
+              delayMs: 240000,
+              title: "[INTEL ALERT - ROUNDED BASELINE]",
+              text: "Isolate the exact, rounded baseline number of approved medical professional applications processed between the launch of the initiative in 2006 and the policy review window. The 4-digit metric starting with '7' is the precise cryptographic key required to clear the terminal."
+            }
+          ],
           prompt: [
-            "The campaign praises Cuban healthcare while erasing physician defections and material scarcity.",
-            "Estimate the scale used in public reporting for Cuban doctors defecting to the United States."
+            "State-sponsored campaigns systematically praise overseas healthcare operations while completely erasing real-world physician defections, movement restrictions, and material scarcity.",
+            "To bypass the rhetorical narrative and anchor your analysis in hard data, you must extract the baseline rounded scale used in public reporting for Cuban doctors who successfully defected to the United States under the historic CMPP initiatives."
           ]
         },
         {
@@ -797,6 +933,16 @@
         }
       }
 
+      function showHintMessage(title, text) {
+        const hintCard = document.getElementById("hint-card");
+        if (!hintCard) {
+          return;
+        }
+
+        hintCard.innerHTML = `<strong>${title}</strong> ${text}`;
+        hintCard.classList.add("is-visible");
+      }
+
       function resetStageOneHints() {
         state.stageOneAttempts = 0;
         state.stageOneHintLevel = 0;
@@ -850,10 +996,14 @@
       }
 
       function renderEvidenceAsset(stage) {
+        const evidenceVisual = stage.assetGraphic
+          ? `<img class="timeline-graphic" src="${stage.assetGraphic}" alt="${stage.assetAlt || stage.assetCaption}" loading="eager">`
+          : `<div class="evidence-symbol">${stage.assetSymbol}</div>`;
+
         return `
           <div class="asset-container">
             <div class="evidence-card">
-              <div class="evidence-symbol">${stage.assetSymbol}</div>
+              ${evidenceVisual}
               <div class="evidence-caption">${stage.assetCaption}</div>
             </div>
             <div class="asset-meta">${stage.assetMeta}</div>
@@ -862,6 +1012,7 @@
       }
 
       function renderLanding() {
+        clearHintTimers();
         const resumeStage = getResumeStage();
         const hasProgress = resumeStage > 1;
 
@@ -874,6 +1025,7 @@
                 In a digital landscape crowded with noise, the truth is a breadcrumb hidden within a global haystack; your only weapon is objective verification.
               </div>
               <button class="landing-cta" id="accept-challenge" type="button">${hasProgress ? "[ Resume Breadcrumb Run ]" : "[ Initialize Breadcrumb Run ]"}</button>
+              ${hasProgress ? `<button class="ghost-button" id="restart-from-beginning" type="button">Start From Beginning</button>` : ""}
               ${hasProgress ? `<div class="asset-meta">Saved checkpoint detected // Stage ${String(resumeStage).padStart(2, "0")} of ${TOTAL_STAGES}</div>` : ""}
             </div>
           </section>
@@ -882,9 +1034,16 @@
         document.getElementById("accept-challenge").addEventListener("click", () => {
           navigateToStage(getResumeStage(), true);
         });
+        const restartButton = document.getElementById("restart-from-beginning");
+        if (restartButton) {
+          restartButton.addEventListener("click", () => {
+            restartRun(true);
+          });
+        }
       }
 
       function renderStage(stageNumber) {
+        clearHintTimers();
         const stage = stageDefinitions.find((item) => item.id === stageNumber);
         if (!stage) {
           navigateHome(true);
@@ -903,6 +1062,12 @@
                   <div class="prompt-title">${stage.title}</div>
                   <div class="prompt-copy">
                     ${stage.prompt.map((paragraph) => `<p>${paragraph}</p>`).join("")}
+                    ${stage.externalLinkUrl ? `
+                      <div class="external-link-row">
+                        <a class="external-link-button" href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer">${stage.externalLinkLabel || "Open External Source"}</a>
+                        <div class="external-link-note">Wayback Machine // secure external tab</div>
+                      </div>
+                    ` : ""}
                   </div>
                 </div>
               `;
@@ -914,7 +1079,12 @@
         app.innerHTML = `
           <section class="stage-shell">
             <div class="stage-frame">
-              <div class="stage-tracker">${stage.tracker}</div>
+                <div class="stage-toolbar">
+                  <div class="stage-tracker">${stage.tracker}</div>
+                  <div class="stage-toolbar-actions">
+                    <button class="solid-button" id="restart-from-beginning-toolbar" type="button">Start From Beginning</button>
+                  </div>
+                </div>
               <div class="${stageBodyClass}">
                 ${assetMarkup}
                 ${promptMarkup}
@@ -946,15 +1116,28 @@
         input.focus();
         input.addEventListener("input", handleStageInput);
         inputFrame.addEventListener("click", () => input.focus());
+        document.getElementById("restart-from-beginning-toolbar").addEventListener("click", () => {
+          restartRun(true);
+        });
 
         if (stage.id === 1) {
           mountStageOneToken();
         } else {
           state.activeStageHash = stage.hash;
         }
+
+        if (Array.isArray(stage.timedHints)) {
+          stage.timedHints.forEach((hint) => {
+            const timerId = window.setTimeout(() => {
+              showHintMessage(hint.title, hint.text);
+            }, hint.delayMs);
+            state.hintTimers.push(timerId);
+          });
+        }
       }
 
       function renderCompletion() {
+        clearHintTimers();
         app.innerHTML = `
           <section class="completion">
             <div class="completion-card">
@@ -972,8 +1155,7 @@
         `;
 
         document.getElementById("restart-run").addEventListener("click", () => {
-          localStorage.setItem("current_stage", "1");
-          navigateToStage(1, true);
+          restartRun(true);
         });
         document.getElementById("return-home").addEventListener("click", () => {
           navigateHome(true);
@@ -1056,6 +1238,23 @@
         nextUrl.pathname = "/stage-1";
         nextUrl.searchParams.set("sector", token);
         window.history.replaceState({ view: "stage", stage: 1 }, "", nextUrl);
+      }
+
+      function restartRun(animate = false) {
+        localStorage.setItem("current_stage", "1");
+        resetStageOneHints();
+        const execute = () => {
+          state.currentView = "stage";
+          state.currentStage = 1;
+          window.history.pushState({ view: "stage", stage: 1 }, "", "/stage-1");
+          renderStage(1);
+        };
+
+        if (animate) {
+          withTransition(execute);
+        } else {
+          execute();
+        }
       }
 
       function withTransition(callback) {

@@ -1,0 +1,29 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="#07090A"/>
+  <rect x="92" y="92" width="1416" height="716" rx="26" fill="#0C1012" stroke="rgba(155,243,207,0.22)"/>
+  <rect x="126" y="126" width="1348" height="64" rx="16" fill="#11181B"/>
+  <circle cx="174" cy="158" r="8" fill="#D07C7C"/>
+  <circle cx="202" cy="158" r="8" fill="#E5D0AF"/>
+  <circle cx="230" cy="158" r="8" fill="#9BF3CF"/>
+  <text x="272" y="166" fill="rgba(192,255,232,0.66)" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="3">FEDERAL REPOSITORY DORKING // SECURE QUERY WORKSPACE</text>
+  <rect x="126" y="222" width="1348" height="540" rx="20" fill="#091012" stroke="rgba(155,243,207,0.10)"/>
+  <text x="164" y="292" fill="#9BF3CF" font-family="'IBM Plex Mono', monospace" font-size="28" letter-spacing="2">$ google</text>
+  <text x="330" y="292" fill="#F4F7F5" font-family="'IBM Plex Mono', monospace" font-size="26">site:archives.gov filetype:pdf "OPERATION MONGOOSE" "SSCIA"</text>
+  <rect x="164" y="344" width="1176" height="86" rx="16" fill="#0F1719" stroke="rgba(155,243,207,0.14)"/>
+  <text x="194" y="394" fill="rgba(192,255,232,0.76)" font-family="'IBM Plex Mono', monospace" font-size="24">RESULT 01 // archives.gov // JFK ASSASSINATION SYSTEM IDENTIFICATION FORM</text>
+  <text x="194" y="478" fill="#BFF9DF" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="3">RECORD NUMBER</text>
+  <text x="492" y="478" fill="#F4F7F5" font-family="'Cormorant Garamond', serif" font-size="54" font-weight="600">157-10011-10009</text>
+  <rect x="164" y="520" width="624" height="138" rx="18" fill="url(#glow)" stroke="rgba(155,243,207,0.18)"/>
+  <text x="198" y="572" fill="rgba(192,255,232,0.6)" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="3">PRIMARY SERIES PREFIX</text>
+  <text x="198" y="632" fill="#9BF3CF" font-family="'Cormorant Garamond', serif" font-size="92" font-weight="600">157-</text>
+  <path d="M948 562H1362" stroke="rgba(155,243,207,0.22)" stroke-width="2" stroke-dasharray="10 12"/>
+  <circle cx="1110" cy="562" r="9" fill="#9BF3CF"/>
+  <text x="948" y="608" fill="rgba(192,255,232,0.66)" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="3">UNINDEXED FEDERAL PDF TRAIL</text>
+  <text x="166" y="730" fill="rgba(192,255,232,0.42)" font-family="'IBM Plex Mono', monospace" font-size="18" letter-spacing="5">RAW RECORDS > SUMMARIES // IMMUTABLE DOCUMENT BEDROCK</text>
+  <defs>
+    <linearGradient id="glow" x1="476" y1="520" x2="476" y2="658" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10191B"/>
+      <stop offset="1" stop-color="#0B1214"/>
+    </linearGradient>
+  </defs>
+</svg>

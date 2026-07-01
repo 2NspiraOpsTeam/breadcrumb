@@ -1,0 +1,37 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="#07090A"/>
+  <rect x="76" y="76" width="1448" height="748" rx="28" fill="url(#panel)" stroke="rgba(155,243,207,0.22)"/>
+  <path d="M170 545C308 489 420 560 533 507C651 452 723 322 851 322C979 322 1041 503 1174 503C1283 503 1372 426 1430 389" stroke="url(#signal)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M171 546C272 526 358 429 451 429C579 429 657 592 803 592C942 592 1001 414 1139 414C1246 414 1342 470 1430 470" stroke="rgba(155,243,207,0.13)" stroke-width="3" stroke-dasharray="10 16" stroke-linecap="round"/>
+  <line x1="176" y1="676" x2="1427" y2="676" stroke="rgba(155,243,207,0.28)" stroke-width="2"/>
+  <circle cx="244" cy="640" r="18" fill="#9BF3CF"/>
+  <circle cx="244" cy="640" r="42" fill="url(#pulse)"/>
+  <circle cx="549" cy="529" r="13" fill="#D4EBDD"/>
+  <circle cx="842" cy="366" r="15" fill="#D4EBDD"/>
+  <circle cx="1118" cy="503" r="14" fill="#D4EBDD"/>
+  <circle cx="1343" cy="435" r="12" fill="#D4EBDD"/>
+  <rect x="212" y="182" width="270" height="122" rx="18" fill="#0E1415" stroke="rgba(155,243,207,0.18)"/>
+  <text x="244" y="226" fill="#BFF9DF" font-family="'IBM Plex Mono', monospace" font-size="20" letter-spacing="3.2">EARLIEST LIVE NODE</text>
+  <text x="244" y="272" fill="#F4F7F5" font-family="'Cormorant Garamond', serif" font-size="54" font-weight="600">Archive Dawn</text>
+  <text x="180" y="728" fill="rgba(192,255,232,0.72)" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="4">1996</text>
+  <text x="465" y="728" fill="rgba(192,255,232,0.38)" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="4">2001</text>
+  <text x="760" y="728" fill="rgba(192,255,232,0.38)" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="4">2008</text>
+  <text x="1038" y="728" fill="rgba(192,255,232,0.38)" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="4">2016</text>
+  <text x="1310" y="728" fill="rgba(192,255,232,0.38)" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="4">2025</text>
+  <text x="178" y="132" fill="rgba(192,255,232,0.54)" font-family="'IBM Plex Mono', monospace" font-size="18" letter-spacing="6">HISTORICAL ARCHIVE WINNOWING</text>
+  <defs>
+    <linearGradient id="panel" x1="800" y1="76" x2="800" y2="824" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0A0E10"/>
+      <stop offset="1" stop-color="#080B0C"/>
+    </linearGradient>
+    <linearGradient id="signal" x1="170" y1="444" x2="1430" y2="444" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9BF3CF"/>
+      <stop offset="0.5" stop-color="#E5D0AF"/>
+      <stop offset="1" stop-color="#9BF3CF"/>
+    </linearGradient>
+    <radialGradient id="pulse" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(244 640) rotate(90) scale(42)">
+      <stop stop-color="#9BF3CF" stop-opacity="0.48"/>
+      <stop offset="1" stop-color="#9BF3CF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>
