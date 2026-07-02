@@ -184,6 +184,10 @@
       position: relative;
     }
 
+    .stage-shell.stage-shell-attempt-hints .stage-body {
+      padding-bottom: clamp(280px, 34vh, 380px);
+    }
+
     .stage-body-trojan {
       min-height: 82vh;
       border: 0;
@@ -344,6 +348,10 @@
       padding: 0 0 86px;
     }
 
+    .stage-shell.stage-shell-attempt-hints .prompt-block {
+      padding-bottom: 0;
+    }
+
     .prompt-title {
       font-family: "Cormorant Garamond", Georgia, serif;
       font-size: clamp(1.9rem, 4vw, 2.6rem);
@@ -420,6 +428,10 @@
       font-size: 0.86rem;
       line-height: 1.8;
       max-width: 66ch;
+    }
+
+    .stage-shell.stage-shell-attempt-hints .hint-rail {
+      min-height: clamp(150px, 22vh, 220px);
     }
 
     .hint-card.is-visible {
@@ -1076,8 +1088,12 @@
           ? "stage-body stage-body-trojan"
           : "stage-body";
 
+        const stageShellClass = stage.attemptHints?.length
+          ? "stage-shell stage-shell-attempt-hints"
+          : "stage-shell";
+
         app.innerHTML = `
-          <section class="stage-shell">
+          <section class="${stageShellClass}">
             <div class="stage-frame">
                 <div class="stage-toolbar">
                   <div class="stage-tracker">${stage.tracker}</div>
