@@ -184,6 +184,10 @@
       position: relative;
     }
 
+    .stage-shell.stage-shell-attempt-hints .stage-body {
+      padding-bottom: clamp(280px, 34vh, 380px);
+    }
+
     .stage-body-trojan {
       min-height: 82vh;
       border: 0;
@@ -344,6 +348,10 @@
       padding: 0 0 86px;
     }
 
+    .stage-shell.stage-shell-attempt-hints .prompt-block {
+      padding-bottom: 0;
+    }
+
     .prompt-title {
       font-family: "Cormorant Garamond", Georgia, serif;
       font-size: clamp(1.9rem, 4vw, 2.6rem);
@@ -420,6 +428,10 @@
       font-size: 0.86rem;
       line-height: 1.8;
       max-width: 66ch;
+    }
+
+    .stage-shell.stage-shell-attempt-hints .hint-rail {
+      min-height: clamp(150px, 22vh, 220px);
     }
 
     .hint-card.is-visible {
@@ -752,15 +764,30 @@
           id: 5,
           tracker: "BREADCRUMB TRACK: 05 / 10 // OPERATIONAL ANCHOR: DEFECTION SIGNAL",
           title: "Defection Signal",
-          expectedLength: 8,
-          hash: "26a39a83482f48feae455f6f37d87c7812fd3d0242ae711bdc30d7a749662546",
+          expectedLength: 4,
+          hash: "91a27e7f677fb274e1e695d7cf161726a455f75e2fa2cfdf323fd35e729a7000",
           assetType: "text",
+          assetGraphic: "/assets/stage5-iK-insignia.png",
+          assetAlt: "High-contrast military-style operation insignia with iK stencil letters on a dark signal-intercept background.",
           assetMeta: "Scale estimate",
-          assetSymbol: "1K",
-          assetCaption: "The story you need is quantitative, not rhetorical. Search for the rounded scale in the reporting.",
+          assetSymbol: "iK",
+          externalLinkUrl: "https://www.pbs.org/newshour/show/u-s-mulls-ending-program-that-urges-cuban-doctors-to-defect",
+          externalLinkLabel: "OPEN HISTORICAL REPOSITORY",
+          timedHints: [
+            {
+              delayMs: 120000,
+              title: "[INTEL ALERT - STATISTICAL TRANSPARENCY]",
+              text: "Propaganda cloaks itself in rhetoric, but reality relies on cold, quantitative documentation. Fire up your secure external tab to view the declassified reporting transcript on the Cuban Medical Professional Parole (CMPP) program. Look for the official figures issued directly by the U.S. State Department."
+            },
+            {
+              delayMs: 240000,
+              title: "[INTEL ALERT - ROUNDED BASELINE]",
+              text: "Isolate the exact, rounded baseline number of approved medical professional applications processed between the launch of the initiative in 2006 and the policy review window. The 4-digit metric starting with '7' is the precise cryptographic key required to clear the terminal."
+            }
+          ],
           prompt: [
-            "The campaign praises Cuban healthcare while erasing physician defections and material scarcity.",
-            "Estimate the scale used in public reporting for Cuban doctors defecting to the United States."
+            "State-sponsored campaigns systematically praise overseas healthcare operations while completely erasing real-world physician defections, movement restrictions, and material scarcity.",
+            "To bypass the rhetorical narrative and anchor your analysis in hard data, you must extract the baseline rounded scale used in public reporting for Cuban doctors who successfully defected to the United States under the historic CMPP initiatives."
           ]
         },
         {
@@ -1061,8 +1088,12 @@
           ? "stage-body stage-body-trojan"
           : "stage-body";
 
+        const stageShellClass = stage.attemptHints?.length
+          ? "stage-shell stage-shell-attempt-hints"
+          : "stage-shell";
+
         app.innerHTML = `
-          <section class="stage-shell">
+          <section class="${stageShellClass}">
             <div class="stage-frame">
                 <div class="stage-toolbar">
                   <div class="stage-tracker">${stage.tracker}</div>

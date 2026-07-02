@@ -492,19 +492,12 @@
       caret-color: transparent;
     }
 
-      .token-box-row {
-        display: flex;
-        justify-content: center;
-        /* Increase horizontal spacing between token boxes to better
-           accommodate space characters and make the hidden clue legible */
-        gap: clamp(12px, 2vw, 18px);
-        padding: 8px 0 4px;
-        /* Add a more generous top margin to push the token row further from
-           any lower‑fixed UI and give the hidden clue room vertically.
-           The clamp values keep it responsive on very small screens while
-           still offering ample spacing on larger viewports. */
-        margin-top: clamp(40px, 8vw, 70px);
-      }
+    .token-box-row {
+      display: flex;
+      justify-content: center;
+      gap: clamp(8px, 1.6vw, 14px);
+      padding: 8px 0 4px;
+    }
 
     .token-box {
       width: clamp(42px, 7vw, 56px);
@@ -655,8 +648,6 @@
         currentStage: 1,
         activeStageHash: "",
         hintTimers: [],
-        stageAttempts: {},
-        stageHintLevels: {},
         feedbackTimer: null,
         stageOneAttempts: 0,
         stageOneHintLevel: 0,
@@ -692,14 +683,14 @@
           assetCaption: "Winnow out the modern shell and identify the earliest permanent web-era footprint for granma.cu.",
           externalLinkUrl: "https://web.archive.org/web/*/granma.cu",
           externalLinkLabel: "Open Wayback Timeline",
-          attemptHints: [
+          timedHints: [
             {
-              attemptCount: 10,
+              delayMs: 120000,
               title: "[INTEL ALERT - ARCHIVE VECTOR]",
               text: "Disinformation attempts to rewrite history by deleting the past. Open a new tab and head to the Wayback Machine (web.archive.org). Plug in Cuba's official state news domain (granma.cu) and look at the absolute dawn of its historical timeline tracking archive."
             },
             {
-              attemptCount: 20,
+              delayMs: 240000,
               title: "[INTEL ALERT - TIMELINE ANCHOR]",
               text: "Look directly at the permanent calendar bar stretching across the top of the Internet Archive screen. Slide the navigation window all the way to the far left. The 4-digit calendar year marking the very first logged digital cluster capture is your key code."
             }
@@ -773,15 +764,30 @@
           id: 5,
           tracker: "BREADCRUMB TRACK: 05 / 10 // OPERATIONAL ANCHOR: DEFECTION SIGNAL",
           title: "Defection Signal",
-          expectedLength: 8,
-          hash: "26a39a83482f48feae455f6f37d87c7812fd3d0242ae711bdc30d7a749662546",
+          expectedLength: 4,
+          hash: "91a27e7f677fb274e1e695d7cf161726a455f75e2fa2cfdf323fd35e729a7000",
           assetType: "text",
+          assetGraphic: "/assets/stage5-iK-insignia.png",
+          assetAlt: "High-contrast military-style operation insignia with iK stencil letters on a dark signal-intercept background.",
           assetMeta: "Scale estimate",
-          assetSymbol: "1K",
-          assetCaption: "The story you need is quantitative, not rhetorical. Search for the rounded scale in the reporting.",
+          assetSymbol: "iK",
+          externalLinkUrl: "https://www.pbs.org/newshour/show/u-s-mulls-ending-program-that-urges-cuban-doctors-to-defect",
+          externalLinkLabel: "OPEN HISTORICAL REPOSITORY",
+          timedHints: [
+            {
+              delayMs: 120000,
+              title: "[INTEL ALERT - STATISTICAL TRANSPARENCY]",
+              text: "Propaganda cloaks itself in rhetoric, but reality relies on cold, quantitative documentation. Fire up your secure external tab to view the declassified reporting transcript on the Cuban Medical Professional Parole (CMPP) program. Look for the official figures issued directly by the U.S. State Department."
+            },
+            {
+              delayMs: 240000,
+              title: "[INTEL ALERT - ROUNDED BASELINE]",
+              text: "Isolate the exact, rounded baseline number of approved medical professional applications processed between the launch of the initiative in 2006 and the policy review window. The 4-digit metric starting with '7' is the precise cryptographic key required to clear the terminal."
+            }
+          ],
           prompt: [
-            "The campaign praises Cuban healthcare while erasing physician defections and material scarcity.",
-            "Estimate the scale used in public reporting for Cuban doctors defecting to the United States."
+            "State-sponsored campaigns systematically praise overseas healthcare operations while completely erasing real-world physician defections, movement restrictions, and material scarcity.",
+            "To bypass the rhetorical narrative and anchor your analysis in hard data, you must extract the baseline rounded scale used in public reporting for Cuban doctors who successfully defected to the United States under the historic CMPP initiatives."
           ]
         },
         {
@@ -980,35 +986,6 @@
         }
       }
 
-      function resetAttemptHints(stageId) {
-        if (!stageId) {
-          return;
-        }
-
-        state.stageAttempts[stageId] = 0;
-        state.stageHintLevels[stageId] = 0;
-      }
-
-      function updateAttemptHints(stage) {
-        if (!stage?.attemptHints?.length) {
-          return;
-        }
-
-        const attempts = state.stageAttempts[stage.id] || 0;
-        let nextHintLevel = state.stageHintLevels[stage.id] || 0;
-
-        while (nextHintLevel < stage.attemptHints.length) {
-          const hint = stage.attemptHints[nextHintLevel];
-          if (attempts < hint.attemptCount) {
-            break;
-          }
-          showHintMessage(hint.title, hint.text);
-          nextHintLevel += 1;
-        }
-
-        state.stageHintLevels[stage.id] = nextHintLevel;
-      }
-
       function renderTrojanAsset() {
         const stage = stageDefinitions.find((item) => item.id === 1);
         return `
@@ -1165,10 +1142,6 @@
           state.activeStageHash = stage.hash;
         }
 
-        if (stage.attemptHints?.length) {
-          resetAttemptHints(stage.id);
-        }
-
         if (Array.isArray(stage.timedHints)) {
           stage.timedHints.forEach((hint) => {
             const timerId = window.setTimeout(() => {
@@ -1251,10 +1224,6 @@
           if (stage.id === 1) {
             state.stageOneAttempts += 1;
             updateStageOneHints();
-          }
-          if (stage.attemptHints?.length) {
-            state.stageAttempts[stage.id] = (state.stageAttempts[stage.id] || 0) + 1;
-            updateAttemptHints(stage);
           }
           input.value = "";
           syncTokenBoxes("");

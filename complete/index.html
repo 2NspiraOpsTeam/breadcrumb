@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Breadcrumb | OSINT Challenge</title>
-  <meta name="version" content="2026-07-01T13:25:00Z">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -185,6 +184,10 @@
       position: relative;
     }
 
+    .stage-shell.stage-shell-attempt-hints .stage-body {
+      padding-bottom: clamp(280px, 34vh, 380px);
+    }
+
     .stage-body-trojan {
       min-height: 82vh;
       border: 0;
@@ -345,6 +348,10 @@
       padding: 0 0 86px;
     }
 
+    .stage-shell.stage-shell-attempt-hints .prompt-block {
+      padding-bottom: 0;
+    }
+
     .prompt-title {
       font-family: "Cormorant Garamond", Georgia, serif;
       font-size: clamp(1.9rem, 4vw, 2.6rem);
@@ -421,6 +428,10 @@
       font-size: 0.86rem;
       line-height: 1.8;
       max-width: 66ch;
+    }
+
+    .stage-shell.stage-shell-attempt-hints .hint-rail {
+      min-height: clamp(150px, 22vh, 220px);
     }
 
     .hint-card.is-visible {
@@ -755,13 +766,11 @@
           title: "Defection Signal",
           expectedLength: 4,
           hash: "91a27e7f677fb274e1e695d7cf161726a455f75e2fa2cfdf323fd35e729a7000",
-          tokenBoxes: 4,
           assetType: "text",
           assetGraphic: "/assets/stage5-iK-insignia.png",
           assetAlt: "High-contrast military-style operation insignia with iK stencil letters on a dark signal-intercept background.",
           assetMeta: "Scale estimate",
           assetSymbol: "iK",
-          assetCaption: "State-sponsored campaigns systematically praise overseas healthcare operations while completely erasing real-world physician defections, movement restrictions, and material scarcity.",
           externalLinkUrl: "https://www.pbs.org/newshour/show/u-s-mulls-ending-program-that-urges-cuban-doctors-to-defect",
           externalLinkLabel: "OPEN HISTORICAL REPOSITORY",
           timedHints: [
@@ -870,7 +879,7 @@
         return `Enter the ${stage.expectedLength}-slot stage token`;
       }
 
-      function renderTokenBoxes(length, visualCount = length) {
+      function renderTokenBoxes(length) {
         return `
           <div class="token-box-row" id="token-box-row" aria-hidden="true">
             ${Array.from({ length }, (_, index) => `<div class="token-box${index === 0 ? " is-active" : ""}" data-token-index="${index}">_</div>`).join("")}
@@ -1079,8 +1088,12 @@
           ? "stage-body stage-body-trojan"
           : "stage-body";
 
+        const stageShellClass = stage.attemptHints?.length
+          ? "stage-shell stage-shell-attempt-hints"
+          : "stage-shell";
+
         app.innerHTML = `
-          <section class="stage-shell">
+          <section class="${stageShellClass}">
             <div class="stage-frame">
                 <div class="stage-toolbar">
                   <div class="stage-tracker">${stage.tracker}</div>
@@ -1096,7 +1109,7 @@
                 </div>
                 <div class="feedback-line" id="feedback-line"></div>
                 <div class="input-frame">
-                  ${renderTokenBoxes(stage.expectedLength, stage.tokenBoxes)}
+                  ${renderTokenBoxes(stage.expectedLength)}
                   <input
                     id="stage-input"
                     class="stage-input"
