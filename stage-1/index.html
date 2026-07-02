@@ -185,79 +185,85 @@
     }
 
     .stage-body-trojan {
-      min-height: 82vh;
+      min-height: 100vh;
       border: 0;
       background: transparent;
       box-shadow: none;
       padding: 0;
-      gap: 14px;
-      overflow: hidden;
-    }
-
-    .asset-container {
-      min-height: clamp(230px, 34vw, 420px);
-      border: 1px solid rgba(155, 243, 207, 0.08);
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.005)),
-        radial-gradient(circle at 50% 30%, rgba(155, 243, 207, 0.08), transparent 34%),
-        #07090a;
-      display: grid;
-      place-items: center;
-      padding: 22px;
+      gap: 0;
       overflow: hidden;
       position: relative;
     }
 
-    .asset-container img,
-    .asset-container svg {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      display: block;
-      filter: saturate(0.74) contrast(1.02) brightness(0.9);
+    .trojan-hero {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
     }
 
-    .asset-container-trojan {
-      min-height: 74vh;
-      border: 0;
-      background: #050607;
-      padding: 0;
-      place-items: stretch;
-    }
-
-    .asset-container-trojan img {
+    .trojan-hero img {
       width: 100%;
       height: 100%;
-      max-width: none;
-      max-height: none;
       object-fit: cover;
-      filter: saturate(0.86) contrast(1.08) brightness(0.84);
-      transform: scale(1.28);
-      transform-origin: center 42%;
+      object-position: center 35%;
+      display: block;
+      filter: saturate(0.82) contrast(1.04) brightness(0.88);
     }
 
-    .stage-brief-overlay {
+    .trojan-hero::after {
+      content: "";
       position: absolute;
-      top: clamp(20px, 2.8vw, 34px);
-      left: clamp(20px, 2.8vw, 34px);
-      width: min(430px, calc(100% - 56px));
-      padding: 18px 20px;
-      background: linear-gradient(180deg, rgba(3, 5, 6, 0.86), rgba(3, 5, 6, 0.58));
-      border: 0;
-      backdrop-filter: blur(5px);
-      z-index: 2;
+      inset: 0;
+      background: linear-gradient(
+        0deg,
+        rgba(5, 7, 11, 0.95) 0%,
+        rgba(5, 7, 11, 0.6) 30%,
+        rgba(5, 7, 11, 0.15) 55%,
+        transparent 75%
+      );
+      pointer-events: none;
     }
 
-    .stage-brief-overlay .prompt-title {
-      font-size: clamp(1.62rem, 2.7vw, 2.1rem);
-      margin-bottom: 10px;
+    .trojan-content {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: clamp(24px, 4vw, 56px) clamp(20px, 3.5vw, 48px);
     }
 
-    .stage-brief-overlay .prompt-copy {
+    .trojan-text-block {
+      max-width: min(70ch, calc(100% - 40px));
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .trojan-title {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(2.1rem, 4vw, 3rem);
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: clamp(8px, 1.5vw, 14px);
+    }
+
+    .trojan-copy {
       max-width: none;
       color: rgba(244, 241, 234, 0.92);
-      font-size: 0.92rem;
-      line-height: 1.72;
+      font-size: clamp(0.86rem, 1.7vw, 0.95rem);
+      line-height: 1.8;
+    }
+
+    .trojan-asset-meta {
+      position: absolute;
+      left: clamp(20px, 2.8vw, 34px);
+      bottom: clamp(108px, 12vw, 126px);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(244, 241, 234, 0.58);
+      z-index: 2;
     }
 
     .stage-body-trojan .hint-rail,
@@ -298,7 +304,7 @@
       color: var(--muted);
     }
 
-    .asset-container-trojan .asset-meta {
+    .trojan-asset-meta {
       left: clamp(20px, 2.8vw, 34px);
       bottom: clamp(108px, 12vw, 126px);
       color: rgba(244, 241, 234, 0.58);
@@ -962,20 +968,22 @@
       function renderTrojanAsset() {
         const stage = stageDefinitions.find((item) => item.id === 1);
         return `
-          <div class="asset-container asset-container-trojan">
-            <div class="stage-brief-overlay">
-              <div class="prompt-title">${stage.title}</div>
-              <div class="prompt-copy">
-                ${stage.prompt.map((paragraph) => `<p>${paragraph}</p>`).join("")}
-              </div>
-            </div>
+          <div class="trojan-hero">
             <img
               src="/assets/trojan-horse-stage-1.jpg"
               alt="Giovanni Domenico Tiepolo, The Procession of the Trojan Horse into Troy"
               loading="eager"
               referrerpolicy="no-referrer"
             >
-            <div class="asset-meta">Giovanni Domenico Tiepolo // The Procession of the Trojan Horse into Troy</div>
+          </div>
+          <div class="trojan-content">
+            <div class="trojan-text-block">
+              <div class="trojan-title">${stage.title}</div>
+              <div class="trojan-copy">
+                ${stage.prompt.map((paragraph) => `<p>${paragraph}</p>`).join("")}
+              </div>
+            </div>
+            <div class="trojan-asset-meta">Stage 1 visual clue</div>
           </div>
         `;
       }
