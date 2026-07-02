@@ -335,7 +335,7 @@
     .prompt-block {
       display: grid;
       gap: 14px;
-      padding: 0 0 86px;
+      padding: 0 0 clamp(28px, 4vw, 48px);
     }
 
     .prompt-title {
@@ -474,6 +474,13 @@
       padding-top: 16px;
       border-top: 1px solid var(--line);
       cursor: text;
+    }
+
+    .stage-body {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .stage-input {
