@@ -236,28 +236,12 @@
       transform-origin: center 42%;
     }
 
-    .stage-brief-overlay {
-      position: absolute;
-      top: clamp(20px, 2.8vw, 34px);
-      left: clamp(20px, 2.8vw, 34px);
-      width: min(430px, calc(100% - 56px));
-      padding: 18px 20px;
-      background: linear-gradient(180deg, rgba(3, 5, 6, 0.86), rgba(3, 5, 6, 0.58));
-      border: 0;
-      backdrop-filter: blur(5px);
-      z-index: 2;
+    .stage-shell-stage-1 .prompt-block {
+      padding: clamp(8px, 1vw, 14px) clamp(20px, 2.8vw, 34px) 0;
     }
 
-    .stage-brief-overlay .prompt-title {
-      font-size: clamp(1.62rem, 2.7vw, 2.1rem);
-      margin-bottom: 10px;
-    }
-
-    .stage-brief-overlay .prompt-copy {
-      max-width: none;
-      color: rgba(244, 241, 234, 0.92);
-      font-size: 0.92rem;
-      line-height: 1.72;
+    .stage-shell-stage-1 .prompt-copy {
+      max-width: 56ch;
     }
 
     .stage-body-trojan .hint-rail,
@@ -300,7 +284,7 @@
 
     .asset-container-trojan .asset-meta {
       left: clamp(20px, 2.8vw, 34px);
-      bottom: clamp(108px, 12vw, 126px);
+      bottom: clamp(20px, 2.8vw, 34px);
       color: rgba(244, 241, 234, 0.58);
       z-index: 2;
     }
@@ -1085,15 +1069,8 @@
       }
 
       function renderTrojanAsset() {
-        const stage = stageDefinitions.find((item) => item.id === 1);
         return `
           <div class="asset-container asset-container-trojan">
-            <div class="stage-brief-overlay">
-              <div class="prompt-title">${stage.title}</div>
-              <div class="prompt-copy">
-                ${stage.prompt.map((paragraph) => `<p>${paragraph}</p>`).join("")}
-              </div>
-            </div>
             <img
               src="/assets/trojan-horse-stage-1.jpg"
               alt="Giovanni Domenico Tiepolo, The Procession of the Trojan Horse into Troy"
@@ -1165,9 +1142,7 @@
           ? renderTrojanAsset()
           : renderEvidenceAsset(stage);
 
-        const promptMarkup = stage.assetType === "trojan"
-          ? ""
-          : `
+        const promptMarkup = `
                 <div class="prompt-block">
                   <div class="prompt-title">${stage.title}</div>
                   <div class="prompt-copy">
@@ -1189,6 +1164,7 @@
         const stageShellClass = [
           "stage-shell",
           stage.attemptHints?.length ? "stage-shell-attempt-hints" : "",
+          stage.id === 1 ? "stage-shell-stage-1" : "",
           stage.id === 2 ? "stage-shell-stage-2" : ""
         ].filter(Boolean).join(" ");
 
