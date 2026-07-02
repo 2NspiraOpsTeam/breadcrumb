@@ -744,8 +744,9 @@
           assetAlt: "Abstract network timeline graphic with archival checkpoints and a highlighted early waypoint.",
           assetCaption: "Winnow out the modern shell and identify the earliest permanent web-era footprint for granma.cu.",
           assetCaptionPlacement: "prompt-bottom",
-          externalLinkUrl: "https://web.archive.org/web/*/granma.cu",
+          externalLinkUrl: "https://web.archive.org/web/*/http://www.granma.cu/",
           externalLinkLabel: "Open Wayback Timeline",
+          externalLinkTarget: "_self",
           externalLinkPlacement: "asset-bottom",
           attemptHints: [
             {
@@ -1091,10 +1092,13 @@
         const evidenceCaption = stage.assetCaptionPlacement === "prompt-bottom"
           ? ""
           : `<div class="evidence-caption">${stage.assetCaption}</div>`;
+        const externalLinkAttrs = stage.externalLinkTarget === "_self"
+          ? `href="${stage.externalLinkUrl}"`
+          : `href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer"`;
         const externalLinkRow = stage.externalLinkUrl && stage.externalLinkPlacement === "asset-bottom"
           ? `
               <div class="external-link-row">
-                <a class="external-link-button" href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer">${stage.externalLinkLabel || "Open External Source"}</a>
+                <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
               </div>
             `
           : "";
@@ -1163,7 +1167,7 @@
                     ${stage.assetCaptionPlacement === "prompt-bottom" ? `<p>${stage.assetCaption}</p>` : ""}
                     ${stage.externalLinkUrl && stage.externalLinkPlacement !== "asset-bottom" ? `
                       <div class="external-link-row">
-                        <a class="external-link-button" href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer">${stage.externalLinkLabel || "Open External Source"}</a>
+                        <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
                       </div>
                     ` : ""}
                   </div>
