@@ -3,7 +3,43 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/stage-:stage",
+      "source": "/stage-1",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-2",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-3",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-4",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-5",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-6",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-7",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-8",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-9",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/stage-10",
       "destination": "/index.html"
     },
     {
