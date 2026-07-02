@@ -746,10 +746,7 @@
           assetAlt: "Abstract network timeline graphic with archival checkpoints and a highlighted early waypoint.",
           assetCaption: "Winnow out the modern shell and identify the earliest permanent web-era footprint for granma.cu.",
           assetCaptionPlacement: "prompt-bottom",
-          externalLinkUrl: "https://web.archive.org/web/*/granma.cu",
-          externalLinkLabel: "Open Wayback Timeline",
-          externalLinkTarget: "_self",
-          externalLinkPlacement: "asset-bottom",
+
           attemptHints: [
             {
               attempts: 10,
@@ -1094,36 +1091,6 @@
         const evidenceCaption = stage.assetCaptionPlacement === "prompt-bottom"
           ? ""
           : `<div class="evidence-caption">${stage.assetCaption}</div>`;
-        const externalLinkAttrs = stage.externalLinkTarget === "_self"
-          ? `href="${stage.externalLinkUrl}"`
-          : `href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer"`;
-        const externalLinkRowAsset = stage.externalLinkUrl && stage.externalLinkPlacement === "asset-bottom"
-          ? `              <div class="external-link-row">
-                <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
-              </div>
-            `
-          : "";
-        const externalLinkRowPrompt = stage.externalLinkUrl && stage.externalLinkPlacement !== "asset-bottom"
-          ? `
-                      <div class="external-link-row">
-                        <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
-                      </div>
-                    `
-          : "";
-
-        // For stage 2, always render the external link in the prompt section (outside asset container)
-        const isStageTwoExternalInPrompt = stage.id === 2 && stage.externalLinkPlacement === "asset-bottom";
-
-        return `
-          <div class="evidence-card">
-            ${evidenceVisual}
-            ${isStageTwoExternalInPrompt ? externalLinkRowAsset : evidenceCaption}
-            ${!isStageTwoExternalInPrompt ? externalLinkRowAsset : ""}
-          </div>
-          <div class="asset-meta">${stage.assetMeta}</div>
-        `;
-      }
-
       function renderLanding() {
         clearHintTimers();
         const resumeStage = getResumeStage();
@@ -1177,11 +1144,6 @@
                     ${stage.externalLinkUrl && stage.externalLinkPlacement !== "asset-bottom" ? `
                       <div class="external-link-row">
                         <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
-                      </div>
-                    ` : ""}
-                    ${stage.id === 2 && stage.externalLinkPlacement === "asset-bottom" ? `
-                      <div class="external-link-row">
-                        <a class="external-link-button" href="${stage.externalLinkUrl}">${stage.externalLinkLabel || "Open External Source"}</a>
                       </div>
                     ` : ""}
                   </div>
