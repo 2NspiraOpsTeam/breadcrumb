@@ -630,8 +630,7 @@
         activeStageHash: "",
         hintTimers: [],
         feedbackTimer: null,
-        stageOneAttempts: 0,
-        stageOneHintLevel: 0,
+        stageAttempts: {},
         transitionLock: false
       };
 
@@ -658,7 +657,7 @@
           expectedLength: 4,
           hash: "3d1e557b540ac045b3b327994a351f08a443f9216f9b2b8d3a0f42b58671ac83",
           assetType: "text",
-          assetMeta: "Wayback timeline matrix",
+          assetMeta: "Archive timeline reference",
           assetGraphic: "/assets/stage2-timeline-graphic.png",
           assetAlt: "Abstract network timeline graphic with archival checkpoints and a highlighted early waypoint.",
           assetCaption: "Winnow out the modern shell and identify the earliest permanent web-era footprint for granma.cu.",
@@ -676,6 +675,11 @@
               text: "Look directly at the permanent calendar bar stretching across the top of the Internet Archive screen. Slide the navigation window all the way to the far left. The 4-digit calendar year marking the very first logged digital cluster capture is your key code."
             }
           ],
+          postFailureHint: {
+            threshold: 10,
+            title: "[INTEL ALERT - ARCHIVE DIRECTIVE]",
+            text: "The answer lives at the origin of granma.cu's digital footprint. Go to web.archive.org, enter granma.cu, and find the very first capture date shown on the timeline bar. The 4-digit year is your token."
+          },
           prompt: [
             "Disinformation networks survive by rewriting the digital record and gaslighting target communities.",
             "To isolate the historical baseline infrastructure of Cuba's primary state information engine, winnow out modern layout changes and uncover when granma.cu first established its permanent footprint on the global web architecture."
@@ -706,6 +710,11 @@
               text: "Open the first PDF returned from the archives.gov search. Look at the very top block titled 'JFK ASSASSINATION SYSTEM IDENTIFICATION FORM'. Locate the 'RECORD NUMBER' row. The first three digits and the trailing hyphen form your 4-character access token."
             }
           ],
+          postFailureHint: {
+            threshold: 10,
+            title: "[INTEL ALERT - FEDERAL DIRECTIVE]",
+            text: "The answer is in the primary national archive document for OPERATION MONGOOSE. Search site:archives.gov filetype:pdf 'OPERATION MONGOOSE' 'SSCIA', open the first PDF, and read the RECORD NUMBER at the top of the JFK Assassination System Identification Form."
+          },
           prompt: [
             "True intelligence requires bypassing media summaries and reading raw, unindexed documentation.",
             "Disinformation campaigns collapse when held against the immutable bedrock of official records. Deploy a live targeted query to locate the primary national archive classification framework for historical covert actions."
@@ -736,6 +745,11 @@
               text: "Look up any universal map zone reference chart for western Cuba or Havana. The region is permanently locked into a specific longitudinal zone number and latitudinal band letter. Combine the two-digit longitudinal zone (84°W to 78°W) and the latitudinal band letter. The resulting 3-character string '17Q' is your override key."
             }
           ],
+          postFailureHint: {
+            threshold: 10,
+            title: "[INTEL ALERT - GEOREFERENCE DIRECTIVE]",
+            text: "The answer is the UTM grid zone for the historic communications array at 22°59'00\"N 82°27'47\"W. Look up the UTM zone for western Cuba/Havana — it combines a two-digit longitudinal zone with a latitudinal band letter."
+          },
           prompt: [
             "Fake news lives in digital space; reality lives in physical geography.",
             "Media operations target minds, but signal intercept operations require physical, grounded infrastructure anchored to the earth. To identify the signal array mapping the diaspora channels, trace its precise geographic coordinates to extract its structural sector clearance code."
@@ -1177,9 +1191,10 @@
 
         const userHash = await sha256(sanitized);
         if (userHash !== state.activeStageHash) {
-          if (stage.id === 1) {
-            state.stageOneAttempts += 1;
-            updateStageOneHints();
+          const key = `stage_${stage.id}_attempts`;
+          state.stageAttempts[key] = (state.stageAttempts[key] || 0) + 1;
+          if (state.stageAttempts[key] >= 10 && stage.postFailureHint) {
+            showHintMessage(stage.postFailureHint.title, stage.postFailureHint.text);
           }
           input.value = "";
           syncTokenBoxes("");
