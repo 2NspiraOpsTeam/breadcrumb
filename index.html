@@ -444,22 +444,31 @@
       bottom: auto;
     }
 
+    .attempt-panel {
+      display: grid;
+      gap: 12px;
+      margin-top: clamp(20px, 3vw, 34px);
+      padding-top: clamp(18px, 2.6vw, 26px);
+      border-top: 1px solid rgba(155, 243, 207, 0.14);
+    }
+
     .stage-shell.stage-shell-attempt-hints .hint-rail {
       min-height: 0;
-      margin-top: 4px;
+      margin-top: 0;
       align-items: start;
     }
 
     .stage-shell.stage-shell-attempt-hints .feedback-line {
-      min-height: 24px;
-      margin-top: 8px;
-      margin-bottom: 12px;
+      min-height: 28px;
+      margin-top: 0;
+      margin-bottom: 0;
     }
 
     .stage-shell.stage-shell-attempt-hints .input-frame {
-      margin-top: 12px;
-      padding-top: 28px;
-      background: linear-gradient(180deg, rgba(4, 7, 8, 0.94), rgba(3, 5, 6, 0.98));
+      margin-top: 0;
+      padding-top: 6px;
+      border-top: 0;
+      background: none;
     }
 
     .stage-shell-stage-2 .prompt-block {
@@ -484,6 +493,12 @@
       text-align: center;
     }
 
+    .stage-shell-stage-2 .attempt-panel {
+      width: min(100%, 720px);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .stage-shell-stage-2 .input-frame {
       width: min(100%, 420px);
       margin-left: auto;
@@ -491,8 +506,8 @@
     }
 
     .stage-shell-stage-2.stage-shell-attempt-hints .input-frame {
-      margin-top: 18px;
-      padding-top: 34px;
+      margin-top: 0;
+      padding-top: 12px;
     }
 
     .hint-card.is-visible {
@@ -1177,15 +1192,29 @@
           stage.id === 2 ? "stage-shell-stage-2" : ""
         ].filter(Boolean).join(" ");
 
-        app.innerHTML = `
-          <section class="${stageShellClass}">
-            <div class="stage-frame">
-              <div class="stage-toolbar">
-                <div class="stage-tracker">${stage.tracker}</div>
-              </div>
-              <div class="${stageBodyClass}">
-                ${assetMarkup}
-                ${promptMarkup}
+        const attemptPanelMarkup = stage.attemptHints?.length
+          ? `
+                <div class="attempt-panel">
+                  <div class="hint-rail">
+                    <div class="hint-card" id="hint-card"></div>
+                  </div>
+                  <div class="feedback-line" id="feedback-line"></div>
+                  <div class="input-frame">
+                    ${renderTokenBoxes(stage.expectedLength)}
+                    <input
+                      id="stage-input"
+                      class="stage-input"
+                      type="text"
+                      spellcheck="false"
+                      autocomplete="off"
+                      autocapitalize="characters"
+                      maxlength="${stage.expectedLength}"
+                      aria-label="${inputLabel}"
+                    >
+                  </div>
+                </div>
+              `
+          : `
                 <div class="hint-rail">
                   <div class="hint-card" id="hint-card"></div>
                 </div>
@@ -1203,6 +1232,18 @@
                     aria-label="${inputLabel}"
                   >
                 </div>
+              `;
+
+        app.innerHTML = `
+          <section class="${stageShellClass}">
+            <div class="stage-frame">
+              <div class="stage-toolbar">
+                <div class="stage-tracker">${stage.tracker}</div>
+              </div>
+              <div class="${stageBodyClass}">
+                ${assetMarkup}
+                ${promptMarkup}
+                ${attemptPanelMarkup}
               </div>
             </div>
           </section>
