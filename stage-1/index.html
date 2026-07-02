@@ -393,6 +393,21 @@
       text-transform: uppercase;
     }
 
+    .glossary-block {
+      margin-top: clamp(14px, 2vw, 20px);
+      padding: clamp(12px, 1.8vw, 16px) clamp(14px, 2vw, 20px);
+      border-left: 2px solid rgba(155, 243, 207, 0.35);
+      background: rgba(155, 243, 207, 0.04);
+      color: var(--hint);
+      font-size: clamp(0.82rem, 1.6vw, 0.9rem);
+      line-height: 1.8;
+    }
+
+    .glossary-block strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
     .hint-rail {
       position: absolute;
       left: clamp(22px, 3vw, 42px);
@@ -689,7 +704,11 @@
           prompt: [
             "Disinformation networks survive by rewriting the digital record and gaslighting target communities.",
             "To isolate the historical baseline infrastructure of Cuba's primary state information engine, winnow out modern layout changes and uncover when granma.cu first established its permanent footprint on the global web architecture."
-          ]
+          ],
+          glossary: {
+            term: "Winnowing",
+            definition: "In intelligence analysis, winnowing means stripping away noise, red herrings, and modern layers to isolate the original signal — like separating grain from chaff. Here, it refers to filtering out decades of website redesigns and content updates to find the earliest permanent digital record."
+          }
         },
         {
           id: 3,
@@ -1074,6 +1093,11 @@
                     ${stage.externalLinkUrl ? `
                       <div class="external-link-row">
                         <a class="external-link-button" href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer">${stage.externalLinkLabel || "Open External Source"}</a>
+                      </div>
+                    ` : ""}
+                    ${stage.glossary ? `
+                      <div class="glossary-block">
+                        <strong>${stage.glossary.term}:</strong> ${stage.glossary.definition}
                       </div>
                     ` : ""}
                   </div>
