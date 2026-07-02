@@ -480,12 +480,19 @@
       caret-color: transparent;
     }
 
-    .token-box-row {
-      display: flex;
-      justify-content: center;
-      gap: clamp(8px, 1.6vw, 14px);
-      padding: 8px 0 4px;
-    }
+      .token-box-row {
+        display: flex;
+        justify-content: center;
+        /* Increase horizontal spacing between token boxes to better
+           accommodate space characters and make the hidden clue legible */
+        gap: clamp(12px, 2vw, 18px);
+        padding: 8px 0 4px;
+        /* Add a more generous top margin to push the token row further from
+           any lower‑fixed UI and give the hidden clue room vertically.
+           The clamp values keep it responsive on very small screens while
+           still offering ample spacing on larger viewports. */
+        margin-top: clamp(40px, 8vw, 70px);
+      }
 
     .token-box {
       width: clamp(42px, 7vw, 56px);
