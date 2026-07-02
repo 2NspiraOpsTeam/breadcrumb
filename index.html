@@ -360,6 +360,8 @@
     }
 
     .external-link-row {
+      position: relative;
+      z-index: 10;
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
@@ -744,7 +746,7 @@
           assetAlt: "Abstract network timeline graphic with archival checkpoints and a highlighted early waypoint.",
           assetCaption: "Winnow out the modern shell and identify the earliest permanent web-era footprint for granma.cu.",
           assetCaptionPlacement: "prompt-bottom",
-          externalLinkUrl: "https://web.archive.org/web/*/http://www.granma.cu/",
+          externalLinkUrl: "https://web.archive.org/web/*/granma.cu",
           externalLinkLabel: "Open Wayback Timeline",
           externalLinkTarget: "_self",
           externalLinkPlacement: "asset-bottom",
@@ -1098,7 +1100,7 @@
         const externalLinkRow = stage.externalLinkUrl && stage.externalLinkPlacement === "asset-bottom"
           ? `
               <div class="external-link-row">
-                <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
+                <a class="external-link-button" href="${stage.externalLinkUrl}">${stage.externalLinkLabel || "Open External Source"}</a>
               </div>
             `
           : "";
