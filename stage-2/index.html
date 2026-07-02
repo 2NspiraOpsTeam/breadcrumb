@@ -422,6 +422,10 @@
       max-width: 66ch;
     }
 
+    .stage-shell.stage-shell-attempt-hints .hint-rail {
+      min-height: clamp(150px, 22vh, 220px);
+    }
+
     .hint-card.is-visible {
       opacity: 1;
       transform: translateY(0);
@@ -643,6 +647,8 @@
         currentStage: 1,
         activeStageHash: "",
         hintTimers: [],
+        stageAttempts: {},
+        stageHintLevels: {},
         feedbackTimer: null,
         stageOneAttempts: 0,
         stageOneHintLevel: 0,
@@ -678,14 +684,14 @@
           assetCaption: "Winnow out the modern shell and identify the earliest permanent web-era footprint for granma.cu.",
           externalLinkUrl: "https://web.archive.org/web/*/granma.cu",
           externalLinkLabel: "Open Wayback Timeline",
-          timedHints: [
+          attemptHints: [
             {
-              delayMs: 120000,
+              attemptCount: 10,
               title: "[INTEL ALERT - ARCHIVE VECTOR]",
               text: "Disinformation attempts to rewrite history by deleting the past. Open a new tab and head to the Wayback Machine (web.archive.org). Plug in Cuba's official state news domain (granma.cu) and look at the absolute dawn of its historical timeline tracking archive."
             },
             {
-              delayMs: 240000,
+              attemptCount: 20,
               title: "[INTEL ALERT - TIMELINE ANCHOR]",
               text: "Look directly at the permanent calendar bar stretching across the top of the Internet Archive screen. Slide the navigation window all the way to the far left. The 4-digit calendar year marking the very first logged digital cluster capture is your key code."
             }
@@ -966,6 +972,35 @@
         }
       }
 
+      function resetAttemptHints(stageId) {
+        if (!stageId) {
+          return;
+        }
+
+        state.stageAttempts[stageId] = 0;
+        state.stageHintLevels[stageId] = 0;
+      }
+
+      function updateAttemptHints(stage) {
+        if (!stage?.attemptHints?.length) {
+          return;
+        }
+
+        const attempts = state.stageAttempts[stage.id] || 0;
+        let nextHintLevel = state.stageHintLevels[stage.id] || 0;
+
+        while (nextHintLevel < stage.attemptHints.length) {
+          const hint = stage.attemptHints[nextHintLevel];
+          if (attempts < hint.attemptCount) {
+            break;
+          }
+          showHintMessage(hint.title, hint.text);
+          nextHintLevel += 1;
+        }
+
+        state.stageHintLevels[stage.id] = nextHintLevel;
+      }
+
       function renderTrojanAsset() {
         const stage = stageDefinitions.find((item) => item.id === 1);
         return `
@@ -1068,8 +1103,12 @@
           ? "stage-body stage-body-trojan"
           : "stage-body";
 
+        const stageShellClass = stage.attemptHints?.length
+          ? "stage-shell stage-shell-attempt-hints"
+          : "stage-shell";
+
         app.innerHTML = `
-          <section class="stage-shell">
+          <section class="${stageShellClass}">
             <div class="stage-frame">
                 <div class="stage-toolbar">
                   <div class="stage-tracker">${stage.tracker}</div>
@@ -1116,6 +1155,10 @@
           mountStageOneToken();
         } else {
           state.activeStageHash = stage.hash;
+        }
+
+        if (stage.attemptHints?.length) {
+          resetAttemptHints(stage.id);
         }
 
         if (Array.isArray(stage.timedHints)) {
@@ -1200,6 +1243,10 @@
           if (stage.id === 1) {
             state.stageOneAttempts += 1;
             updateStageOneHints();
+          }
+          if (stage.attemptHints?.length) {
+            state.stageAttempts[stage.id] = (state.stageAttempts[stage.id] || 0) + 1;
+            updateAttemptHints(stage);
           }
           input.value = "";
           syncTokenBoxes("");
