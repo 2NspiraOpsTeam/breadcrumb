@@ -361,7 +361,7 @@
 
     .external-link-row {
       position: relative;
-      z-index: 10;
+      z-index: 9999 !important;;
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
@@ -1097,23 +1097,30 @@
         const externalLinkAttrs = stage.externalLinkTarget === "_self"
           ? `href="${stage.externalLinkUrl}"`
           : `href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer"`;
-        const externalLinkRow = stage.externalLinkUrl && stage.externalLinkPlacement === "asset-bottom"
-          ? `
-              <div class="external-link-row">
-                <a class="external-link-button" href="${stage.externalLinkUrl}">${stage.externalLinkLabel || "Open External Source"}</a>
+        const externalLinkRowAsset = stage.externalLinkUrl && stage.externalLinkPlacement === "asset-bottom"
+          ? `              <div class="external-link-row">
+                <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
               </div>
             `
           : "";
+        const externalLinkRowPrompt = stage.externalLinkUrl && stage.externalLinkPlacement !== "asset-bottom"
+          ? `
+                      <div class="external-link-row">
+                        <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
+                      </div>
+                    `
+          : "";
+
+        // For stage 2, always render the external link in the prompt section (outside asset container)
+        const isStageTwoExternalInPrompt = stage.id === 2 && stage.externalLinkPlacement === "asset-bottom";
 
         return `
-          <div class="asset-container">
-            <div class="evidence-card">
-              ${evidenceVisual}
-              ${evidenceCaption}
-              ${externalLinkRow}
-            </div>
-            <div class="asset-meta">${stage.assetMeta}</div>
+          <div class="evidence-card">
+            ${evidenceVisual}
+            ${isStageTwoExternalInPrompt ? externalLinkRowAsset : evidenceCaption}
+            ${!isStageTwoExternalInPrompt ? externalLinkRowAsset : ""}
           </div>
+          <div class="asset-meta">${stage.assetMeta}</div>
         `;
       }
 
@@ -1170,6 +1177,11 @@
                     ${stage.externalLinkUrl && stage.externalLinkPlacement !== "asset-bottom" ? `
                       <div class="external-link-row">
                         <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
+                      </div>
+                    ` : ""}
+                    ${stage.id === 2 && stage.externalLinkPlacement === "asset-bottom" ? `
+                      <div class="external-link-row">
+                        <a class="external-link-button" href="${stage.externalLinkUrl}">${stage.externalLinkLabel || "Open External Source"}</a>
                       </div>
                     ` : ""}
                   </div>
