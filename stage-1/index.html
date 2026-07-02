@@ -216,13 +216,26 @@
       inset: 0;
       background: linear-gradient(
         0deg,
-        rgba(5, 7, 11, 0.97) 0%,
-        rgba(5, 7, 11, 0.82) 18%,
-        rgba(5, 7, 11, 0.45) 36%,
-        rgba(5, 7, 11, 0.12) 54%,
-        transparent 72%
+        rgba(5, 7, 11, 0.92) 0%,
+        rgba(5, 7, 11, 0.72) 16%,
+        rgba(5, 7, 11, 0.38) 34%,
+        rgba(5, 7, 11, 0.08) 52%,
+        transparent 70%
       );
       pointer-events: none;
+    }
+
+    .trojan-content {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: clamp(48px, 7vw, 96px);
+      padding-top: clamp(24px, 4vw, 56px);
+      padding-left: clamp(20px, 3.5vw, 48px);
+      padding-right: clamp(20px, 3.5vw, 48px);
     }
 
     .trojan-content {
@@ -242,6 +255,11 @@
       max-width: min(70ch, calc(100% - 40px));
       margin: 0 auto;
       width: 100%;
+      background: rgba(5, 7, 11, 0.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: clamp(16px, 2vw, 24px) clamp(18px, 2.2vw, 28px);
     }
 
     .trojan-title {
@@ -502,9 +520,9 @@
       height: clamp(50px, 8vw, 62px);
       display: grid;
       place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: rgba(255, 255, 255, 0.02);
-      color: rgba(244, 241, 234, 0.38);
+      border: 1px solid rgba(155, 243, 207, 0.35);
+      background: rgba(155, 243, 207, 0.08);
+      color: var(--text);
       font-size: clamp(1rem, 2vw, 1.12rem);
       letter-spacing: 0.08em;
       text-transform: uppercase;
