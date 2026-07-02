@@ -451,12 +451,14 @@
     }
 
     .stage-shell.stage-shell-attempt-hints .feedback-line {
-      min-height: 18px;
+      min-height: 24px;
+      margin-top: 8px;
+      margin-bottom: 12px;
     }
 
     .stage-shell.stage-shell-attempt-hints .input-frame {
-      margin-top: 4px;
-      padding-top: 18px;
+      margin-top: 12px;
+      padding-top: 28px;
       background: linear-gradient(180deg, rgba(4, 7, 8, 0.94), rgba(3, 5, 6, 0.98));
     }
 
@@ -486,6 +488,11 @@
       width: min(100%, 420px);
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .stage-shell-stage-2.stage-shell-attempt-hints .input-frame {
+      margin-top: 18px;
+      padding-top: 34px;
     }
 
     .hint-card.is-visible {
@@ -705,6 +712,8 @@
         feedbackTimer: null,
         stageOneAttempts: 0,
         stageOneHintLevel: 0,
+        stageAttemptCounts: {},
+        stageHintLevels: {},
         transitionLock: false
       };
 
@@ -737,14 +746,14 @@
           assetCaption: "Winnow out the modern shell and identify the earliest permanent web-era footprint for granma.cu.",
           externalLinkUrl: "https://web.archive.org/web/*/granma.cu",
           externalLinkLabel: "Open Wayback Timeline",
-          timedHints: [
+          attemptHints: [
             {
-              delayMs: 120000,
+              attempts: 10,
               title: "[INTEL ALERT - ARCHIVE VECTOR]",
               text: "Disinformation attempts to rewrite history by deleting the past. Open a new tab and head to the Wayback Machine (web.archive.org). Plug in Cuba's official state news domain (granma.cu) and look at the absolute dawn of its historical timeline tracking archive."
             },
             {
-              delayMs: 240000,
+              attempts: 20,
               title: "[INTEL ALERT - TIMELINE ANCHOR]",
               text: "Look directly at the permanent calendar bar stretching across the top of the Internet Archive screen. Slide the navigation window all the way to the far left. The 4-digit calendar year marking the very first logged digital cluster capture is your key code."
             }
@@ -1040,6 +1049,26 @@
         }
       }
 
+      function updateAttemptHints(stage) {
+        if (!Array.isArray(stage.attemptHints) || !stage.attemptHints.length) {
+          return;
+        }
+
+        const attempts = state.stageAttemptCounts[stage.id] || 0;
+        const currentLevel = state.stageHintLevels[stage.id] || 0;
+        let nextLevel = currentLevel;
+
+        stage.attemptHints.forEach((hint, index) => {
+          const hintLevel = index + 1;
+          if (attempts >= hint.attempts && hintLevel > nextLevel) {
+            showHintMessage(hint.title, hint.text);
+            nextLevel = hintLevel;
+          }
+        });
+
+        state.stageHintLevels[stage.id] = nextLevel;
+      }
+
       function renderTrojanAsset() {
         const stage = stageDefinitions.find((item) => item.id === 1);
         return `
@@ -1274,6 +1303,10 @@
           if (stage.id === 1) {
             state.stageOneAttempts += 1;
             updateStageOneHints();
+          }
+          if (Array.isArray(stage.attemptHints) && stage.attemptHints.length) {
+            state.stageAttemptCounts[stage.id] = (state.stageAttemptCounts[stage.id] || 0) + 1;
+            updateAttemptHints(stage);
           }
           input.value = "";
           syncTokenBoxes("");
