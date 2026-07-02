@@ -1,50 +1,14 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/stage-1",
-      "destination": "/index.html"
+      "src": "^/stage-(?:[1-9]|10)$",
+      "dest": "/"
     },
     {
-      "source": "/stage-2",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/stage-3",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/stage-4",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/stage-5",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/stage-6",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/stage-7",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/stage-8",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/stage-9",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/stage-10",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/complete",
-      "destination": "/index.html"
+      "src": "^/complete$",
+      "dest": "/"
     }
   ],
   "headers": [
