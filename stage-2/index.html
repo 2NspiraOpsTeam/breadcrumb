@@ -1151,12 +1151,9 @@
         app.innerHTML = `
           <section class="${stageShellClass}">
             <div class="stage-frame">
-                <div class="stage-toolbar">
-                  <div class="stage-tracker">${stage.tracker}</div>
-                  <div class="stage-toolbar-actions">
-                    <button class="solid-button" id="restart-from-beginning-toolbar" type="button">Start From Beginning</button>
-                  </div>
-                </div>
+              <div class="stage-toolbar">
+                <div class="stage-tracker">${stage.tracker}</div>
+              </div>
               <div class="${stageBodyClass}">
                 ${assetMarkup}
                 ${promptMarkup}
@@ -1188,9 +1185,6 @@
         input.focus();
         input.addEventListener("input", handleStageInput);
         inputFrame.addEventListener("click", () => input.focus());
-        document.getElementById("restart-from-beginning-toolbar").addEventListener("click", () => {
-          restartRun(true);
-        });
 
         if (stage.id === 1) {
           mountStageOneToken();
