@@ -184,10 +184,6 @@
       position: relative;
     }
 
-    .stage-shell.stage-shell-attempt-hints .stage-body {
-      padding-bottom: clamp(280px, 34vh, 380px);
-    }
-
     .stage-body-trojan {
       min-height: 82vh;
       border: 0;
@@ -430,8 +426,29 @@
       max-width: 66ch;
     }
 
+    .stage-shell.stage-shell-attempt-hints .hint-rail,
+    .stage-shell.stage-shell-attempt-hints .feedback-line,
+    .stage-shell.stage-shell-attempt-hints .input-frame {
+      position: static;
+      left: auto;
+      right: auto;
+      bottom: auto;
+    }
+
     .stage-shell.stage-shell-attempt-hints .hint-rail {
-      min-height: clamp(150px, 22vh, 220px);
+      min-height: 0;
+      margin-top: 4px;
+      align-items: start;
+    }
+
+    .stage-shell.stage-shell-attempt-hints .feedback-line {
+      min-height: 18px;
+    }
+
+    .stage-shell.stage-shell-attempt-hints .input-frame {
+      margin-top: 4px;
+      padding-top: 18px;
+      background: linear-gradient(180deg, rgba(4, 7, 8, 0.94), rgba(3, 5, 6, 0.98));
     }
 
     .hint-card.is-visible {
