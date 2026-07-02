@@ -218,7 +218,7 @@
       flex-direction: column;
       justify-content: flex-end;
       background: linear-gradient(180deg, #05070b 0%, #030506 100%);
-      padding: clamp(24px, 4vw, 48px) clamp(20px, 3.5vw, 48px) clamp(32px, 5vw, 56px);
+      padding: clamp(28px, 4.5vw, 56px) clamp(20px, 3.5vw, 48px) clamp(40px, 6vw, 72px);
     }
 
     .trojan-text-block {
@@ -232,7 +232,7 @@
       font-size: clamp(1.8rem, 3.5vw, 2.6rem);
       color: var(--text);
       line-height: 1.35;
-      margin-bottom: clamp(10px, 1.8vw, 16px);
+      margin-bottom: clamp(14px, 2vw, 20px);
     }
 
     .trojan-copy {
@@ -240,6 +240,7 @@
       color: rgba(244, 241, 234, 0.92);
       font-size: clamp(0.88rem, 1.8vw, 0.98rem);
       line-height: 1.85;
+      margin-bottom: clamp(16px, 2.5vw, 24px);
     }
 
     .trojan-asset-meta {
@@ -680,6 +681,11 @@
             title: "[INTEL ALERT - ARCHIVE DIRECTIVE]",
             text: "The answer lives at the origin of granma.cu's digital footprint. Go to web.archive.org, enter granma.cu, and find the very first capture date shown on the timeline bar. The 4-digit year is your token."
           },
+          postFailureHint2: {
+            threshold: 20,
+            title: "[INTEL ALERT - ARCHIVE BREAKTHROUGH]",
+            text: "Direct answer: granma.cu was first captured in the late 1990s. The exact year is 1997 — this is when Cuba's official state news engine first appeared on the global web architecture."
+          },
           prompt: [
             "Disinformation networks survive by rewriting the digital record and gaslighting target communities.",
             "To isolate the historical baseline infrastructure of Cuba's primary state information engine, winnow out modern layout changes and uncover when granma.cu first established its permanent footprint on the global web architecture."
@@ -715,6 +721,11 @@
             title: "[INTEL ALERT - FEDERAL DIRECTIVE]",
             text: "The answer is in the primary national archive document for OPERATION MONGOOSE. Search site:archives.gov filetype:pdf 'OPERATION MONGOOSE' 'SSCIA', open the first PDF, and read the RECORD NUMBER at the top of the JFK Assassination System Identification Form."
           },
+          postFailureHint2: {
+            threshold: 20,
+            title: "[INTEL ALERT - FEDERAL BREAKTHROUGH]",
+            text: "Direct answer: The RECORD NUMBER on the JFK Assassination System Identification Form for OPERATION MONGOOSE begins with '94-H' — the clearance code is 94H."
+          },
           prompt: [
             "True intelligence requires bypassing media summaries and reading raw, unindexed documentation.",
             "Disinformation campaigns collapse when held against the immutable bedrock of official records. Deploy a live targeted query to locate the primary national archive classification framework for historical covert actions."
@@ -749,6 +760,11 @@
             threshold: 10,
             title: "[INTEL ALERT - GEOREFERENCE DIRECTIVE]",
             text: "The answer is the UTM grid zone for the historic communications array at 22°59'00\"N 82°27'47\"W. Look up the UTM zone for western Cuba/Havana — it combines a two-digit longitudinal zone with a latitudinal band letter."
+          },
+          postFailureHint2: {
+            threshold: 20,
+            title: "[INTEL ALERT - GEOREFERENCE BREAKTHROUGH]",
+            text: "Direct answer: The UTM grid zone for western Cuba/Havana is 17Q — the two-digit longitudinal zone (84°W to 78°W) combined with the latitudinal band letter Q."
           },
           prompt: [
             "Fake news lives in digital space; reality lives in physical geography.",
@@ -1193,8 +1209,11 @@
         if (userHash !== state.activeStageHash) {
           const key = `stage_${stage.id}_attempts`;
           state.stageAttempts[key] = (state.stageAttempts[key] || 0) + 1;
-          if (state.stageAttempts[key] >= 10 && stage.postFailureHint) {
+          if (stage.postFailureHint && state.stageAttempts[key] >= stage.postFailureHint.threshold) {
             showHintMessage(stage.postFailureHint.title, stage.postFailureHint.text);
+          }
+          if (stage.postFailureHint2 && state.stageAttempts[key] >= stage.postFailureHint2.threshold) {
+            showHintMessage(stage.postFailureHint2.title, stage.postFailureHint2.text);
           }
           input.value = "";
           syncTokenBoxes("");
