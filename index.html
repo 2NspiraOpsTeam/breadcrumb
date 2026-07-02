@@ -743,8 +743,10 @@
           assetGraphic: "/assets/stage2-timeline-graphic.png",
           assetAlt: "Abstract network timeline graphic with archival checkpoints and a highlighted early waypoint.",
           assetCaption: "Winnow out the modern shell and identify the earliest permanent web-era footprint for granma.cu.",
+          assetCaptionPlacement: "prompt-bottom",
           externalLinkUrl: "https://web.archive.org/web/*/granma.cu",
           externalLinkLabel: "Open Wayback Timeline",
+          externalLinkPlacement: "asset-bottom",
           attemptHints: [
             {
               attempts: 10,
@@ -1086,12 +1088,23 @@
         const evidenceVisual = stage.assetGraphic
           ? `<img class="timeline-graphic" src="${stage.assetGraphic}" alt="${stage.assetAlt || stage.assetCaption}" loading="eager">`
           : `<div class="evidence-symbol">${stage.assetSymbol}</div>`;
+        const evidenceCaption = stage.assetCaptionPlacement === "prompt-bottom"
+          ? ""
+          : `<div class="evidence-caption">${stage.assetCaption}</div>`;
+        const externalLinkRow = stage.externalLinkUrl && stage.externalLinkPlacement === "asset-bottom"
+          ? `
+              <div class="external-link-row">
+                <a class="external-link-button" href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer">${stage.externalLinkLabel || "Open External Source"}</a>
+              </div>
+            `
+          : "";
 
         return `
           <div class="asset-container">
             <div class="evidence-card">
               ${evidenceVisual}
-              <div class="evidence-caption">${stage.assetCaption}</div>
+              ${evidenceCaption}
+              ${externalLinkRow}
             </div>
             <div class="asset-meta">${stage.assetMeta}</div>
           </div>
@@ -1147,7 +1160,8 @@
                   <div class="prompt-title">${stage.title}</div>
                   <div class="prompt-copy">
                     ${stage.prompt.map((paragraph) => `<p>${paragraph}</p>`).join("")}
-                    ${stage.externalLinkUrl ? `
+                    ${stage.assetCaptionPlacement === "prompt-bottom" ? `<p>${stage.assetCaption}</p>` : ""}
+                    ${stage.externalLinkUrl && stage.externalLinkPlacement !== "asset-bottom" ? `
                       <div class="external-link-row">
                         <a class="external-link-button" href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer">${stage.externalLinkLabel || "Open External Source"}</a>
                         <div class="external-link-note">Wayback Machine // secure external tab</div>
