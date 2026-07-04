@@ -1,4 +1,11 @@
 {
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,
   "routes": [
