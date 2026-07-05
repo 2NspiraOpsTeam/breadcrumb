@@ -19,11 +19,11 @@
     },
     {
       "src": "/stage-(?:[1-9]|10)$",
-      "dest": "/index.html"
+      "dest": "/"
     },
     {
       "src": "/complete$",
-      "dest": "/index.html"
+      "dest": "/"
     },
     {
       "src": "/(.*)",
