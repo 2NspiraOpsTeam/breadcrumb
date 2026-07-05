@@ -87,6 +87,12 @@ if echo "$HTML" | grep -qF "Open Wayback Timeline"; then
 else
   fail "Stage 2 Wayback button label NOT found"
 fi
+
+if echo "$HTML" | grep -qF 'externalLinkPlacement: "asset-bottom"'; then
+  pass "Stage 2 Wayback button placement is below the timeline asset"
+else
+  fail "Stage 2 Wayback button placement is NOT set below the timeline asset"
+fi
 echo ""
 
 # Check 5: "Wayback timeline matrix" text removed
