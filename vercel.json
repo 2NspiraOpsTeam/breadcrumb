@@ -2,7 +2,7 @@
   "builds": [
     {
       "src": "index.html",
-      "use": "@vercel/static"
+      "use": "@vercel/static-build"
     }
   ],
   "outputDirectory": ".",
@@ -10,11 +10,15 @@
   "trailingSlash": false,
   "routes": [
     {
-      "src": "^/stage-(?:[1-9]|10)$",
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/stage-(?:[1-9]|10)$",
       "dest": "/"
     },
     {
-      "src": "^/complete$",
+      "src": "/complete$",
       "dest": "/"
     }
   ],
