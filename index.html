@@ -1091,6 +1091,34 @@
         const evidenceCaption = stage.assetCaptionPlacement === "prompt-bottom"
           ? ""
           : `<div class="evidence-caption">${stage.assetCaption}</div>`;
+        const externalLinkAttrs = getExternalLinkAttrs(stage);
+        const externalLinkRowAsset = stage.externalLinkUrl && stage.externalLinkPlacement === "asset-bottom"
+          ? `              <div class="external-link-row">
+                <a class="external-link-button" ${externalLinkAttrs}>${stage.externalLinkLabel || "Open External Source"}</a>
+              </div>
+            `
+          : "";
+
+        return `
+          <div class="evidence-card">
+            ${evidenceVisual}
+            ${evidenceCaption}
+            ${externalLinkRowAsset}
+          </div>
+          <div class="asset-meta">${stage.assetMeta}</div>
+        `;
+      }
+
+      function getExternalLinkAttrs(stage) {
+        if (!stage.externalLinkUrl) {
+          return "";
+        }
+
+        return stage.externalLinkTarget === "_self"
+          ? `href="${stage.externalLinkUrl}"`
+          : `href="${stage.externalLinkUrl}" target="_blank" rel="noopener noreferrer"`;
+      }
+
       function renderLanding() {
         clearHintTimers();
         const resumeStage = getResumeStage();
@@ -1134,6 +1162,7 @@
         const assetMarkup = stage.assetType === "trojan"
           ? renderTrojanAsset()
           : renderEvidenceAsset(stage);
+        const externalLinkAttrs = getExternalLinkAttrs(stage);
 
         const promptMarkup = `
                 <div class="prompt-block">

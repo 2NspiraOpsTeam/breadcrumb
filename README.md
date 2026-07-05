@@ -19,6 +19,8 @@ python3 -m http.server 4173
 
 Then open `http://localhost:4173`.
 
+For deployment recovery and production verification steps, see [docs/OPERATIONS.md](docs/OPERATIONS.md).
+
 ## Zero-cost GitHub + Vercel path
 
 1. Create a GitHub repo for this folder, for example `2NspiraOpsTeam/breadcrumb`.
