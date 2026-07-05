@@ -780,6 +780,18 @@
           assetCaption: "Bypass summaries. Query the raw federal archive layer and extract the permanent record-series prefix.",
           externalLinkUrl: "https://www.google.com/search?q=site:archives.gov+filetype:pdf+%22OPERATION+MONGOOSE%22+%22SSCIA%22",
           externalLinkLabel: "Launch Google Dork",
+          attemptHints: [
+            {
+              attempts: 10,
+              title: "[INTEL ALERT - FEDERAL VECTOR]",
+              text: "True intelligence requires bypassing media summaries and reading raw unindexed documentation. Use your browser to search site:archives.gov filetype:pdf combined with the historical operation codename 'OPERATION MONGOOSE' and the agency creator 'SSCIA'. Look at the permanent serial stamp at the absolute top of the national archive document."
+            },
+            {
+              attempts: 20,
+              title: "[INTEL ALERT - RECORD SERIES]",
+              text: "Open the first PDF returned from the archives.gov search. Look at the very top block titled 'JFK ASSASSINATION SYSTEM IDENTIFICATION FORM'. Locate the 'RECORD NUMBER' row. The first three digits and the trailing hyphen form your 4-character access token."
+            }
+          ],
           timedHints: [
             {
               delayMs: 120000,

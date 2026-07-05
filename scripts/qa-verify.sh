@@ -64,6 +64,18 @@ else
   fail "Timed hint data NOT found for later stages"
 fi
 
+if echo "$HTML" | grep -qF "attempts: 10" && echo "$HTML" | grep -qF "[INTEL ALERT - FEDERAL VECTOR]"; then
+  pass "Stage 3 10-attempt clue data found"
+else
+  fail "Stage 3 10-attempt clue data NOT found"
+fi
+
+if echo "$HTML" | grep -qF "delayMs: 120000" && echo "$HTML" | grep -qF "[INTEL ALERT - FEDERAL VECTOR]"; then
+  pass "Stage 3 2-minute clue data found"
+else
+  fail "Stage 3 2-minute clue data NOT found"
+fi
+
 if echo "$HTML" | grep -q "getExternalLinkAttrs"; then
   pass "External-link rendering helper found"
 else
