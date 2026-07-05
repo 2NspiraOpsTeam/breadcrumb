@@ -82,6 +82,18 @@ else
   fail "Stage 3 spacing class NOT found"
 fi
 
+if echo "$HTML" | grep -qF ".stage-shell-stage-3 .timeline-graphic" && echo "$HTML" | grep -qF "1360px"; then
+  pass "Stage 3 enlarged image styling found"
+else
+  fail "Stage 3 enlarged image styling NOT found"
+fi
+
+if echo "$HTML" | grep -qF "National archives query vector"; then
+  fail "Stage 3 asset meta label still present"
+else
+  pass "Stage 3 asset meta label removed"
+fi
+
 if echo "$HTML" | grep -q "getExternalLinkAttrs"; then
   pass "External-link rendering helper found"
 else

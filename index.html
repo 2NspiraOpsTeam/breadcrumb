@@ -331,6 +331,21 @@
       width: min(100%, 1040px);
     }
 
+    .stage-shell-stage-3 .stage-frame {
+      width: min(1180px, 100%);
+    }
+
+    .stage-shell-stage-3 .stage-body {
+      padding-left: clamp(22px, 2.4vw, 34px);
+      padding-right: clamp(22px, 2.4vw, 34px);
+    }
+
+    .stage-shell-stage-3 .timeline-graphic {
+      width: min(100%, 1360px);
+      image-rendering: auto;
+      filter: contrast(1.08) brightness(1.04) saturate(1.04);
+    }
+
     .prompt-block {
       display: grid;
       gap: 14px;
@@ -807,7 +822,7 @@
           expectedLength: 4,
           hash: "3e547f270ce178864bd8b8b87a8b6f0103c3d0d929cb3ba80b5af93722cc9923",
           assetType: "text",
-          assetMeta: "National archives query vector",
+          assetMeta: "",
           assetGraphic: "/assets/stage3-dorking-interface.png",
           assetAlt: "Secure server interface graphic with a command-line style archives.gov Google dork query prompt.",
           assetCaption: "Bypass summaries. Query the raw federal archive layer and extract the permanent record-series prefix.",
@@ -1153,7 +1168,7 @@
             ${evidenceCaption}
             ${externalLinkRowAsset}
           </div>
-          <div class="asset-meta">${stage.assetMeta}</div>
+          ${stage.assetMeta ? `<div class="asset-meta">${stage.assetMeta}</div>` : ""}
         `;
       }
 
