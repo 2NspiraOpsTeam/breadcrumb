@@ -76,6 +76,12 @@ else
   fail "Stage 3 2-minute clue data NOT found"
 fi
 
+if echo "$HTML" | grep -qF "stage-shell-stage-3"; then
+  pass "Stage 3 spacing class found"
+else
+  fail "Stage 3 spacing class NOT found"
+fi
+
 if echo "$HTML" | grep -q "getExternalLinkAttrs"; then
   pass "External-link rendering helper found"
 else

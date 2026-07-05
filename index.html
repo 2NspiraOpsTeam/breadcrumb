@@ -496,6 +496,39 @@
       padding-top: 12px;
     }
 
+    .stage-shell-stage-3 .attempt-panel {
+      width: min(100%, 720px);
+      margin: clamp(26px, 3.4vw, 42px) auto 0;
+      padding-top: clamp(20px, 2.8vw, 30px);
+      gap: 16px;
+    }
+
+    .stage-shell-stage-3 .hint-rail {
+      min-height: 0;
+      margin: 0 auto;
+      width: 100%;
+      align-items: start;
+    }
+
+    .stage-shell-stage-3 .hint-card {
+      max-width: 68ch;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .stage-shell-stage-3 .feedback-line {
+      min-height: 28px;
+      margin: 0 auto;
+      width: min(100%, 420px);
+      text-align: center;
+    }
+
+    .stage-shell-stage-3 .input-frame {
+      width: min(100%, 420px);
+      margin: 0 auto;
+      padding-top: 12px;
+    }
+
     .hint-card.is-visible {
       opacity: 1;
       transform: translateY(0);
@@ -1202,7 +1235,8 @@
           "stage-shell",
           stage.attemptHints?.length ? "stage-shell-attempt-hints" : "",
           stage.id === 1 ? "stage-shell-stage-1" : "",
-          stage.id === 2 ? "stage-shell-stage-2" : ""
+          stage.id === 2 ? "stage-shell-stage-2" : "",
+          stage.id === 3 ? "stage-shell-stage-3" : ""
         ].filter(Boolean).join(" ");
 
         const attemptPanelMarkup = stage.attemptHints?.length
