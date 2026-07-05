@@ -18,7 +18,7 @@ echo "==========================================="
 echo ""
 
 # Fetch production HTML once
-echo "[1/5] Fetching production URL: ${BASE_URL}"
+echo "[1/6] Fetching production URL: ${BASE_URL}"
 HTML=$(curl -sS -f --max-time 30 "${BASE_URL}") || {
   fail "Could not fetch ${BASE_URL} (HTTP error or timeout)"
   echo ""
@@ -36,7 +36,7 @@ pass "Successfully fetched production HTML ($(wc -c <<< "$HTML") bytes)"
 echo ""
 
 # Check 2: Stage 2 hash value
-echo "[2/5] Verifying stage-2 hash (SHA-256 of '1997')"
+echo "[2/6] Verifying stage-2 hash (SHA-256 of '1997')"
 EXPECTED_HASH="0985b889a1fe4f4e1fb925061ac6fb2247f10875f5fcbe63eec2ab55ed68970e"
 
 if echo "$HTML" | grep -qF "$EXPECTED_HASH"; then
@@ -50,7 +50,7 @@ fi
 echo ""
 
 # Check 3: recovery hint data exists for stages 2, 3, and 4
-echo "[3/5] Verifying recovery hint data presence"
+echo "[3/6] Verifying recovery hint data presence"
 
 if echo "$HTML" | grep -q "attemptHints"; then
   pass "Stage 2 attempt-based hint data found"
@@ -71,8 +71,26 @@ else
 fi
 echo ""
 
-# Check 4: "Wayback timeline matrix" text removed
-echo "[4/5] Verifying 'Wayback timeline matrix' text is removed"
+# Check 4: Stage 2 Wayback button is present and points to the right URL
+echo "[4/6] Verifying Stage 2 Wayback button"
+EXPECTED_WAYBACK_URL="https://web.archive.org/web/*/granma.cu"
+
+if echo "$HTML" | grep -qF "$EXPECTED_WAYBACK_URL"; then
+  pass "Stage 2 Wayback URL matches expected value"
+else
+  fail "Stage 2 Wayback URL NOT found"
+  echo "       Expected: ${EXPECTED_WAYBACK_URL}"
+fi
+
+if echo "$HTML" | grep -qF "Open Wayback Timeline"; then
+  pass "Stage 2 Wayback button label found"
+else
+  fail "Stage 2 Wayback button label NOT found"
+fi
+echo ""
+
+# Check 5: "Wayback timeline matrix" text removed
+echo "[5/6] Verifying 'Wayback timeline matrix' text is removed"
 if echo "$HTML" | grep -qF "Wayback timeline matrix"; then
   fail "'Wayback timeline matrix' text still present in production HTML"
   echo "       Expected: text removed"
@@ -82,8 +100,8 @@ else
 fi
 echo ""
 
-# Check 5: "Wayback Machine // secure external tab" text removed
-echo "[5/5] Verifying 'Wayback Machine // secure external tab' text is removed"
+# Check 6: "Wayback Machine // secure external tab" text removed
+echo "[6/6] Verifying 'Wayback Machine // secure external tab' text is removed"
 if echo "$HTML" | grep -qF "Wayback Machine // secure external tab"; then
   fail "'Wayback Machine // secure external tab' text still present in production HTML"
   echo "       Expected: text removed"
