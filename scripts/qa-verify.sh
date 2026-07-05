@@ -71,21 +71,20 @@ else
 fi
 echo ""
 
-# Check 4: Stage 2 Wayback button is present and points to the right URL
-echo "[4/6] Verifying Stage 2 Wayback button"
+# Check 4: Stage 2 Wayback button remains removed
+echo "[4/6] Verifying Stage 2 Wayback button is removed"
 EXPECTED_WAYBACK_URL="https://web.archive.org/web/*/granma.cu"
 
 if echo "$HTML" | grep -qF "$EXPECTED_WAYBACK_URL"; then
-  pass "Stage 2 Wayback URL matches expected value"
+  fail "Stage 2 Wayback URL is still present"
 else
-  fail "Stage 2 Wayback URL NOT found"
-  echo "       Expected: ${EXPECTED_WAYBACK_URL}"
+  pass "Stage 2 Wayback URL is absent"
 fi
 
 if echo "$HTML" | grep -qF "Open Wayback Timeline"; then
-  pass "Stage 2 Wayback button label found"
+  fail "Stage 2 Wayback button label is still present"
 else
-  fail "Stage 2 Wayback button label NOT found"
+  pass "Stage 2 Wayback button label is absent"
 fi
 echo ""
 
