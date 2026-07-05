@@ -73,7 +73,7 @@ echo ""
 
 # Check 4: Stage 2 Wayback button is present and points to the right URL
 echo "[4/6] Verifying Stage 2 Wayback button"
-EXPECTED_WAYBACK_URL="https://web.archive.org/web/*/granma.cu"
+EXPECTED_WAYBACK_URL="https://web.archive.org/web/collections/20260000000000*/granma.cu"
 
 if echo "$HTML" | grep -qF "$EXPECTED_WAYBACK_URL"; then
   pass "Stage 2 Wayback URL matches expected value"
