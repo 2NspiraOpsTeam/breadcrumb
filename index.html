@@ -577,7 +577,8 @@
     }
 
     .stage-shell-stage-4 .attempt-panel,
-    .stage-shell-stage-5 .attempt-panel {
+    .stage-shell-stage-5 .attempt-panel,
+    .stage-shell-stage-6 .attempt-panel {
       width: min(100%, 720px);
       margin: clamp(26px, 3.4vw, 42px) auto 0;
       padding-top: clamp(20px, 2.8vw, 30px);
@@ -585,31 +586,40 @@
     }
 
     .stage-shell-stage-4 .hint-rail,
-    .stage-shell-stage-5 .hint-rail {
+    .stage-shell-stage-5 .hint-rail,
+    .stage-shell-stage-6 .hint-rail {
       width: 100%;
       margin: clamp(24px, 3vw, 36px) auto 0;
       align-items: start;
     }
 
     .stage-shell-stage-4 .hint-card,
-    .stage-shell-stage-5 .hint-card {
+    .stage-shell-stage-5 .hint-card,
+    .stage-shell-stage-6 .hint-card {
       max-width: 68ch;
       margin: 0 auto;
       text-align: left;
     }
 
     .stage-shell-stage-4 .feedback-line,
-    .stage-shell-stage-5 .feedback-line {
+    .stage-shell-stage-5 .feedback-line,
+    .stage-shell-stage-6 .feedback-line {
       width: min(100%, 420px);
       margin: 0 auto;
       text-align: center;
     }
 
     .stage-shell-stage-4 .input-frame,
-    .stage-shell-stage-5 .input-frame {
+    .stage-shell-stage-5 .input-frame,
+    .stage-shell-stage-6 .input-frame {
       width: min(100%, 420px);
       margin: 0 auto;
       padding-top: 12px;
+    }
+
+    .stage-shell-stage-6 .timeline-graphic {
+      width: min(100%, 1180px);
+      filter: saturate(1.08) contrast(1.05);
     }
 
     .hint-card.is-visible {
@@ -987,17 +997,32 @@
         },
         {
           id: 6,
-          tracker: "BREADCRUMB TRACK: 06 / 10 // OPERATIONAL ANCHOR: INFORMAL PAYMENTS",
-          title: "Informal Payments",
-          expectedLength: 6,
-          hash: "75e74817bfd082c9c1ff399396217f2d718ab5b688c7e8a0feb116a19b970515",
+          tracker: "BREADCRUMB TRACK: 06 / 10 // OPERATIONAL ANCHOR: PUBLIC TRANSPARENCY REGISTRY",
+          title: "Public Transparency Registry",
+          expectedLength: 4,
+          hash: "2669177e036faf971d71a01d43e24021aedb25513df4bfd3a6916d78599f8bd4",
           assetType: "text",
-          assetMeta: "Underground term",
-          assetSymbol: "S",
-          assetCaption: "Official systems rarely describe their own side channels. Local language usually does.",
+          assetMeta: "Florida registry matrix",
+          assetGraphic: "/assets/stage6-registry-matrix.png",
+          assetAlt: "High-contrast Florida registry ledger graphic highlighting Cuban American National Foundation Inc. with document number N08000008635.",
+          assetCaption: "Audit the official state registry, identify the active non-profit entity, and extract the trailing system filing key.",
+          externalLinkUrl: "https://search.sunbiz.org/Inquiry/CorporationSearch/ByName",
+          externalLinkLabel: "OPEN STATE REGISTRY",
+          timedHints: [
+            {
+              delayMs: 120000,
+              title: "[INTEL ALERT - REGISTRY VECTOR]",
+              text: "Foreign shell accounts are fluid, but foundational registries are permanent. Fire up your secure external tab to access Sunbiz (The Florida Division of Corporations). Run an official Entity Name inquiry for 'Cuban American National Foundation'. The state-assigned system index is completely immutable."
+            },
+            {
+              delayMs: 240000,
+              title: "[INTEL ALERT - DOCUMENT TRAILER]",
+              text: "Locate the active, non-profit entity entry titled 'CUBAN AMERICAN NATIONAL FOUNDATION, INC.' Look directly at its unique alphanumeric Document Number listed in the search rows. The final 4 digits of that unchangeable state system ID--ending with '635'--is the code to clear this console."
+            }
+          ],
           prompt: [
-            "Propaganda hides the reality of families paying under the table for access to treatment.",
-            "Identify the term commonly used for this practice."
+            "Foreign shell accounts and proxy digital layers are fluid, but foundational state registries are permanent.",
+            "Disinformation often hides behind vague corporate fronts, but mapping the institutional pillars of a diaspora requires auditing original, unchangeable transparency logs. Locate the master non-profit charter established in Florida by early community builders to extract its structural system filing key."
           ]
         },
         {
@@ -1317,12 +1342,13 @@
         const stageShellClass = [
           "stage-shell",
           stage.attemptHints?.length ? "stage-shell-attempt-hints" : "",
-          [4, 5].includes(stage.id) ? "stage-shell-spaced-hints" : "",
+          [4, 5, 6].includes(stage.id) ? "stage-shell-spaced-hints" : "",
           stage.id === 1 ? "stage-shell-stage-1" : "",
           stage.id === 2 ? "stage-shell-stage-2" : "",
           stage.id === 3 ? "stage-shell-stage-3" : "",
           stage.id === 4 ? "stage-shell-stage-4" : "",
-          stage.id === 5 ? "stage-shell-stage-5" : ""
+          stage.id === 5 ? "stage-shell-stage-5" : "",
+          stage.id === 6 ? "stage-shell-stage-6" : ""
         ].filter(Boolean).join(" ");
 
         const attemptPanelMarkup = stage.attemptHints?.length

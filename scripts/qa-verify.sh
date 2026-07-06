@@ -6,6 +6,13 @@
 set -euo pipefail
 
 BASE_URL="${BASE_URL:-https://breadcrumb-challenge.vercel.app/stage-2}"
+if [[ "$BASE_URL" == *"/stage-"* ]]; then
+  ORIGIN_URL="${BASE_URL%%/stage-*}"
+elif [[ "$BASE_URL" == *"/index.html" ]]; then
+  ORIGIN_URL="${BASE_URL%/index.html}"
+else
+  ORIGIN_URL="${BASE_URL%/}"
+fi
 PASS=0
 FAIL=0
 
@@ -88,12 +95,51 @@ else
   fail "Stage 5 spacing class NOT found"
 fi
 
+if echo "$HTML" | grep -qF "stage-shell-stage-6" && echo "$HTML" | grep -qF "stage-shell-spaced-hints"; then
+  pass "Stage 6 spacing class found"
+else
+  fail "Stage 6 spacing class NOT found"
+fi
+
 EXPECTED_STAGE5_HASH="b698d86c67a2cff80405bd47af322216c552fd3a52f9c58a70f7b3a3313895b1"
 if echo "$HTML" | grep -qF "$EXPECTED_STAGE5_HASH"; then
   pass "Stage 5 answer hash matches expected value for 7000"
 else
   fail "Stage 5 answer hash for 7000 NOT found"
   echo "       Expected: ${EXPECTED_STAGE5_HASH}"
+fi
+
+EXPECTED_STAGE6_HASH="2669177e036faf971d71a01d43e24021aedb25513df4bfd3a6916d78599f8bd4"
+OLD_STAGE6_HASH="75e74817bfd082c9c1ff399396217f2d718ab5b688c7e8a0feb116a19b970515"
+if echo "$HTML" | grep -qF "$EXPECTED_STAGE6_HASH"; then
+  pass "Stage 6 answer hash matches expected value for 8635"
+else
+  fail "Stage 6 answer hash for 8635 NOT found"
+  echo "       Expected: ${EXPECTED_STAGE6_HASH}"
+fi
+
+if echo "$HTML" | grep -qF "$OLD_STAGE6_HASH"; then
+  fail "Old Stage 6 SOBRES hash still present"
+else
+  pass "Old Stage 6 SOBRES hash removed"
+fi
+
+if echo "$HTML" | grep -qF "https://search.sunbiz.org/Inquiry/CorporationSearch/ByName" && echo "$HTML" | grep -qF "OPEN STATE REGISTRY"; then
+  pass "Stage 6 Sunbiz registry link data found"
+else
+  fail "Stage 6 Sunbiz registry link data NOT found"
+fi
+
+if echo "$HTML" | grep -qF "stage6-registry-matrix.png" && echo "$HTML" | grep -qF "N08000008635"; then
+  pass "Stage 6 registry asset and document number found"
+else
+  fail "Stage 6 registry asset or document number NOT found"
+fi
+
+if echo "$HTML" | grep -qF "[INTEL ALERT - REGISTRY VECTOR]" && echo "$HTML" | grep -qF "[INTEL ALERT - DOCUMENT TRAILER]"; then
+  pass "Stage 6 timed hint data found"
+else
+  fail "Stage 6 timed hint data NOT found"
 fi
 
 if echo "$HTML" | grep -qF ".stage-shell-stage-3 .timeline-graphic" && echo "$HTML" | grep -qF "1360px"; then
@@ -158,6 +204,16 @@ if echo "$HTML" | grep -qF "Wayback Machine // secure external tab"; then
   echo "       Found: text still exists in the page"
 else
   pass "'Wayback Machine // secure external tab' text successfully removed"
+fi
+echo ""
+
+# Check 7: Stage 6 asset is served
+echo "[7/7] Verifying Stage 6 registry asset is served"
+STAGE6_ASSET_URL="${ORIGIN_URL}/assets/stage6-registry-matrix.png"
+if curl -sS -f -I --max-time 30 "$STAGE6_ASSET_URL" >/dev/null; then
+  pass "Stage 6 registry asset served: ${STAGE6_ASSET_URL}"
+else
+  fail "Stage 6 registry asset NOT served: ${STAGE6_ASSET_URL}"
 fi
 echo ""
 
