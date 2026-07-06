@@ -240,13 +240,15 @@ fi
 
 EXPECTED_STAGE9_NASA_HASH="06552eff6885a0591452b0cb2ebd87668a5116026fead8501658104978541aa5"
 EXPECTED_STAGE9_ARMY_HASH="b315cc65cbb1d433705e3a7b2ae8e7d7c58e4400178887e7adae57edc434fb45"
+EXPECTED_STAGE9_OCIO_HASH="57339221a1a3247b6b536f59e3c7b4721d9e52b4494a865a7e4454a3c948116a"
 OLD_STAGE9_HASH="77877a6e15b4b85d927a53604ef263ab77b59321023244a6be5be8f5c7fa1e44"
-if echo "$HTML" | grep -qF "$EXPECTED_STAGE9_NASA_HASH" && echo "$HTML" | grep -qF "$EXPECTED_STAGE9_ARMY_HASH"; then
-  pass "Stage 9 answer hashes found for NASA and ARMY"
+if echo "$HTML" | grep -qF "$EXPECTED_STAGE9_NASA_HASH" && echo "$HTML" | grep -qF "$EXPECTED_STAGE9_ARMY_HASH" && echo "$HTML" | grep -qF "$EXPECTED_STAGE9_OCIO_HASH"; then
+  pass "Stage 9 answer hashes found for NASA, ARMY, and visible OCIO fallback"
 else
-  fail "Stage 9 answer hashes for NASA and/or ARMY NOT found"
+  fail "Stage 9 answer hashes for NASA, ARMY, and/or OCIO NOT found"
   echo "       Expected NASA: ${EXPECTED_STAGE9_NASA_HASH}"
   echo "       Expected ARMY: ${EXPECTED_STAGE9_ARMY_HASH}"
+  echo "       Expected OCIO: ${EXPECTED_STAGE9_OCIO_HASH}"
 fi
 
 if echo "$HTML" | grep -qF "$OLD_STAGE9_HASH"; then
@@ -283,6 +285,12 @@ if echo "$HTML" | grep -qF "[INTEL ALERT - ROOT AUTHORITY]" && echo "$HTML" | gr
   pass "Stage 9 timed hint data found"
 else
   fail "Stage 9 timed hint data NOT found"
+fi
+
+if echo "$HTML" | grep -qF "NASA, OCIO, or ARMY" && echo "$HTML" | grep -qF "NASA OCIO"; then
+  pass "Stage 9 visible operator answer guidance found"
+else
+  fail "Stage 9 visible operator answer guidance NOT found"
 fi
 
 if echo "$HTML" | grep -qF ".stage-shell-stage-3 .timeline-graphic" && echo "$HTML" | grep -qF "1360px"; then
