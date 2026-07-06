@@ -101,6 +101,12 @@ else
   fail "Stage 6 spacing class NOT found"
 fi
 
+if echo "$HTML" | grep -qF "stage-shell-stage-7" && echo "$HTML" | grep -qF "stage-shell-spaced-hints"; then
+  pass "Stage 7 spacing class found"
+else
+  fail "Stage 7 spacing class NOT found"
+fi
+
 EXPECTED_STAGE5_HASH="b698d86c67a2cff80405bd47af322216c552fd3a52f9c58a70f7b3a3313895b1"
 if echo "$HTML" | grep -qF "$EXPECTED_STAGE5_HASH"; then
   pass "Stage 5 answer hash matches expected value for 7000"
@@ -140,6 +146,39 @@ if echo "$HTML" | grep -qF "[INTEL ALERT - REGISTRY VECTOR]" && echo "$HTML" | g
   pass "Stage 6 timed hint data found"
 else
   fail "Stage 6 timed hint data NOT found"
+fi
+
+EXPECTED_STAGE7_HASH="2a898bc98aaf6c96f2054bb1eadc9848eb77633039e9e9ffd833184ce553fe9b"
+OLD_STAGE7_HASH="b5f6dbae04bd764b0c2f3cb796e404ffdf77fb4cac171d72ec7fa6a2077da252"
+if echo "$HTML" | grep -qF "$EXPECTED_STAGE7_HASH"; then
+  pass "Stage 7 answer hash matches expected value for UUID"
+else
+  fail "Stage 7 answer hash for UUID NOT found"
+  echo "       Expected: ${EXPECTED_STAGE7_HASH}"
+fi
+
+if echo "$HTML" | grep -qF "$OLD_STAGE7_HASH"; then
+  fail "Old Stage 7 connectivity hash still present"
+else
+  pass "Old Stage 7 connectivity hash removed"
+fi
+
+if echo "$HTML" | grep -qF "https://www.iana.org/assignments/urn-namespaces/urn-namespaces.xhtml" && echo "$HTML" | grep -qF "OPEN PROTOCOL REGISTRY"; then
+  pass "Stage 7 IANA registry link data found"
+else
+  fail "Stage 7 IANA registry link data NOT found"
+fi
+
+if echo "$HTML" | grep -qF "stage7-protocol-frame.png" && echo "$HTML" | grep -qF "Technical Protocol Standards"; then
+  pass "Stage 7 protocol asset and title found"
+else
+  fail "Stage 7 protocol asset or title NOT found"
+fi
+
+if echo "$HTML" | grep -qF "[INTEL ALERT - PROTOCOL REGISTRY]" && echo "$HTML" | grep -qF "[INTEL ALERT - NAMESPACE ACRONYM]"; then
+  pass "Stage 7 timed hint data found"
+else
+  fail "Stage 7 timed hint data NOT found"
 fi
 
 if echo "$HTML" | grep -qF ".stage-shell-stage-3 .timeline-graphic" && echo "$HTML" | grep -qF "1360px"; then
@@ -207,13 +246,20 @@ else
 fi
 echo ""
 
-# Check 7: Stage 6 asset is served
-echo "[7/7] Verifying Stage 6 registry asset is served"
+# Check 7: Stage 6 and 7 assets are served
+echo "[7/7] Verifying Stage 6 and 7 assets are served"
 STAGE6_ASSET_URL="${ORIGIN_URL}/assets/stage6-registry-matrix.png"
 if curl -sS -f -I --max-time 30 "$STAGE6_ASSET_URL" >/dev/null; then
   pass "Stage 6 registry asset served: ${STAGE6_ASSET_URL}"
 else
   fail "Stage 6 registry asset NOT served: ${STAGE6_ASSET_URL}"
+fi
+
+STAGE7_ASSET_URL="${ORIGIN_URL}/assets/stage7-protocol-frame.png"
+if curl -sS -f -I --max-time 30 "$STAGE7_ASSET_URL" >/dev/null; then
+  pass "Stage 7 protocol asset served: ${STAGE7_ASSET_URL}"
+else
+  fail "Stage 7 protocol asset NOT served: ${STAGE7_ASSET_URL}"
 fi
 echo ""
 
