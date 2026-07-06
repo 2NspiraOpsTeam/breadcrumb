@@ -580,7 +580,8 @@
     .stage-shell-stage-5 .attempt-panel,
     .stage-shell-stage-6 .attempt-panel,
     .stage-shell-stage-7 .attempt-panel,
-    .stage-shell-stage-8 .attempt-panel {
+    .stage-shell-stage-8 .attempt-panel,
+    .stage-shell-stage-9 .attempt-panel {
       width: min(100%, 720px);
       margin: clamp(26px, 3.4vw, 42px) auto 0;
       padding-top: clamp(20px, 2.8vw, 30px);
@@ -591,7 +592,8 @@
     .stage-shell-stage-5 .hint-rail,
     .stage-shell-stage-6 .hint-rail,
     .stage-shell-stage-7 .hint-rail,
-    .stage-shell-stage-8 .hint-rail {
+    .stage-shell-stage-8 .hint-rail,
+    .stage-shell-stage-9 .hint-rail {
       width: 100%;
       margin: clamp(24px, 3vw, 36px) auto 0;
       align-items: start;
@@ -601,7 +603,8 @@
     .stage-shell-stage-5 .hint-card,
     .stage-shell-stage-6 .hint-card,
     .stage-shell-stage-7 .hint-card,
-    .stage-shell-stage-8 .hint-card {
+    .stage-shell-stage-8 .hint-card,
+    .stage-shell-stage-9 .hint-card {
       max-width: 68ch;
       margin: 0 auto;
       text-align: left;
@@ -611,7 +614,8 @@
     .stage-shell-stage-5 .feedback-line,
     .stage-shell-stage-6 .feedback-line,
     .stage-shell-stage-7 .feedback-line,
-    .stage-shell-stage-8 .feedback-line {
+    .stage-shell-stage-8 .feedback-line,
+    .stage-shell-stage-9 .feedback-line {
       width: min(100%, 420px);
       margin: 0 auto;
       text-align: center;
@@ -621,7 +625,8 @@
     .stage-shell-stage-5 .input-frame,
     .stage-shell-stage-6 .input-frame,
     .stage-shell-stage-7 .input-frame,
-    .stage-shell-stage-8 .input-frame {
+    .stage-shell-stage-8 .input-frame,
+    .stage-shell-stage-9 .input-frame {
       width: min(100%, 420px);
       margin: 0 auto;
       padding-top: 12px;
@@ -629,7 +634,8 @@
 
     .stage-shell-stage-6 .timeline-graphic,
     .stage-shell-stage-7 .timeline-graphic,
-    .stage-shell-stage-8 .timeline-graphic {
+    .stage-shell-stage-8 .timeline-graphic,
+    .stage-shell-stage-9 .timeline-graphic {
       width: min(100%, 1180px);
       filter: saturate(1.08) contrast(1.05);
     }
@@ -1100,17 +1106,36 @@
         },
         {
           id: 9,
-          tracker: "BREADCRUMB TRACK: 09 / 10 // OPERATIONAL ANCHOR: MODERN COMMS PATTERN",
-          title: "Modern Comms Pattern",
-          expectedLength: 8,
-          hash: "77877a6e15b4b85d927a53604ef263ab77b59321023244a6be5be8f5c7fa1e44",
+          tracker: "BREADCRUMB TRACK: 09 / 10 // OPERATIONAL ANCHOR: NETWORK HIERARCHY",
+          title: "Network Hierarchy (The Root Servers)",
+          expectedLength: 4,
+          hash: "06552eff6885a0591452b0cb2ebd87668a5116026fead8501658104978541aa5",
+          acceptedHashes: [
+            "06552eff6885a0591452b0cb2ebd87668a5116026fead8501658104978541aa5",
+            "b315cc65cbb1d433705e3a7b2ae8e7d7c58e4400178887e7adae57edc434fb45"
+          ],
           assetType: "text",
-          assetMeta: "Current channel",
-          assetSymbol: "W",
-          assetCaption: "The tool is ordinary, mobile, encrypted, and socially sticky enough to replace distance with cadence.",
+          assetMeta: "Root server authority matrix",
+          assetGraphic: "/assets/stage9-root-matrix.png",
+          assetAlt: "High-contrast root server matrix graphic showing A through M root authorities with E-Root and H-Root highlighted.",
+          assetCaption: "Trace the root-server operator matrix and extract either trusted 4-letter administrative designator.",
+          externalLinkUrl: "https://root-servers.org/",
+          externalLinkLabel: "OPEN ROOT SERVER MATRIX",
+          timedHints: [
+            {
+              delayMs: 120000,
+              title: "[INTEL ALERT - ROOT AUTHORITY]",
+              text: "The global information ecosystem relies on 13 master logical root authorities to keep the web running. Head out to the live root server system dashboard (root-servers.org) and review the designated organizations explicitly trusted with routing the global namespace."
+            },
+            {
+              delayMs: 240000,
+              title: "[INTEL ALERT - OPERATOR DESIGNATOR]",
+              text: "Scroll down to the alphabetical root identity letter map at the bottom of the portal. Locate the specific root authority line operated natively by the 'NASA Office of the Chief Information Officer' or the 'U.S. Army Research Laboratory'. The 4-letter acronym of either global organization is your system token."
+            }
+          ],
           prompt: [
-            "Historical broadcasting gave way to newer communication channels among exile communities.",
-            "Identify the platform most commonly used today for daily coordination."
+            "To protect global connectivity from systemic cyber and information operations, the underlying infrastructure relies on absolute operational transparency.",
+            "The DNS Root Server System is maintained globally by a highly resilient, immutable ring of independent organizations. To demonstrate structural defense, trace the authority mapping back to the master administrative designators."
           ]
         },
         {
@@ -1385,7 +1410,7 @@
         const stageShellClass = [
           "stage-shell",
           stage.attemptHints?.length ? "stage-shell-attempt-hints" : "",
-          [4, 5, 6, 7, 8].includes(stage.id) ? "stage-shell-spaced-hints" : "",
+          [4, 5, 6, 7, 8, 9].includes(stage.id) ? "stage-shell-spaced-hints" : "",
           stage.id === 1 ? "stage-shell-stage-1" : "",
           stage.id === 2 ? "stage-shell-stage-2" : "",
           stage.id === 3 ? "stage-shell-stage-3" : "",
@@ -1393,7 +1418,8 @@
           stage.id === 5 ? "stage-shell-stage-5" : "",
           stage.id === 6 ? "stage-shell-stage-6" : "",
           stage.id === 7 ? "stage-shell-stage-7" : "",
-          stage.id === 8 ? "stage-shell-stage-8" : ""
+          stage.id === 8 ? "stage-shell-stage-8" : "",
+          stage.id === 9 ? "stage-shell-stage-9" : ""
         ].filter(Boolean).join(" ");
 
         const attemptPanelMarkup = stage.attemptHints?.length
@@ -1544,7 +1570,10 @@
         }
 
         const userHash = await sha256(sanitized);
-        if (userHash !== state.activeStageHash) {
+        const acceptedHashes = Array.isArray(stage.acceptedHashes) && stage.acceptedHashes.length
+          ? stage.acceptedHashes
+          : [state.activeStageHash];
+        if (!acceptedHashes.includes(userHash)) {
           if (stage.id === 1) {
             state.stageOneAttempts += 1;
             updateStageOneHints();

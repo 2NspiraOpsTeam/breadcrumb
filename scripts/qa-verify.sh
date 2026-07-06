@@ -42,6 +42,12 @@ fi
 pass "Successfully fetched production HTML ($(wc -c <<< "$HTML") bytes)"
 echo ""
 
+# Many checks intentionally use grep -q against the same large HTML payload.
+# With pipefail enabled, a successful early grep can close the pipe before echo
+# finishes writing, causing a false failure from SIGPIPE. Keep strict mode for
+# command failures, but use normal pipeline status for these content probes.
+set +o pipefail
+
 # Check 2: Stage 2 hash value
 echo "[2/6] Verifying stage-2 hash (SHA-256 of '1997')"
 EXPECTED_HASH="0985b889a1fe4f4e1fb925061ac6fb2247f10875f5fcbe63eec2ab55ed68970e"
@@ -111,6 +117,12 @@ if echo "$HTML" | grep -qF "stage-shell-stage-8" && echo "$HTML" | grep -qF "sta
   pass "Stage 8 spacing class found"
 else
   fail "Stage 8 spacing class NOT found"
+fi
+
+if echo "$HTML" | grep -qF "stage-shell-stage-9" && echo "$HTML" | grep -qF "stage-shell-spaced-hints"; then
+  pass "Stage 9 spacing class found"
+else
+  fail "Stage 9 spacing class NOT found"
 fi
 
 EXPECTED_STAGE5_HASH="b698d86c67a2cff80405bd47af322216c552fd3a52f9c58a70f7b3a3313895b1"
@@ -226,6 +238,47 @@ else
   fail "Stage 8 input sanitizer does NOT strip optional 0x prefix"
 fi
 
+EXPECTED_STAGE9_NASA_HASH="06552eff6885a0591452b0cb2ebd87668a5116026fead8501658104978541aa5"
+EXPECTED_STAGE9_ARMY_HASH="b315cc65cbb1d433705e3a7b2ae8e7d7c58e4400178887e7adae57edc434fb45"
+OLD_STAGE9_HASH="77877a6e15b4b85d927a53604ef263ab77b59321023244a6be5be8f5c7fa1e44"
+if echo "$HTML" | grep -qF "$EXPECTED_STAGE9_NASA_HASH" && echo "$HTML" | grep -qF "$EXPECTED_STAGE9_ARMY_HASH"; then
+  pass "Stage 9 answer hashes found for NASA and ARMY"
+else
+  fail "Stage 9 answer hashes for NASA and/or ARMY NOT found"
+  echo "       Expected NASA: ${EXPECTED_STAGE9_NASA_HASH}"
+  echo "       Expected ARMY: ${EXPECTED_STAGE9_ARMY_HASH}"
+fi
+
+if echo "$HTML" | grep -qF "$OLD_STAGE9_HASH"; then
+  fail "Old Stage 9 modern-comms hash still present"
+else
+  pass "Old Stage 9 modern-comms hash removed"
+fi
+
+if echo "$HTML" | grep -qF "acceptedHashes"; then
+  pass "Dual-token acceptedHashes validation path found"
+else
+  fail "Dual-token acceptedHashes validation path NOT found"
+fi
+
+if echo "$HTML" | grep -qF "https://root-servers.org/" && echo "$HTML" | grep -qF "OPEN ROOT SERVER MATRIX"; then
+  pass "Stage 9 root server matrix link data found"
+else
+  fail "Stage 9 root server matrix link data NOT found"
+fi
+
+if echo "$HTML" | grep -qF "stage9-root-matrix.png" && echo "$HTML" | grep -qF "Network Hierarchy (The Root Servers)"; then
+  pass "Stage 9 root matrix asset and title found"
+else
+  fail "Stage 9 root matrix asset or title NOT found"
+fi
+
+if echo "$HTML" | grep -qF "[INTEL ALERT - ROOT AUTHORITY]" && echo "$HTML" | grep -qF "[INTEL ALERT - OPERATOR DESIGNATOR]"; then
+  pass "Stage 9 timed hint data found"
+else
+  fail "Stage 9 timed hint data NOT found"
+fi
+
 if echo "$HTML" | grep -qF ".stage-shell-stage-3 .timeline-graphic" && echo "$HTML" | grep -qF "1360px"; then
   pass "Stage 3 enlarged image styling found"
 else
@@ -291,8 +344,8 @@ else
 fi
 echo ""
 
-# Check 7: Stage 6, 7, and 8 assets are served
-echo "[7/7] Verifying Stage 6, 7, and 8 assets are served"
+# Check 7: Stage 6, 7, 8, and 9 assets are served
+echo "[7/7] Verifying Stage 6, 7, 8, and 9 assets are served"
 STAGE6_ASSET_URL="${ORIGIN_URL}/assets/stage6-registry-matrix.png"
 if curl -sS -f -I --max-time 30 "$STAGE6_ASSET_URL" >/dev/null; then
   pass "Stage 6 registry asset served: ${STAGE6_ASSET_URL}"
@@ -312,6 +365,13 @@ if curl -sS -f -I --max-time 30 "$STAGE8_ASSET_URL" >/dev/null; then
   pass "Stage 8 EXIF asset served: ${STAGE8_ASSET_URL}"
 else
   fail "Stage 8 EXIF asset NOT served: ${STAGE8_ASSET_URL}"
+fi
+
+STAGE9_ASSET_URL="${ORIGIN_URL}/assets/stage9-root-matrix.png"
+if curl -sS -f -I --max-time 30 "$STAGE9_ASSET_URL" >/dev/null; then
+  pass "Stage 9 root matrix asset served: ${STAGE9_ASSET_URL}"
+else
+  fail "Stage 9 root matrix asset NOT served: ${STAGE9_ASSET_URL}"
 fi
 echo ""
 
