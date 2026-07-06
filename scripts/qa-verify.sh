@@ -238,17 +238,24 @@ else
   fail "Stage 8 input sanitizer does NOT strip optional 0x prefix"
 fi
 
-EXPECTED_STAGE9_NASA_HASH="06552eff6885a0591452b0cb2ebd87668a5116026fead8501658104978541aa5"
-EXPECTED_STAGE9_ARMY_HASH="b315cc65cbb1d433705e3a7b2ae8e7d7c58e4400178887e7adae57edc434fb45"
-EXPECTED_STAGE9_OCIO_HASH="57339221a1a3247b6b536f59e3c7b4721d9e52b4494a865a7e4454a3c948116a"
+EXPECTED_STAGE9_COGENT_HASH="b18ef258b2c9948da7c7396e0a131cedf7f7a0490661533346819eb0ab293ee1"
+EXPECTED_STAGE9_NETNOD_HASH="14ae4a4eb3364ddd8bc35602df8b761a98e277458b8eef2e375dbee330e5c6ce"
+OLD_STAGE9_NASA_HASH="06552eff6885a0591452b0cb2ebd87668a5116026fead8501658104978541aa5"
+OLD_STAGE9_ARMY_HASH="b315cc65cbb1d433705e3a7b2ae8e7d7c58e4400178887e7adae57edc434fb45"
+OLD_STAGE9_OCIO_HASH="57339221a1a3247b6b536f59e3c7b4721d9e52b4494a865a7e4454a3c948116a"
 OLD_STAGE9_HASH="77877a6e15b4b85d927a53604ef263ab77b59321023244a6be5be8f5c7fa1e44"
-if echo "$HTML" | grep -qF "$EXPECTED_STAGE9_NASA_HASH" && echo "$HTML" | grep -qF "$EXPECTED_STAGE9_ARMY_HASH" && echo "$HTML" | grep -qF "$EXPECTED_STAGE9_OCIO_HASH"; then
-  pass "Stage 9 answer hashes found for NASA, ARMY, and visible OCIO fallback"
+if echo "$HTML" | grep -qF "$EXPECTED_STAGE9_COGENT_HASH" && echo "$HTML" | grep -qF "$EXPECTED_STAGE9_NETNOD_HASH"; then
+  pass "Stage 9 answer hashes found for visible COGENT and NETNOD operators"
 else
-  fail "Stage 9 answer hashes for NASA, ARMY, and/or OCIO NOT found"
-  echo "       Expected NASA: ${EXPECTED_STAGE9_NASA_HASH}"
-  echo "       Expected ARMY: ${EXPECTED_STAGE9_ARMY_HASH}"
-  echo "       Expected OCIO: ${EXPECTED_STAGE9_OCIO_HASH}"
+  fail "Stage 9 answer hashes for COGENT and/or NETNOD NOT found"
+  echo "       Expected COGENT: ${EXPECTED_STAGE9_COGENT_HASH}"
+  echo "       Expected NETNOD: ${EXPECTED_STAGE9_NETNOD_HASH}"
+fi
+
+if echo "$HTML" | grep -qF "$OLD_STAGE9_NASA_HASH" || echo "$HTML" | grep -qF "$OLD_STAGE9_ARMY_HASH" || echo "$HTML" | grep -qF "$OLD_STAGE9_OCIO_HASH"; then
+  fail "Old Stage 9 NASA/ARMY/OCIO hashes still present"
+else
+  pass "Old Stage 9 NASA/ARMY/OCIO hashes removed"
 fi
 
 if echo "$HTML" | grep -qF "$OLD_STAGE9_HASH"; then
@@ -263,10 +270,10 @@ else
   fail "Dual-token acceptedHashes validation path NOT found"
 fi
 
-if echo "$HTML" | grep -qF "inputMaxLength: 8"; then
-  pass "Stage 9 raw input buffer allows pasted whitespace"
+if echo "$HTML" | grep -qF "expectedLength: 6" && echo "$HTML" | grep -qF "inputMaxLength: 10"; then
+  pass "Stage 9 input length supports COGENT and NETNOD tokens"
 else
-  fail "Stage 9 raw input buffer does NOT allow pasted whitespace"
+  fail "Stage 9 input length does NOT support COGENT and NETNOD tokens"
 fi
 
 if echo "$HTML" | grep -qF "https://root-servers.org/" && echo "$HTML" | grep -qF "OPEN ROOT SERVER MATRIX"; then
@@ -287,10 +294,10 @@ else
   fail "Stage 9 timed hint data NOT found"
 fi
 
-if echo "$HTML" | grep -qF "NASA, OCIO, or ARMY" && echo "$HTML" | grep -qF "NASA OCIO"; then
-  pass "Stage 9 visible operator answer guidance found"
+if echo "$HTML" | grep -qF "COGENT or NETNOD" && echo "$HTML" | grep -qF "The C-root row exposes 'Cogent'"; then
+  pass "Stage 9 visible Cogent/Netnod operator guidance found"
 else
-  fail "Stage 9 visible operator answer guidance NOT found"
+  fail "Stage 9 visible Cogent/Netnod operator guidance NOT found"
 fi
 
 if echo "$HTML" | grep -qF ".stage-shell-stage-3 .timeline-graphic" && echo "$HTML" | grep -qF "1360px"; then
