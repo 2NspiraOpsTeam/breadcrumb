@@ -261,6 +261,12 @@ else
   fail "Dual-token acceptedHashes validation path NOT found"
 fi
 
+if echo "$HTML" | grep -qF "inputMaxLength: 8"; then
+  pass "Stage 9 raw input buffer allows pasted whitespace"
+else
+  fail "Stage 9 raw input buffer does NOT allow pasted whitespace"
+fi
+
 if echo "$HTML" | grep -qF "https://root-servers.org/" && echo "$HTML" | grep -qF "OPEN ROOT SERVER MATRIX"; then
   pass "Stage 9 root server matrix link data found"
 else
