@@ -356,6 +356,10 @@
       padding-bottom: 0;
     }
 
+    .stage-shell.stage-shell-spaced-hints .prompt-block {
+      padding-bottom: 0;
+    }
+
     .prompt-title {
       font-family: "Cormorant Garamond", Georgia, serif;
       font-size: clamp(1.9rem, 4vw, 2.6rem);
@@ -445,6 +449,15 @@
       bottom: auto;
     }
 
+    .stage-shell.stage-shell-spaced-hints .hint-rail,
+    .stage-shell.stage-shell-spaced-hints .feedback-line,
+    .stage-shell.stage-shell-spaced-hints .input-frame {
+      position: static;
+      left: auto;
+      right: auto;
+      bottom: auto;
+    }
+
     .attempt-panel {
       display: grid;
       gap: 12px;
@@ -459,13 +472,32 @@
       align-items: start;
     }
 
+    .stage-shell.stage-shell-spaced-hints .hint-rail {
+      min-height: 0;
+      margin-top: 0;
+      align-items: start;
+    }
+
     .stage-shell.stage-shell-attempt-hints .feedback-line {
       min-height: 28px;
       margin-top: 0;
       margin-bottom: 0;
     }
 
+    .stage-shell.stage-shell-spaced-hints .feedback-line {
+      min-height: 28px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
     .stage-shell.stage-shell-attempt-hints .input-frame {
+      margin-top: 0;
+      padding-top: 6px;
+      border-top: 0;
+      background: none;
+    }
+
+    .stage-shell.stage-shell-spaced-hints .input-frame {
       margin-top: 0;
       padding-top: 6px;
       border-top: 0;
@@ -539,6 +571,42 @@
     }
 
     .stage-shell-stage-3 .input-frame {
+      width: min(100%, 420px);
+      margin: 0 auto;
+      padding-top: 12px;
+    }
+
+    .stage-shell-stage-4 .attempt-panel,
+    .stage-shell-stage-5 .attempt-panel {
+      width: min(100%, 720px);
+      margin: clamp(26px, 3.4vw, 42px) auto 0;
+      padding-top: clamp(20px, 2.8vw, 30px);
+      gap: 16px;
+    }
+
+    .stage-shell-stage-4 .hint-rail,
+    .stage-shell-stage-5 .hint-rail {
+      width: 100%;
+      margin: clamp(24px, 3vw, 36px) auto 0;
+      align-items: start;
+    }
+
+    .stage-shell-stage-4 .hint-card,
+    .stage-shell-stage-5 .hint-card {
+      max-width: 68ch;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .stage-shell-stage-4 .feedback-line,
+    .stage-shell-stage-5 .feedback-line {
+      width: min(100%, 420px);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .stage-shell-stage-4 .input-frame,
+    .stage-shell-stage-5 .input-frame {
       width: min(100%, 420px);
       margin: 0 auto;
       padding-top: 12px;
@@ -892,7 +960,7 @@
           tracker: "BREADCRUMB TRACK: 05 / 10 // OPERATIONAL ANCHOR: DEFECTION SIGNAL",
           title: "Defection Signal",
           expectedLength: 4,
-          hash: "91a27e7f677fb274e1e695d7cf161726a455f75e2fa2cfdf323fd35e729a7000",
+          hash: "b698d86c67a2cff80405bd47af322216c552fd3a52f9c58a70f7b3a3313895b1",
           assetType: "text",
           assetGraphic: "/assets/stage5-iK-insignia.png",
           assetAlt: "High-contrast military-style operation insignia with iK stencil letters on a dark signal-intercept background.",
@@ -1249,9 +1317,12 @@
         const stageShellClass = [
           "stage-shell",
           stage.attemptHints?.length ? "stage-shell-attempt-hints" : "",
+          [4, 5].includes(stage.id) ? "stage-shell-spaced-hints" : "",
           stage.id === 1 ? "stage-shell-stage-1" : "",
           stage.id === 2 ? "stage-shell-stage-2" : "",
-          stage.id === 3 ? "stage-shell-stage-3" : ""
+          stage.id === 3 ? "stage-shell-stage-3" : "",
+          stage.id === 4 ? "stage-shell-stage-4" : "",
+          stage.id === 5 ? "stage-shell-stage-5" : ""
         ].filter(Boolean).join(" ");
 
         const attemptPanelMarkup = stage.attemptHints?.length

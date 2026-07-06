@@ -82,6 +82,20 @@ else
   fail "Stage 3 spacing class NOT found"
 fi
 
+if echo "$HTML" | grep -qF "stage-shell-stage-5" && echo "$HTML" | grep -qF "stage-shell-spaced-hints"; then
+  pass "Stage 5 spacing class found"
+else
+  fail "Stage 5 spacing class NOT found"
+fi
+
+EXPECTED_STAGE5_HASH="b698d86c67a2cff80405bd47af322216c552fd3a52f9c58a70f7b3a3313895b1"
+if echo "$HTML" | grep -qF "$EXPECTED_STAGE5_HASH"; then
+  pass "Stage 5 answer hash matches expected value for 7000"
+else
+  fail "Stage 5 answer hash for 7000 NOT found"
+  echo "       Expected: ${EXPECTED_STAGE5_HASH}"
+fi
+
 if echo "$HTML" | grep -qF ".stage-shell-stage-3 .timeline-graphic" && echo "$HTML" | grep -qF "1360px"; then
   pass "Stage 3 enlarged image styling found"
 else
