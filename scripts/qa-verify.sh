@@ -107,6 +107,12 @@ else
   fail "Stage 7 spacing class NOT found"
 fi
 
+if echo "$HTML" | grep -qF "stage-shell-stage-8" && echo "$HTML" | grep -qF "stage-shell-spaced-hints"; then
+  pass "Stage 8 spacing class found"
+else
+  fail "Stage 8 spacing class NOT found"
+fi
+
 EXPECTED_STAGE5_HASH="b698d86c67a2cff80405bd47af322216c552fd3a52f9c58a70f7b3a3313895b1"
 if echo "$HTML" | grep -qF "$EXPECTED_STAGE5_HASH"; then
   pass "Stage 5 answer hash matches expected value for 7000"
@@ -181,6 +187,45 @@ else
   fail "Stage 7 timed hint data NOT found"
 fi
 
+EXPECTED_STAGE8_HASH="c4c2134909e76c15dcdb86914867d837761055cc00130768d8136447175dfbb9"
+OLD_STAGE8_HASH="a7be8e1fe282a37cd666e0632b17d933fa13f21addf4798fc0455bc166e2488c"
+if echo "$HTML" | grep -qF "$EXPECTED_STAGE8_HASH"; then
+  pass "Stage 8 answer hash matches expected value for 010F"
+else
+  fail "Stage 8 answer hash for 010F NOT found"
+  echo "       Expected: ${EXPECTED_STAGE8_HASH}"
+fi
+
+if echo "$HTML" | grep -qF "$OLD_STAGE8_HASH"; then
+  fail "Old Stage 8 broadcast-origin hash still present"
+else
+  pass "Old Stage 8 broadcast-origin hash removed"
+fi
+
+if echo "$HTML" | grep -qF "https://exiv2.org/tags.html" && echo "$HTML" | grep -qF "OPEN EXIF SPECIFICATION"; then
+  pass "Stage 8 Exiv2 specification link data found"
+else
+  fail "Stage 8 Exiv2 specification link data NOT found"
+fi
+
+if echo "$HTML" | grep -qF "stage8-exif-breakout.png" && echo "$HTML" | grep -qF "Hardware Architecture Standards"; then
+  pass "Stage 8 EXIF asset and title found"
+else
+  fail "Stage 8 EXIF asset or title NOT found"
+fi
+
+if echo "$HTML" | grep -qF "[INTEL ALERT - HARDWARE SIGNATURE]" && echo "$HTML" | grep -qF "[INTEL ALERT - TAG IDENTIFIER]"; then
+  pass "Stage 8 timed hint data found"
+else
+  fail "Stage 8 timed hint data NOT found"
+fi
+
+if echo "$HTML" | grep -qF "replace(/^0X/, \"\")"; then
+  pass "Stage 8 input sanitizer accepts optional 0x prefix"
+else
+  fail "Stage 8 input sanitizer does NOT strip optional 0x prefix"
+fi
+
 if echo "$HTML" | grep -qF ".stage-shell-stage-3 .timeline-graphic" && echo "$HTML" | grep -qF "1360px"; then
   pass "Stage 3 enlarged image styling found"
 else
@@ -246,8 +291,8 @@ else
 fi
 echo ""
 
-# Check 7: Stage 6 and 7 assets are served
-echo "[7/7] Verifying Stage 6 and 7 assets are served"
+# Check 7: Stage 6, 7, and 8 assets are served
+echo "[7/7] Verifying Stage 6, 7, and 8 assets are served"
 STAGE6_ASSET_URL="${ORIGIN_URL}/assets/stage6-registry-matrix.png"
 if curl -sS -f -I --max-time 30 "$STAGE6_ASSET_URL" >/dev/null; then
   pass "Stage 6 registry asset served: ${STAGE6_ASSET_URL}"
@@ -260,6 +305,13 @@ if curl -sS -f -I --max-time 30 "$STAGE7_ASSET_URL" >/dev/null; then
   pass "Stage 7 protocol asset served: ${STAGE7_ASSET_URL}"
 else
   fail "Stage 7 protocol asset NOT served: ${STAGE7_ASSET_URL}"
+fi
+
+STAGE8_ASSET_URL="${ORIGIN_URL}/assets/stage8-exif-breakout.png"
+if curl -sS -f -I --max-time 30 "$STAGE8_ASSET_URL" >/dev/null; then
+  pass "Stage 8 EXIF asset served: ${STAGE8_ASSET_URL}"
+else
+  fail "Stage 8 EXIF asset NOT served: ${STAGE8_ASSET_URL}"
 fi
 echo ""
 
