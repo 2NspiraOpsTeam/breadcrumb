@@ -824,17 +824,328 @@
       font-size: 0.72rem;
     }
 
-    @media (max-width: 720px) {
-      .app-shell {
-        padding: 14px;
+    @media (max-width: 760px) {
+      html,
+      body {
+        width: 100%;
+        overflow-x: hidden;
       }
 
-      .stage-body {
-        min-height: 82vh;
+      .app-shell {
+        width: 100vw;
+        max-width: 100vw;
+        padding: 10px;
+        place-items: start stretch;
+      }
+
+      .fade-layer,
+      .stage-frame,
+      .stage-body,
+      .asset-container,
+      .prompt-block,
+      .prompt-copy,
+      .landing-card {
+        width: 100%;
+        max-width: calc(100vw - 20px);
+        min-width: 0;
+      }
+
+      .landing {
+        width: 100%;
+        max-width: calc(100vw - 20px);
+        min-height: calc(100svh - 20px);
+        place-items: start center;
+        text-align: left;
+        padding: 18px 0 28px;
+      }
+
+      .landing-card {
+        gap: 24px;
+        padding-top: 56px;
+        justify-self: center;
+        justify-items: start;
+      }
+
+      .landing-mark,
+      .landing-cta,
+      .stage-tracker,
+      .external-link-button,
+      .ghost-button,
+      .solid-button {
+        letter-spacing: 0.12em;
+      }
+
+      .system-status {
+        width: 100%;
+        max-width: 34ch;
+        font-size: 0.66rem;
+        line-height: 1.65;
+        letter-spacing: 0.11em;
       }
 
       .landing-statement {
-        max-width: 14ch;
+        width: 100%;
+        max-width: calc(100vw - 20px);
+        font-size: clamp(1.72rem, 7.2vw, 2rem);
+        line-height: 1.08;
+        overflow-wrap: normal;
+        text-wrap: normal;
+        text-align: left;
+      }
+
+      .landing-cta,
+      .landing-card .ghost-button {
+        width: min(100%, 330px);
+        min-height: 48px;
+      }
+
+      .stage-shell {
+        min-height: auto;
+        padding: 0;
+      }
+
+      .stage-frame {
+        gap: 14px;
+      }
+
+      .stage-toolbar {
+        align-items: flex-start;
+      }
+
+      .stage-tracker {
+        font-size: 0.64rem;
+        line-height: 1.65;
+        letter-spacing: 0.11em;
+      }
+
+      .stage-body {
+        min-height: auto;
+        gap: 18px;
+        padding: 16px;
+      }
+
+      .stage-body-trojan {
+        min-height: auto;
+        gap: 14px;
+      }
+
+      .prompt-block {
+        gap: 10px;
+        padding-bottom: 0;
+      }
+
+      .prompt-title {
+        font-size: clamp(1.55rem, 8vw, 2.1rem);
+        line-height: 1.08;
+      }
+
+      .prompt-copy {
+        font-size: 0.9rem;
+        line-height: 1.72;
+      }
+
+      .prompt-copy p + p {
+        margin-top: 10px;
+      }
+
+      .external-link-row {
+        width: 100%;
+        gap: 8px;
+      }
+
+      .external-link-button {
+        width: 100%;
+        min-height: 46px;
+        padding: 12px 14px;
+        text-align: center;
+        line-height: 1.45;
+      }
+
+      .external-link-note {
+        width: 100%;
+        font-size: 0.66rem;
+        line-height: 1.55;
+      }
+
+      .asset-container {
+        min-height: 220px;
+        padding: 12px;
+      }
+
+      .asset-container img,
+      .asset-container svg {
+        width: 100%;
+        height: auto;
+        max-height: min(54svh, 440px);
+      }
+
+      .asset-container-trojan {
+        min-height: min(58svh, 520px);
+      }
+
+      .asset-container-trojan img {
+        height: min(58svh, 520px);
+        transform: scale(1.08);
+        transform-origin: center 46%;
+      }
+
+      .asset-container-trojan .asset-meta {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        font-size: 0.58rem;
+        line-height: 1.55;
+        letter-spacing: 0.1em;
+      }
+
+      .stage-shell-stage-1 .prompt-block {
+        padding: 4px 14px 0;
+      }
+
+      .stage-shell-stage-1 .prompt-copy {
+        max-width: 100%;
+      }
+
+      .stage-body-trojan .hint-rail,
+      .stage-body-trojan .feedback-line,
+      .stage-body-trojan .input-frame {
+        margin-left: 14px;
+        margin-right: 14px;
+      }
+
+      .stage-shell-stage-2 .asset-container {
+        min-height: 260px;
+        padding: 12px;
+      }
+
+      .stage-shell-stage-2 .timeline-graphic,
+      .stage-shell-stage-3 .timeline-graphic,
+      .stage-shell-stage-6 .timeline-graphic,
+      .stage-shell-stage-7 .timeline-graphic,
+      .stage-shell-stage-8 .timeline-graphic,
+      .stage-shell-stage-9 .timeline-graphic {
+        width: 100%;
+      }
+
+      .hint-rail,
+      .feedback-line,
+      .input-frame {
+        position: static;
+        left: auto;
+        right: auto;
+        bottom: auto;
+      }
+
+      .hint-rail {
+        min-height: 0;
+        align-items: start;
+      }
+
+      .hint-card {
+        font-size: 0.8rem;
+        line-height: 1.65;
+        padding-top: 12px;
+      }
+
+      .feedback-line {
+        min-height: 24px;
+        font-size: 0.72rem;
+        line-height: 1.55;
+      }
+
+      .input-frame {
+        padding-top: 12px;
+      }
+
+      .attempt-panel {
+        margin-top: 16px;
+        padding-top: 16px;
+        gap: 12px;
+      }
+
+      .stage-shell-stage-2 .attempt-panel,
+      .stage-shell-stage-3 .attempt-panel,
+      .stage-shell-stage-4 .attempt-panel,
+      .stage-shell-stage-5 .attempt-panel,
+      .stage-shell-stage-6 .attempt-panel,
+      .stage-shell-stage-7 .attempt-panel,
+      .stage-shell-stage-8 .attempt-panel,
+      .stage-shell-stage-9 .attempt-panel {
+        margin-top: 18px;
+        padding-top: 16px;
+      }
+
+      .token-box-row {
+        width: 100%;
+        gap: 6px;
+        padding: 6px 0 2px;
+      }
+
+      .token-box {
+        flex: 1 1 0;
+        width: auto;
+        min-width: 0;
+        max-width: 48px;
+        height: 50px;
+        font-size: 0.95rem;
+      }
+
+      .completion {
+        min-height: calc(100svh - 20px);
+        padding: 28px 0;
+      }
+
+      .completion-card {
+        gap: 18px;
+      }
+
+      .completion-card p {
+        font-size: 0.92rem;
+        line-height: 1.72;
+      }
+
+      .completion-card .cta-row,
+      .stage-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .completion-card .cta-row .ghost-button,
+      .completion-card .cta-row .solid-button,
+      .stage-actions .ghost-button,
+      .stage-actions .solid-button {
+        width: 100%;
+        min-height: 46px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .app-shell {
+        padding: 8px;
+      }
+
+      .stage-body {
+        padding: 14px;
+      }
+
+      .asset-container {
+        min-height: 190px;
+        padding: 10px;
+      }
+
+      .landing-statement {
+        width: 100%;
+        max-width: none;
+        font-size: clamp(1.58rem, 7vw, 1.9rem);
+      }
+
+      .token-box {
+        height: 46px;
+        font-size: 0.88rem;
+      }
+
+      .prompt-copy {
+        font-size: 0.86rem;
       }
     }
   </style>
